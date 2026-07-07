@@ -1,0 +1,198 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EL CAMINO DE LA INVESTIGACIÓN</title>
+    <link rel="stylesheet" href="style.css?v=25">
+    <!-- MapLibre GL JS CSS (versión debe coincidir con el JS al final del body) -->
+    <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
+</head>
+<body>
+    <!-- Screen 1: Official Cover Sci-Fi -->
+    <div id="screen-1" class="screen active">
+        <div class="sci-fi-container">
+            <img src="CIENCIA Y FICCION.png" alt="Ciencia y Ficción" class="cover-image sci-fi-glow">
+            <div class="hologram-overlay"></div>
+        </div>
+        
+        <div class="nav-controls">
+            <button id="btn-prev-1" class="nav-btn btn-back disabled">Atrás</button>
+            <button id="btn-next-1" class="nav-btn btn-next">Siguiente</button>
+        </div>
+    </div>
+    
+    <!-- Screen 2: Inner Map (Side by Side) -->
+    <div id="screen-2" class="screen">
+        <div id="roll-wrapper" class="roll-up-wrapper">
+            <div class="layout-container">
+                <div class="image-box">
+                    <img src="El camino de la investigación.png" alt="Mapa Interno" class="inner-map-image">
+                </div>
+                <div class="text-box sci-fi-panel">
+                    <p>Te proponemos un recorrido interactivo por este mapa con postas para acompañarlas/os a la próxima edición de la Feria</p>
+                </div>
+            </div>
+            <!-- We will use a CSS clip-path transition instead of roll-bottom cylinder for a cleaner diagonal wipe -->
+        </div>
+        <div class="nav-controls">
+            <button id="btn-prev-2" class="nav-btn btn-back">Atrás</button>
+            <button id="btn-next-2" class="nav-btn btn-next">Siguiente</button>
+        </div>
+    </div>
+    
+    <!-- Screen 3: Satellite Map with HUD -->
+    <div id="screen-3" class="screen">
+        <div id="map"></div>
+        
+        <!-- Sci-Fi HUD Overlay -->
+        <div class="map-hud">
+            <img src="EL CAMINO DE LA INVESTIGACION-TITULO.png" alt="Título" class="hud-title">
+            <div id="dest-ui" class="dest-ui">Viajando a: <span id="dest-text"></span></div>
+            <div id="inter-posta-text" class="inter-posta-text">En esta posta nos preguntamos: ¿qué tema nos interesa? ¿cuál nos motiva? ¿qué nos da intriga o llama la atención? ¿qué queremos saber?</div>
+            
+            <div id="embedded-modal" class="hidden">
+                <button id="btn-close-modal">X Cerrar</button>
+                <h2 id="modal-title" style="margin-top: 10px;">Información de Posta</h2>
+                <div id="modal-body">
+                    Este es el contenido de la posta.
+                </div>
+            </div>
+
+            <div class="hud-timer-container">
+                <img src="ASPAS FERIA.svg" alt="Aspas" class="hud-aspas">
+                <img src="EL CAMINO DE LA INVESTIGACION-TITULO.png" alt="El camino de la investigación" class="hud-counter-title">
+                <div class="hud-timer">
+                    <div class="timer-label">Faltan:</div>
+                    <div class="timer-countdown" id="countdown-timer">
+                        <div class="time-block"><span class="t-red">00</span><div class="time-sub">DÍAS</div></div>
+                        <span class="colon">:</span>
+                        <div class="time-block"><span class="t-blue">00</span><div class="time-sub">HORAS</div></div>
+                        <span class="colon">:</span>
+                        <div class="time-block"><span class="t-green">00</span><div class="time-sub">MINS</div></div>
+                    </div>
+                    <div class="timer-target">para Octubre</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Locality name overlay (shown when vehicle enters a locality) -->
+        <div id="locality-name-display" class="locality-name-display"></div>
+
+        <!-- Botón trigger de reinicio (aparece al llegar a Posta 9) -->
+        <button id="btn-show-restart" class="restart-trigger-btn hidden">↺ Reiniciar</button>
+
+        <!-- Panel de reinicio (se abre al presionar el botón) -->
+        <div id="restart-panel" class="restart-panel hidden">
+            <div class="restart-inner">
+                <h2 class="restart-title">🎉 ¡Llegaste a las Conclusiones!</h2>
+                <button id="btn-restart-journey" class="nav-btn restart-main-btn">↺ Reiniciar viaje desde Posta 1</button>
+                <div class="restart-divider">— o revisitar una posta anterior —</div>
+                <div class="restart-postas-grid" id="restart-postas-grid"></div>
+            </div>
+        </div>
+
+        <!-- Black Translucent Screen for Postas -->
+        <div id="posta-black-screen" class="posta-black-screen">
+            <h1 id="posta-black-title">Título</h1>
+            <p>Espacio para cargar información de la posta...</p>
+        </div>
+        
+        <div class="nav-controls map-nav" style="z-index: 1000; display: flex; gap: 10px; align-items: center;">
+            <button id="btn-edit-train" class="nav-btn" style="display:none;">Editar Tren</button>
+            <button id="btn-edit-depot" class="nav-btn" style="display:none;">Editar Depósito</button>
+            <button id="btn-prev-3" class="nav-btn btn-back">Atrás</button>
+            <button id="btn-skip-3" class="nav-btn btn-skip" style="background: linear-gradient(45deg, #0f0, #00a);">Skip posta</button>
+            <button id="btn-next-3" class="nav-btn btn-next">Siguiente</button>
+        </div>
+    </div>
+
+    <!-- Bus Editor Overlay -->
+    <div id="bus-editor-overlay" class="hidden">
+        <div class="editor-panel">
+            <h2>Editor de Colectivo</h2>
+            <div class="editor-controls">
+                <label>Tamaño del Colectivo: <span id="bus-size-val">250px</span></label>
+                <input type="range" id="bus-size" min="50" max="800" value="120">
+                
+                <label>Rotación del Colectivo: <span id="bus-rot-val">0°</span></label>
+                <input type="range" id="bus-rot" min="-180" max="180" value="0">
+            </div>
+            
+            <div class="editor-canvas-container">
+                <div id="editor-canvas-bus">
+                    <img src="COLECTIVO FERIA-anverso.png" id="editor-bus-img" style="width:100%; height:auto;">
+                </div>
+            </div>
+            
+            <div class="editor-buttons">
+                <button id="btn-save-bus" class="nav-btn">Guardar</button>
+                <button id="btn-cancel-bus" class="nav-btn btn-back">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Depot Editor Overlay -->
+    <div id="depot-editor-overlay" class="hidden" style="position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); z-index: 9999; align-items: center; justify-content: center;">
+        <div class="editor-panel" style="background: #222; border-radius: 10px; padding: 20px; border: 2px solid #0ff; color: white; width: 350px;">
+            <h2>Editor Depósito</h2>
+            <div class="editor-controls" style="display: flex; flex-direction: column; gap: 15px; margin-top: 15px;">
+                <label>Tamaño: <span id="depot-size-val">720px</span></label>
+                <input type="range" id="depot-size" min="100" max="2000" value="720">
+                <label>Offset X: <span id="depot-offx-val">0px</span></label>
+                <input type="range" id="depot-offx" min="-1000" max="1000" value="0">
+                <label>Offset Y: <span id="depot-offy-val">0px</span></label>
+                <input type="range" id="depot-offy" min="-1000" max="1000" value="0">
+            </div>
+            <button id="btn-save-depot" class="nav-btn" style="background: #0f0; color: black; font-weight: bold; width: 100%; margin-top: 20px;">Guardar y Cerrar</button>
+        </div>
+    </div>
+<!-- Train Editor Overlay -->
+    <div id="train-editor-overlay" class="hidden">
+        <div class="editor-panel">
+            <h2>Editor de Tren</h2>
+            <div class="editor-controls">
+                <label>Tamaño del Tren: <span id="train-size-val">250px</span></label>
+                <input type="range" id="train-size" min="100" max="1000" value="250">
+                
+                <label>Rotación del Tren: <span id="train-rot-val">-90°</span></label>
+                <input type="range" id="train-rot" min="-180" max="180" value="-90">
+                
+                <p style="font-size: 12px; margin-top: 10px; color: #ccc;">* Arrastra las 3 aspas de colores para ubicarlas en las ruedas.</p>
+            </div>
+            
+            <div class="editor-canvas-container">
+                <div id="editor-canvas">
+                    <img src="tren_transparente.png" id="editor-train-img">
+                    <div class="draggable-wheel" id="wheel-1"><img src="ASPAS FERIA.svg" class="spin-wheel"></div>
+                    <div class="draggable-wheel" id="wheel-2"><img src="ASPAS FERIA.svg" class="spin-wheel"></div>
+                    <div class="draggable-wheel" id="wheel-3"><img src="ASPAS FERIA.svg" class="spin-wheel"></div>
+                </div>
+            </div>
+            
+            <div class="editor-buttons" style="display:none;">
+                <button id="btn-save-train" class="nav-btn">Guardar</button>
+                <button id="btn-cancel-train" class="nav-btn btn-back">Cancelar</button>
+            </div>
+            <button id="btn-close-train-editor" class="nav-btn" style="width:100%;margin-top:15px;background:linear-gradient(45deg,#0ff,#00f);">✕ Cerrar y guardar</button>
+        </div>
+    </div>
+
+    <!-- Botón de pantalla completa (siempre visible) -->
+    <button id="btn-fullscreen" onclick="(function(){if(!document.fullscreenElement)document.documentElement.requestFullscreen().catch(()=>{});else document.exitFullscreen();})()">⛶ Pantalla completa</button>
+
+    <!-- MapLibre GL JS -->
+    <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+    <!-- Three.js for 3D Models -->
+    <script src="https://unpkg.com/three@0.147.0/build/three.min.js"></script>
+    <script src="https://unpkg.com/three@0.147.0/examples/js/loaders/GLTFLoader.js"></script>
+    <!-- Turf.js and Proj4js for spatial analysis and coordinate conversions -->
+    <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.9.0/proj4.js"></script>
+    <!-- Model Viewer -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+    <script src="data.js?v=25"></script>
+    <script src="localidades-san-martin-shp.js?v=25"></script>
+    <script src="script.js?v=25"></script>
+</body>
+</html>

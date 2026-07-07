@@ -1,0 +1,2865 @@
+﻿{
+    "features":  [
+                     {
+                         "properties":  {
+                                            "description":  "Ramal Retiro - Domingo Cabred",
+                                            "electrified":  "no",
+                                            "gauge":  "1676",
+                                            "maxspeed":  "80",
+                                            "name":  "FC San MartÃ­n",
+                                            "network":  "San MartÃ­n",
+                                            "official_name":  "Ferrocarril General San MartÃ­n",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "proposed:electrified":  "contact_line",
+                                            "proposed:frequency":  "50",
+                                            "proposed:voltage":  "25000",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "SM-A",
+                                            "usage":  "main"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5548523,
+                                                                  -34.6042479
+                                                              ],
+                                                              [
+                                                                  -58.5568923,
+                                                                  -34.6043196
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "electrified":  "no",
+                                            "gauge":  "1676",
+                                            "name":  "FC San MartÃ­n",
+                                            "network":  "San MartÃ­n",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "railway":  "rail",
+                                            "service":  "yard"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5502995,
+                                                                  -34.6049623
+                                                              ],
+                                                              [
+                                                                  -58.5496131,
+                                                                  -34.6049057
+                                                              ],
+                                                              [
+                                                                  -58.5492334,
+                                                                  -34.6048536
+                                                              ],
+                                                              [
+                                                                  -58.5488891,
+                                                                  -34.6048064
+                                                              ],
+                                                              [
+                                                                  -58.5486722,
+                                                                  -34.6047767
+                                                              ],
+                                                              [
+                                                                  -58.5473890,
+                                                                  -34.6045564
+                                                              ],
+                                                              [
+                                                                  -58.5469510,
+                                                                  -34.6045099
+                                                              ],
+                                                              [
+                                                                  -58.5463144,
+                                                                  -34.6044773
+                                                              ],
+                                                              [
+                                                                  -58.5462448,
+                                                                  -34.6044737
+                                                              ],
+                                                              [
+                                                                  -58.5395189,
+                                                                  -34.6042152
+                                                              ],
+                                                              [
+                                                                  -58.5389543,
+                                                                  -34.6042032
+                                                              ],
+                                                              [
+                                                                  -58.5386699,
+                                                                  -34.6042024
+                                                              ],
+                                                              [
+                                                                  -58.5386377,
+                                                                  -34.6042023
+                                                              ],
+                                                              [
+                                                                  -58.5385050,
+                                                                  -34.6042020
+                                                              ],
+                                                              [
+                                                                  -58.5383132,
+                                                                  -34.6042014
+                                                              ],
+                                                              [
+                                                                  -58.5378412,
+                                                                  -34.6042401
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "electrified":  "no",
+                                            "gauge":  "1676",
+                                            "name":  "FC San MartÃ­n",
+                                            "network":  "San MartÃ­n",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "railway":  "rail",
+                                            "service":  "yard"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5486722,
+                                                                  -34.6047767
+                                                              ],
+                                                              [
+                                                                  -58.5482695,
+                                                                  -34.6047613
+                                                              ],
+                                                              [
+                                                                  -58.5401735,
+                                                                  -34.6044523
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "electrified":  "rail",
+                                            "electrified:rail":  "bottom",
+                                            "frequency":  "0",
+                                            "gauge":  "1676",
+                                            "maxspeed":  "80",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "usage":  "main",
+                                            "voltage":  "830"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5749817,
+                                                                  -34.5357828
+                                                              ],
+                                                              [
+                                                                  -58.5752772,
+                                                                  -34.5354892
+                                                              ],
+                                                              [
+                                                                  -58.5763005,
+                                                                  -34.5344335
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "description":  "Ramal Retiro - Domingo Cabred",
+                                            "electrified":  "no",
+                                            "gauge":  "1676",
+                                            "maxspeed":  "80",
+                                            "name":  "FC San MartÃ­n",
+                                            "network":  "San MartÃ­n",
+                                            "official_name":  "Ferrocarril General San MartÃ­n",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "proposed:electrified":  "contact_line",
+                                            "proposed:frequency":  "50",
+                                            "proposed:voltage":  "25000",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "SM-A",
+                                            "usage":  "main"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5573634,
+                                                                  -34.6043353
+                                                              ],
+                                                              [
+                                                                  -58.5586800,
+                                                                  -34.6043871
+                                                              ],
+                                                              [
+                                                                  -58.5593320,
+                                                                  -34.6044095
+                                                              ],
+                                                              [
+                                                                  -58.5603038,
+                                                                  -34.6044428
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "bridge":  "yes",
+                                            "description":  "Ramal Retiro - Domingo Cabred",
+                                            "electrified":  "no",
+                                            "gauge":  "1676",
+                                            "layer":  "1",
+                                            "maxspeed":  "80",
+                                            "name":  "FC San MartÃ­n",
+                                            "network":  "San MartÃ­n",
+                                            "official_name":  "Ferrocarril General San MartÃ­n",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "proposed:electrified":  "contact_line",
+                                            "proposed:frequency":  "50",
+                                            "proposed:voltage":  "25000",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "SM-A",
+                                            "usage":  "main"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5568923,
+                                                                  -34.6043196
+                                                              ],
+                                                              [
+                                                                  -58.5570312,
+                                                                  -34.6043232
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "electrified":  "rail",
+                                            "electrified:rail":  "bottom",
+                                            "frequency":  "0",
+                                            "gauge":  "1676",
+                                            "maxspeed":  "80",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "GM-1",
+                                            "usage":  "main",
+                                            "voltage":  "830"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5623258,
+                                                                  -34.5459638
+                                                              ],
+                                                              [
+                                                                  -58.5662081,
+                                                                  -34.5428565
+                                                              ],
+                                                              [
+                                                                  -58.5671888,
+                                                                  -34.5420663
+                                                              ],
+                                                              [
+                                                                  -58.5674575,
+                                                                  -34.5418497
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "bridge":  "yes",
+                                            "electrified":  "rail",
+                                            "frequency":  "0",
+                                            "gauge":  "1676",
+                                            "layer":  "1",
+                                            "maxspeed":  "80",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "GM-1",
+                                            "usage":  "main",
+                                            "voltage":  "830"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5152191,
+                                                                  -34.5812631
+                                                              ],
+                                                              [
+                                                                  -58.5145578,
+                                                                  -34.5813028
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "electrified":  "rail",
+                                            "frequency":  "0",
+                                            "gauge":  "1676",
+                                            "maxspeed":  "80",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "GM-1",
+                                            "usage":  "main",
+                                            "voltage":  "830"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5145578,
+                                                                  -34.5813028
+                                                              ],
+                                                              [
+                                                                  -58.5137764,
+                                                                  -34.5813370
+                                                              ],
+                                                              [
+                                                                  -58.5128457,
+                                                                  -34.5813391
+                                                              ],
+                                                              [
+                                                                  -58.5125343,
+                                                                  -34.5813305
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "electrified":  "no",
+                                            "gauge":  "1676",
+                                            "maxspeed":  "80",
+                                            "name":  "FC San MartÃ­n",
+                                            "network":  "San MartÃ­n",
+                                            "official_name":  "Ferrocarril San MartÃ­n",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "proposed:electrified":  "contact_line",
+                                            "proposed:frequency":  "50",
+                                            "proposed:voltage":  "25000",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "SM-A",
+                                            "usage":  "main"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5359542,
+                                                                  -34.6035192
+                                                              ],
+                                                              [
+                                                                  -58.5384324,
+                                                                  -34.6036255
+                                                              ],
+                                                              [
+                                                                  -58.5396177,
+                                                                  -34.6036666
+                                                              ],
+                                                              [
+                                                                  -58.5408025,
+                                                                  -34.6037077
+                                                              ],
+                                                              [
+                                                                  -58.5424935,
+                                                                  -34.6037727
+                                                              ],
+                                                              [
+                                                                  -58.5442304,
+                                                                  -34.6038369
+                                                              ],
+                                                              [
+                                                                  -58.5476047,
+                                                                  -34.6039799
+                                                              ],
+                                                              [
+                                                                  -58.5548523,
+                                                                  -34.6042479
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "bridge":  "yes",
+                                            "electrified":  "rail",
+                                            "frequency":  "0",
+                                            "gauge":  "1676",
+                                            "layer":  "1",
+                                            "maxspeed":  "80",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "GM-1",
+                                            "usage":  "main",
+                                            "voltage":  "830"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5145772,
+                                                                  -34.5813480
+                                                              ],
+                                                              [
+                                                                  -58.5151672,
+                                                                  -34.5813109
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "electrified":  "rail",
+                                            "frequency":  "0",
+                                            "gauge":  "1676",
+                                            "maxspeed":  "80",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "GM-1",
+                                            "usage":  "main",
+                                            "voltage":  "830"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5405614,
+                                                                  -34.5637074
+                                                              ],
+                                                              [
+                                                                  -58.5407638,
+                                                                  -34.5634412
+                                                              ],
+                                                              [
+                                                                  -58.5412923,
+                                                                  -34.5628101
+                                                              ],
+                                                              [
+                                                                  -58.5414595,
+                                                                  -34.5626300
+                                                              ],
+                                                              [
+                                                                  -58.5417075,
+                                                                  -34.5623779
+                                                              ],
+                                                              [
+                                                                  -58.5418725,
+                                                                  -34.5622266
+                                                              ],
+                                                              [
+                                                                  -58.5420736,
+                                                                  -34.5620500
+                                                              ],
+                                                              [
+                                                                  -58.5434238,
+                                                                  -34.5609619
+                                                              ],
+                                                              [
+                                                                  -58.5439652,
+                                                                  -34.5605349
+                                                              ],
+                                                              [
+                                                                  -58.5450021,
+                                                                  -34.5597171
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "electrified":  "rail",
+                                            "frequency":  "0",
+                                            "gauge":  "1676",
+                                            "maxspeed":  "80",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "GM-1",
+                                            "usage":  "main",
+                                            "voltage":  "830"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5125340,
+                                                                  -34.5813725
+                                                              ],
+                                                              [
+                                                                  -58.5132895,
+                                                                  -34.5813804
+                                                              ],
+                                                              [
+                                                                  -58.5137872,
+                                                                  -34.5813761
+                                                              ],
+                                                              [
+                                                                  -58.5145772,
+                                                                  -34.5813480
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "description":  "Ramal Retiro - Domingo Cabred",
+                                            "electrified":  "no",
+                                            "gauge":  "1676",
+                                            "maxspeed":  "80",
+                                            "name":  "FC San MartÃ­n",
+                                            "network":  "San MartÃ­n",
+                                            "official_name":  "Ferrocarril General San MartÃ­n",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "proposed:electrified":  "contact_line",
+                                            "proposed:frequency":  "50",
+                                            "proposed:voltage":  "25000",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "SM-A",
+                                            "usage":  "main"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5570312,
+                                                                  -34.6043232
+                                                              ],
+                                                              [
+                                                                  -58.5572133,
+                                                                  -34.6043296
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "bridge":  "yes",
+                                            "description":  "Ramal Retiro - Domingo Cabred",
+                                            "electrified":  "no",
+                                            "gauge":  "1676",
+                                            "layer":  "1",
+                                            "maxspeed":  "80",
+                                            "name":  "FC San MartÃ­n",
+                                            "network":  "San MartÃ­n",
+                                            "official_name":  "Ferrocarril General San MartÃ­n",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "proposed:electrified":  "contact_line",
+                                            "proposed:frequency":  "50",
+                                            "proposed:voltage":  "25000",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "SM-A",
+                                            "usage":  "main"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5572133,
+                                                                  -34.6043296
+                                                              ],
+                                                              [
+                                                                  -58.5573634,
+                                                                  -34.6043353
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "electrified":  "rail",
+                                            "frequency":  "0",
+                                            "gauge":  "1676",
+                                            "maxspeed":  "80",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "GM-1",
+                                            "usage":  "main",
+                                            "voltage":  "830"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.4959117,
+                                                                  -34.5791367
+                                                              ],
+                                                              [
+                                                                  -58.4961258,
+                                                                  -34.5792120
+                                                              ],
+                                                              [
+                                                                  -58.4963350,
+                                                                  -34.5792867
+                                                              ],
+                                                              [
+                                                                  -58.4969025,
+                                                                  -34.5794691
+                                                              ],
+                                                              [
+                                                                  -58.4975516,
+                                                                  -34.5796678
+                                                              ],
+                                                              [
+                                                                  -58.4981658,
+                                                                  -34.5798423
+                                                              ],
+                                                              [
+                                                                  -58.4987505,
+                                                                  -34.5799814
+                                                              ],
+                                                              [
+                                                                  -58.4994385,
+                                                                  -34.5801459
+                                                              ],
+                                                              [
+                                                                  -58.4998234,
+                                                                  -34.5802288
+                                                              ],
+                                                              [
+                                                                  -58.5004920,
+                                                                  -34.5803494
+                                                              ],
+                                                              [
+                                                                  -58.5013890,
+                                                                  -34.5804626
+                                                              ],
+                                                              [
+                                                                  -58.5017012,
+                                                                  -34.5805046
+                                                              ],
+                                                              [
+                                                                  -58.5022401,
+                                                                  -34.5805622
+                                                              ],
+                                                              [
+                                                                  -58.5034766,
+                                                                  -34.5806726
+                                                              ],
+                                                              [
+                                                                  -58.5070114,
+                                                                  -34.5809578
+                                                              ],
+                                                              [
+                                                                  -58.5079424,
+                                                                  -34.5810458
+                                                              ],
+                                                              [
+                                                                  -58.5108372,
+                                                                  -34.5812722
+                                                              ],
+                                                              [
+                                                                  -58.5118013,
+                                                                  -34.5813348
+                                                              ],
+                                                              [
+                                                                  -58.5122925,
+                                                                  -34.5813624
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "description":  "Ramal Retiro - Domingo Cabred",
+                                            "electrified":  "no",
+                                            "gauge":  "1676",
+                                            "maxspeed":  "80",
+                                            "name":  "FC San MartÃ­n",
+                                            "network":  "San MartÃ­n",
+                                            "official_name":  "Ferrocarril General San MartÃ­n",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "proposed:electrified":  "contact_line",
+                                            "proposed:frequency":  "50",
+                                            "proposed:voltage":  "25000",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "SM-A",
+                                            "usage":  "main"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5603903,
+                                                                  -34.6044054
+                                                              ],
+                                                              [
+                                                                  -58.5600411,
+                                                                  -34.6043931
+                                                              ],
+                                                              [
+                                                                  -58.5586850,
+                                                                  -34.6043453
+                                                              ],
+                                                              [
+                                                                  -58.5574124,
+                                                                  -34.6042972
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "bridge":  "yes",
+                                            "description":  "Ramal Retiro - Domingo Cabred",
+                                            "electrified":  "no",
+                                            "gauge":  "1676",
+                                            "layer":  "1",
+                                            "maxspeed":  "80",
+                                            "name":  "FC San MartÃ­n",
+                                            "network":  "San MartÃ­n",
+                                            "official_name":  "Ferrocarril General San MartÃ­n",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "proposed:electrified":  "contact_line",
+                                            "proposed:frequency":  "50",
+                                            "proposed:voltage":  "25000",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "SM-A",
+                                            "usage":  "main"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5574124,
+                                                                  -34.6042972
+                                                              ],
+                                                              [
+                                                                  -58.5572630,
+                                                                  -34.6042917
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "bridge":  "yes",
+                                            "description":  "Ramal Retiro - Domingo Cabred",
+                                            "electrified":  "no",
+                                            "gauge":  "1676",
+                                            "layer":  "1",
+                                            "maxspeed":  "80",
+                                            "name":  "FC San MartÃ­n",
+                                            "network":  "San MartÃ­n",
+                                            "official_name":  "Ferrocarril General San MartÃ­n",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "proposed:electrified":  "contact_line",
+                                            "proposed:frequency":  "50",
+                                            "proposed:voltage":  "25000",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "SM-A",
+                                            "usage":  "main"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5569874,
+                                                                  -34.6042757
+                                                              ],
+                                                              [
+                                                                  -58.5568525,
+                                                                  -34.6042731
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "description":  "Ramal Retiro - Domingo Cabred",
+                                            "electrified":  "no",
+                                            "gauge":  "1676",
+                                            "maxspeed":  "80",
+                                            "name":  "FC San MartÃ­n",
+                                            "network":  "San MartÃ­n",
+                                            "official_name":  "Ferrocarril General San MartÃ­n",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "proposed:electrified":  "contact_line",
+                                            "proposed:frequency":  "50",
+                                            "proposed:voltage":  "25000",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "SM-A",
+                                            "usage":  "main"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5572630,
+                                                                  -34.6042917
+                                                              ],
+                                                              [
+                                                                  -58.5569874,
+                                                                  -34.6042757
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "description":  "Ramal Retiro - Domingo Cabred",
+                                            "electrified":  "no",
+                                            "gauge":  "1676",
+                                            "maxspeed":  "80",
+                                            "name":  "FC San MartÃ­n",
+                                            "network":  "San MartÃ­n",
+                                            "official_name":  "Ferrocarril General San MartÃ­n",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "proposed:electrified":  "contact_line",
+                                            "proposed:frequency":  "50",
+                                            "proposed:voltage":  "25000",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "SM-A",
+                                            "usage":  "main"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5568525,
+                                                                  -34.6042731
+                                                              ],
+                                                              [
+                                                                  -58.5555132,
+                                                                  -34.6042240
+                                                              ],
+                                                              [
+                                                                  -58.5482763,
+                                                                  -34.6039506
+                                                              ],
+                                                              [
+                                                                  -58.5449263,
+                                                                  -34.6038058
+                                                              ],
+                                                              [
+                                                                  -58.5424973,
+                                                                  -34.6037212
+                                                              ],
+                                                              [
+                                                                  -58.5407560,
+                                                                  -34.6036606
+                                                              ],
+                                                              [
+                                                                  -58.5396225,
+                                                                  -34.6036204
+                                                              ],
+                                                              [
+                                                                  -58.5390935,
+                                                                  -34.6036016
+                                                              ],
+                                                              [
+                                                                  -58.5366153,
+                                                                  -34.6034953
+                                                              ],
+                                                              [
+                                                                  -58.5315740,
+                                                                  -34.6033109
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "electrified":  "no",
+                                            "gauge":  "1676",
+                                            "maxspeed":  "120",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "proposed:electrified":  "rail",
+                                            "proposed:electrified:rail":  "bottom",
+                                            "proposed:frequency":  "0",
+                                            "proposed:voltage":  "830",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "GM-1",
+                                            "usage":  "main"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5769562,
+                                                                  -34.5342019
+                                                              ],
+                                                              [
+                                                                  -58.5776569,
+                                                                  -34.5336323
+                                                              ],
+                                                              [
+                                                                  -58.5781976,
+                                                                  -34.5331644
+                                                              ],
+                                                              [
+                                                                  -58.5787030,
+                                                                  -34.5326988
+                                                              ],
+                                                              [
+                                                                  -58.5790828,
+                                                                  -34.5323281
+                                                              ],
+                                                              [
+                                                                  -58.5794267,
+                                                                  -34.5319603
+                                                              ],
+                                                              [
+                                                                  -58.5800920,
+                                                                  -34.5312349
+                                                              ],
+                                                              [
+                                                                  -58.5804292,
+                                                                  -34.5308344
+                                                              ],
+                                                              [
+                                                                  -58.5807471,
+                                                                  -34.5304300
+                                                              ],
+                                                              [
+                                                                  -58.5810837,
+                                                                  -34.5299605
+                                                              ],
+                                                              [
+                                                                  -58.5813986,
+                                                                  -34.5295033
+                                                              ],
+                                                              [
+                                                                  -58.5816604,
+                                                                  -34.5290987
+                                                              ],
+                                                              [
+                                                                  -58.5818750,
+                                                                  -34.5287407
+                                                              ],
+                                                              [
+                                                                  -58.5823165,
+                                                                  -34.5279373
+                                                              ],
+                                                              [
+                                                                  -58.5826594,
+                                                                  -34.5272316
+                                                              ],
+                                                              [
+                                                                  -58.5838272,
+                                                                  -34.5245708
+                                                              ],
+                                                              [
+                                                                  -58.5845095,
+                                                                  -34.5229999
+                                                              ],
+                                                              [
+                                                                  -58.5857764,
+                                                                  -34.5200830
+                                                              ],
+                                                              [
+                                                                  -58.5858121,
+                                                                  -34.5200016
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "electrified":  "no",
+                                            "gauge":  "1676",
+                                            "maxspeed":  "120",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "proposed:electrified":  "rail",
+                                            "proposed:electrified:rail":  "bottom",
+                                            "proposed:frequency":  "0",
+                                            "proposed:voltage":  "830",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "GM-1",
+                                            "usage":  "main"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5857666,
+                                                                  -34.5199853
+                                                              ],
+                                                              [
+                                                                  -58.5857326,
+                                                                  -34.5200668
+                                                              ],
+                                                              [
+                                                                  -58.5844670,
+                                                                  -34.5229794
+                                                              ],
+                                                              [
+                                                                  -58.5837656,
+                                                                  -34.5245936
+                                                              ],
+                                                              [
+                                                                  -58.5826270,
+                                                                  -34.5272080
+                                                              ],
+                                                              [
+                                                                  -58.5822760,
+                                                                  -34.5279295
+                                                              ],
+                                                              [
+                                                                  -58.5817140,
+                                                                  -34.5289302
+                                                              ],
+                                                              [
+                                                                  -58.5815384,
+                                                                  -34.5291987
+                                                              ],
+                                                              [
+                                                                  -58.5813506,
+                                                                  -34.5294860
+                                                              ],
+                                                              [
+                                                                  -58.5810381,
+                                                                  -34.5299461
+                                                              ],
+                                                              [
+                                                                  -58.5806854,
+                                                                  -34.5304532
+                                                              ],
+                                                              [
+                                                                  -58.5803810,
+                                                                  -34.5308277
+                                                              ],
+                                                              [
+                                                                  -58.5800615,
+                                                                  -34.5312095
+                                                              ],
+                                                              [
+                                                                  -58.5793980,
+                                                                  -34.5319392
+                                                              ],
+                                                              [
+                                                                  -58.5790479,
+                                                                  -34.5323049
+                                                              ],
+                                                              [
+                                                                  -58.5786705,
+                                                                  -34.5326711
+                                                              ],
+                                                              [
+                                                                  -58.5781668,
+                                                                  -34.5331302
+                                                              ],
+                                                              [
+                                                                  -58.5776300,
+                                                                  -34.5335991
+                                                              ],
+                                                              [
+                                                                  -58.5771921,
+                                                                  -34.5339487
+                                                              ],
+                                                              [
+                                                                  -58.5768516,
+                                                                  -34.5342146
+                                                              ],
+                                                              [
+                                                                  -58.5752772,
+                                                                  -34.5354892
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "electrified":  "rail",
+                                            "electrified:rail":  "bottom",
+                                            "frequency":  "0",
+                                            "gauge":  "1676",
+                                            "maxspeed":  "80",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "usage":  "main",
+                                            "voltage":  "830"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5761614,
+                                                                  -34.5345159
+                                                              ],
+                                                              [
+                                                                  -58.5753558,
+                                                                  -34.5353497
+                                                              ],
+                                                              [
+                                                                  -58.5749514,
+                                                                  -34.5357574
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "electrified":  "rail",
+                                            "frequency":  "0",
+                                            "gauge":  "1676",
+                                            "maxspeed":  "80",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "GM-1",
+                                            "usage":  "main",
+                                            "voltage":  "830"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5574699,
+                                                                  -34.5498036
+                                                              ],
+                                                              [
+                                                                  -58.5560280,
+                                                                  -34.5509622
+                                                              ],
+                                                              [
+                                                                  -58.5552307,
+                                                                  -34.5515947
+                                                              ],
+                                                              [
+                                                                  -58.5548368,
+                                                                  -34.5519072
+                                                              ],
+                                                              [
+                                                                  -58.5544293,
+                                                                  -34.5522218
+                                                              ],
+                                                              [
+                                                                  -58.5539192,
+                                                                  -34.5526294
+                                                              ],
+                                                              [
+                                                                  -58.5515987,
+                                                                  -34.5544755
+                                                              ],
+                                                              [
+                                                                  -58.5507557,
+                                                                  -34.5551462
+                                                              ],
+                                                              [
+                                                                  -58.5478488,
+                                                                  -34.5574175
+                                                              ],
+                                                              [
+                                                                  -58.5471104,
+                                                                  -34.5579969
+                                                              ],
+                                                              [
+                                                                  -58.5457030,
+                                                                  -34.5591012
+                                                              ],
+                                                              [
+                                                                  -58.5439319,
+                                                                  -34.5605042
+                                                              ],
+                                                              [
+                                                                  -58.5433938,
+                                                                  -34.5609304
+                                                              ],
+                                                              [
+                                                                  -58.5420339,
+                                                                  -34.5620231
+                                                              ],
+                                                              [
+                                                                  -58.5418443,
+                                                                  -34.5621891
+                                                              ],
+                                                              [
+                                                                  -58.5416740,
+                                                                  -34.5623547
+                                                              ],
+                                                              [
+                                                                  -58.5414241,
+                                                                  -34.5626006
+                                                              ],
+                                                              [
+                                                                  -58.5412542,
+                                                                  -34.5627855
+                                                              ],
+                                                              [
+                                                                  -58.5407306,
+                                                                  -34.5634314
+                                                              ],
+                                                              [
+                                                                  -58.5392800,
+                                                                  -34.5653105
+                                                              ],
+                                                              [
+                                                                  -58.5376771,
+                                                                  -34.5673502
+                                                              ],
+                                                              [
+                                                                  -58.5375930,
+                                                                  -34.5674477
+                                                              ],
+                                                              [
+                                                                  -58.5363019,
+                                                                  -34.5691247
+                                                              ],
+                                                              [
+                                                                  -58.5362600,
+                                                                  -34.5691791
+                                                              ],
+                                                              [
+                                                                  -58.5351370,
+                                                                  -34.5706345
+                                                              ],
+                                                              [
+                                                                  -58.5347354,
+                                                                  -34.5710721
+                                                              ],
+                                                              [
+                                                                  -58.5342397,
+                                                                  -34.5715536
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "electrified":  "rail",
+                                            "frequency":  "0",
+                                            "gauge":  "1676",
+                                            "maxspeed":  "80",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "GM-1",
+                                            "usage":  "main",
+                                            "voltage":  "830"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5122965,
+                                                                  -34.5813226
+                                                              ],
+                                                              [
+                                                                  -58.5114008,
+                                                                  -34.5812644
+                                                              ],
+                                                              [
+                                                                  -58.5108580,
+                                                                  -34.5812317
+                                                              ],
+                                                              [
+                                                                  -58.5104543,
+                                                                  -34.5812079
+                                                              ],
+                                                              [
+                                                                  -58.5087375,
+                                                                  -34.5810761
+                                                              ],
+                                                              [
+                                                                  -58.5070433,
+                                                                  -34.5809203
+                                                              ],
+                                                              [
+                                                                  -58.5062211,
+                                                                  -34.5808597
+                                                              ],
+                                                              [
+                                                                  -58.5040502,
+                                                                  -34.5806875
+                                                              ],
+                                                              [
+                                                                  -58.5022476,
+                                                                  -34.5805240
+                                                              ],
+                                                              [
+                                                                  -58.5017034,
+                                                                  -34.5804689
+                                                              ],
+                                                              [
+                                                                  -58.5014031,
+                                                                  -34.5804314
+                                                              ],
+                                                              [
+                                                                  -58.5005175,
+                                                                  -34.5803206
+                                                              ],
+                                                              [
+                                                                  -58.4998345,
+                                                                  -34.5801914
+                                                              ],
+                                                              [
+                                                                  -58.4994440,
+                                                                  -34.5801105
+                                                              ],
+                                                              [
+                                                                  -58.4988001,
+                                                                  -34.5799527
+                                                              ],
+                                                              [
+                                                                  -58.4981930,
+                                                                  -34.5798029
+                                                              ],
+                                                              [
+                                                                  -58.4974758,
+                                                                  -34.5796048
+                                                              ],
+                                                              [
+                                                                  -58.4968841,
+                                                                  -34.5794248
+                                                              ],
+                                                              [
+                                                                  -58.4963322,
+                                                                  -34.5792466
+                                                              ],
+                                                              [
+                                                                  -58.4959501,
+                                                                  -34.5791055
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "electrified":  "rail",
+                                            "electrified:rail":  "bottom",
+                                            "frequency":  "0",
+                                            "gauge":  "1676",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Trenes Argentinos Operadora Ferroviaria",
+                                            "passenger_lines":  "2",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "GM-1",
+                                            "usage":  "main",
+                                            "voltage":  "830"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5752772,
+                                                                  -34.5354892
+                                                              ],
+                                                              [
+                                                                  -58.5749514,
+                                                                  -34.5357574
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "electrified":  "rail",
+                                            "frequency":  "0",
+                                            "gauge":  "1676",
+                                            "maxspeed":  "80",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "both",
+                                            "ref":  "GM-1",
+                                            "usage":  "main",
+                                            "voltage":  "830"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5578757,
+                                                                  -34.5494807
+                                                              ],
+                                                              [
+                                                                  -58.5574699,
+                                                                  -34.5498036
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "electrified":  "rail",
+                                            "electrified:rail":  "bottom",
+                                            "frequency":  "0",
+                                            "gauge":  "1676",
+                                            "maxspeed":  "80",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "GM-1",
+                                            "usage":  "main",
+                                            "voltage":  "830"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5718207,
+                                                                  -34.5382807
+                                                              ],
+                                                              [
+                                                                  -58.5677481,
+                                                                  -34.5415615
+                                                              ],
+                                                              [
+                                                                  -58.5671576,
+                                                                  -34.5420372
+                                                              ],
+                                                              [
+                                                                  -58.5661715,
+                                                                  -34.5428263
+                                                              ],
+                                                              [
+                                                                  -58.5622874,
+                                                                  -34.5459420
+                                                              ],
+                                                              [
+                                                                  -58.5607505,
+                                                                  -34.5471748
+                                                              ],
+                                                              [
+                                                                  -58.5578757,
+                                                                  -34.5494807
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "electrified":  "rail",
+                                            "electrified:rail":  "bottom",
+                                            "frequency":  "0",
+                                            "gauge":  "1676",
+                                            "maxspeed":  "80",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "GM-1",
+                                            "usage":  "main",
+                                            "voltage":  "830"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5719957,
+                                                                  -34.5381905
+                                                              ],
+                                                              [
+                                                                  -58.5742538,
+                                                                  -34.5363697
+                                                              ],
+                                                              [
+                                                                  -58.5749817,
+                                                                  -34.5357828
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "bridge":  "yes",
+                                            "electrified":  "rail",
+                                            "electrified:rail":  "bottom",
+                                            "frequency":  "0",
+                                            "gauge":  "1676",
+                                            "layer":  "1",
+                                            "maxspeed":  "80",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "GM-1",
+                                            "usage":  "main",
+                                            "voltage":  "830"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5718520,
+                                                                  -34.5383063
+                                                              ],
+                                                              [
+                                                                  -58.5719957,
+                                                                  -34.5381905
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "bridge":  "yes",
+                                            "electrified":  "rail",
+                                            "electrified:rail":  "bottom",
+                                            "frequency":  "0",
+                                            "gauge":  "1676",
+                                            "layer":  "1",
+                                            "maxspeed":  "80",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "GM-1",
+                                            "usage":  "main",
+                                            "voltage":  "830"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5719628,
+                                                                  -34.5381650
+                                                              ],
+                                                              [
+                                                                  -58.5718207,
+                                                                  -34.5382807
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "electrified":  "rail",
+                                            "electrified:rail":  "bottom",
+                                            "frequency":  "0",
+                                            "gauge":  "1676",
+                                            "maxspeed":  "80",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "GM-1",
+                                            "usage":  "main",
+                                            "voltage":  "830"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5749514,
+                                                                  -34.5357574
+                                                              ],
+                                                              [
+                                                                  -58.5745283,
+                                                                  -34.5360984
+                                                              ],
+                                                              [
+                                                                  -58.5720410,
+                                                                  -34.5381033
+                                                              ],
+                                                              [
+                                                                  -58.5719628,
+                                                                  -34.5381650
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "electrified":  "rail",
+                                            "electrified:rail":  "bottom",
+                                            "frequency":  "0",
+                                            "gauge":  "1676",
+                                            "maxspeed":  "80",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "usage":  "main",
+                                            "voltage":  "830"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5763005,
+                                                                  -34.5344335
+                                                              ],
+                                                              [
+                                                                  -58.5763858,
+                                                                  -34.5343488
+                                                              ],
+                                                              [
+                                                                  -58.5765333,
+                                                                  -34.5342107
+                                                              ],
+                                                              [
+                                                                  -58.5766943,
+                                                                  -34.5340704
+                                                              ],
+                                                              [
+                                                                  -58.5767689,
+                                                                  -34.5340103
+                                                              ],
+                                                              [
+                                                                  -58.5770136,
+                                                                  -34.5338129
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "electrified":  "rail",
+                                            "electrified:rail":  "bottom",
+                                            "frequency":  "0",
+                                            "gauge":  "1676",
+                                            "maxspeed":  "80",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "usage":  "main",
+                                            "voltage":  "830"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5769852,
+                                                                  -34.5337815
+                                                              ],
+                                                              [
+                                                                  -58.5767463,
+                                                                  -34.5339751
+                                                              ],
+                                                              [
+                                                                  -58.5766902,
+                                                                  -34.5340206
+                                                              ],
+                                                              [
+                                                                  -58.5764851,
+                                                                  -34.5341985
+                                                              ],
+                                                              [
+                                                                  -58.5763523,
+                                                                  -34.5343245
+                                                              ],
+                                                              [
+                                                                  -58.5761614,
+                                                                  -34.5345159
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "electrified":  "rail",
+                                            "frequency":  "0",
+                                            "gauge":  "1676",
+                                            "maxspeed":  "80",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "GM-1",
+                                            "usage":  "main",
+                                            "voltage":  "830"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5152394,
+                                                                  -34.5813064
+                                                              ],
+                                                              [
+                                                                  -58.5159816,
+                                                                  -34.5812403
+                                                              ],
+                                                              [
+                                                                  -58.5163597,
+                                                                  -34.5812070
+                                                              ],
+                                                              [
+                                                                  -58.5166106,
+                                                                  -34.5811789
+                                                              ],
+                                                              [
+                                                                  -58.5168958,
+                                                                  -34.5811418
+                                                              ],
+                                                              [
+                                                                  -58.5171841,
+                                                                  -34.5810972
+                                                              ],
+                                                              [
+                                                                  -58.5181940,
+                                                                  -34.5809156
+                                                              ],
+                                                              [
+                                                                  -58.5188551,
+                                                                  -34.5807743
+                                                              ],
+                                                              [
+                                                                  -58.5192923,
+                                                                  -34.5806749
+                                                              ],
+                                                              [
+                                                                  -58.5197009,
+                                                                  -34.5805740
+                                                              ],
+                                                              [
+                                                                  -58.5200782,
+                                                                  -34.5804729
+                                                              ],
+                                                              [
+                                                                  -58.5204388,
+                                                                  -34.5803663
+                                                              ],
+                                                              [
+                                                                  -58.5208574,
+                                                                  -34.5802476
+                                                              ],
+                                                              [
+                                                                  -58.5212839,
+                                                                  -34.5801082
+                                                              ],
+                                                              [
+                                                                  -58.5220094,
+                                                                  -34.5798550
+                                                              ],
+                                                              [
+                                                                  -58.5224332,
+                                                                  -34.5797010
+                                                              ],
+                                                              [
+                                                                  -58.5228519,
+                                                                  -34.5795293
+                                                              ],
+                                                              [
+                                                                  -58.5234484,
+                                                                  -34.5792770
+                                                              ],
+                                                              [
+                                                                  -58.5240422,
+                                                                  -34.5790037
+                                                              ],
+                                                              [
+                                                                  -58.5251954,
+                                                                  -34.5784070
+                                                              ],
+                                                              [
+                                                                  -58.5256626,
+                                                                  -34.5781519
+                                                              ],
+                                                              [
+                                                                  -58.5258731,
+                                                                  -34.5780326
+                                                              ],
+                                                              [
+                                                                  -58.5260996,
+                                                                  -34.5779042
+                                                              ],
+                                                              [
+                                                                  -58.5266603,
+                                                                  -34.5775683
+                                                              ],
+                                                              [
+                                                                  -58.5266877,
+                                                                  -34.5775519
+                                                              ],
+                                                              [
+                                                                  -58.5270326,
+                                                                  -34.5773323
+                                                              ],
+                                                              [
+                                                                  -58.5273913,
+                                                                  -34.5770885
+                                                              ],
+                                                              [
+                                                                  -58.5278457,
+                                                                  -34.5767614
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "bridge":  "yes",
+                                            "electrified":  "rail",
+                                            "frequency":  "0",
+                                            "gauge":  "1676",
+                                            "layer":  "1",
+                                            "maxspeed":  "80",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "GM-1",
+                                            "usage":  "main",
+                                            "voltage":  "830"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5342143,
+                                                                  -34.5716575
+                                                              ],
+                                                              [
+                                                                  -58.5342849,
+                                                                  -34.5715917
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "electrified":  "rail",
+                                            "frequency":  "0",
+                                            "gauge":  "1676",
+                                            "maxspeed":  "80",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "GM-1",
+                                            "usage":  "main",
+                                            "voltage":  "830"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5341738,
+                                                                  -34.5716177
+                                                              ],
+                                                              [
+                                                                  -58.5315674,
+                                                                  -34.5737012
+                                                              ],
+                                                              [
+                                                                  -58.5309484,
+                                                                  -34.5742073
+                                                              ],
+                                                              [
+                                                                  -58.5305115,
+                                                                  -34.5745617
+                                                              ],
+                                                              [
+                                                                  -58.5303434,
+                                                                  -34.5746990
+                                                              ],
+                                                              [
+                                                                  -58.5300002,
+                                                                  -34.5749591
+                                                              ],
+                                                              [
+                                                                  -58.5278063,
+                                                                  -34.5767269
+                                                              ],
+                                                              [
+                                                                  -58.5273443,
+                                                                  -34.5770675
+                                                              ],
+                                                              [
+                                                                  -58.5270144,
+                                                                  -34.5772939
+                                                              ],
+                                                              [
+                                                                  -58.5266587,
+                                                                  -34.5775233
+                                                              ],
+                                                              [
+                                                                  -58.5266268,
+                                                                  -34.5775423
+                                                              ],
+                                                              [
+                                                                  -58.5260743,
+                                                                  -34.5778717
+                                                              ],
+                                                              [
+                                                                  -58.5258476,
+                                                                  -34.5780028
+                                                              ],
+                                                              [
+                                                                  -58.5256384,
+                                                                  -34.5781221
+                                                              ],
+                                                              [
+                                                                  -58.5251690,
+                                                                  -34.5783760
+                                                              ],
+                                                              [
+                                                                  -58.5240198,
+                                                                  -34.5789623
+                                                              ],
+                                                              [
+                                                                  -58.5234363,
+                                                                  -34.5792307
+                                                              ],
+                                                              [
+                                                                  -58.5228283,
+                                                                  -34.5794920
+                                                              ],
+                                                              [
+                                                                  -58.5224251,
+                                                                  -34.5796558
+                                                              ],
+                                                              [
+                                                                  -58.5219902,
+                                                                  -34.5798202
+                                                              ],
+                                                              [
+                                                                  -58.5212679,
+                                                                  -34.5800657
+                                                              ],
+                                                              [
+                                                                  -58.5208426,
+                                                                  -34.5802045
+                                                              ],
+                                                              [
+                                                                  -58.5204167,
+                                                                  -34.5803297
+                                                              ],
+                                                              [
+                                                                  -58.5200608,
+                                                                  -34.5804353
+                                                              ],
+                                                              [
+                                                                  -58.5196870,
+                                                                  -34.5805373
+                                                              ],
+                                                              [
+                                                                  -58.5192722,
+                                                                  -34.5806396
+                                                              ],
+                                                              [
+                                                                  -58.5188439,
+                                                                  -34.5807352
+                                                              ],
+                                                              [
+                                                                  -58.5181644,
+                                                                  -34.5808792
+                                                              ],
+                                                              [
+                                                                  -58.5171750,
+                                                                  -34.5810579
+                                                              ],
+                                                              [
+                                                                  -58.5168837,
+                                                                  -34.5811015
+                                                              ],
+                                                              [
+                                                                  -58.5165738,
+                                                                  -34.5811414
+                                                              ],
+                                                              [
+                                                                  -58.5163553,
+                                                                  -34.5811643
+                                                              ],
+                                                              [
+                                                                  -58.5159203,
+                                                                  -34.5811995
+                                                              ],
+                                                              [
+                                                                  -58.5152191,
+                                                                  -34.5812631
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "bridge":  "yes",
+                                            "electrified":  "rail",
+                                            "frequency":  "0",
+                                            "gauge":  "1676",
+                                            "layer":  "1",
+                                            "maxspeed":  "80",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "GM-1",
+                                            "usage":  "main",
+                                            "voltage":  "830"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5342397,
+                                                                  -34.5715536
+                                                              ],
+                                                              [
+                                                                  -58.5341738,
+                                                                  -34.5716177
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "electrified":  "rail",
+                                            "electrified:rail":  "bottom",
+                                            "frequency":  "0",
+                                            "gauge":  "1676",
+                                            "maxspeed":  "80",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Trenes Argentinos Operadora Ferroviaria",
+                                            "railway":  "rail",
+                                            "service":  "crossover",
+                                            "usage":  "main"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5745283,
+                                                                  -34.5360984
+                                                              ],
+                                                              [
+                                                                  -58.5742538,
+                                                                  -34.5363697
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "electrified":  "no",
+                                            "gauge":  "1676",
+                                            "maxspeed":  "120",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "proposed:electrified":  "rail",
+                                            "proposed:electrified:rail":  "bottom",
+                                            "proposed:frequency":  "0",
+                                            "proposed:voltage":  "830",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "GM-1",
+                                            "usage":  "main"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5749817,
+                                                                  -34.5357828
+                                                              ],
+                                                              [
+                                                                  -58.5761645,
+                                                                  -34.5348437
+                                                              ],
+                                                              [
+                                                                  -58.5768730,
+                                                                  -34.5342686
+                                                              ],
+                                                              [
+                                                                  -58.5769562,
+                                                                  -34.5342019
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "electrified":  "rail",
+                                            "electrified:rail":  "bottom",
+                                            "frequency":  "0",
+                                            "gauge":  "1676",
+                                            "maxspeed":  "80",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "GM-1",
+                                            "usage":  "main",
+                                            "voltage":  "830"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5693953,
+                                                                  -34.5402872
+                                                              ],
+                                                              [
+                                                                  -58.5718520,
+                                                                  -34.5383063
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "electrified":  "rail",
+                                            "electrified:rail":  "bottom",
+                                            "frequency":  "0",
+                                            "gauge":  "1676",
+                                            "maxspeed":  "80",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "GM-1",
+                                            "usage":  "main",
+                                            "voltage":  "830"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5674575,
+                                                                  -34.5418497
+                                                              ],
+                                                              [
+                                                                  -58.5677798,
+                                                                  -34.5415898
+                                                              ],
+                                                              [
+                                                                  -58.5693953,
+                                                                  -34.5402872
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "electrified":  "rail",
+                                            "electrified:rail":  "bottom",
+                                            "frequency":  "0",
+                                            "gauge":  "1676",
+                                            "maxspeed":  "80",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "GM-1",
+                                            "usage":  "main",
+                                            "voltage":  "830"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5581376,
+                                                                  -34.5493152
+                                                              ],
+                                                              [
+                                                                  -58.5607782,
+                                                                  -34.5472024
+                                                              ],
+                                                              [
+                                                                  -58.5611934,
+                                                                  -34.5468701
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "electrified":  "rail",
+                                            "frequency":  "0",
+                                            "gauge":  "1676",
+                                            "maxspeed":  "80",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "GM-1",
+                                            "usage":  "main",
+                                            "voltage":  "830"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5545723,
+                                                                  -34.5521678
+                                                              ],
+                                                              [
+                                                                  -58.5551351,
+                                                                  -34.5517234
+                                                              ],
+                                                              [
+                                                                  -58.5552659,
+                                                                  -34.5516201
+                                                              ],
+                                                              [
+                                                                  -58.5560625,
+                                                                  -34.5509914
+                                                              ],
+                                                              [
+                                                                  -58.5581376,
+                                                                  -34.5493152
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "electrified":  "rail",
+                                            "frequency":  "0",
+                                            "gauge":  "1676",
+                                            "maxspeed":  "80",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "GM-1",
+                                            "usage":  "main",
+                                            "voltage":  "830"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5460689,
+                                                                  -34.5588752
+                                                              ],
+                                                              [
+                                                                  -58.5471429,
+                                                                  -34.5580264
+                                                              ],
+                                                              [
+                                                                  -58.5478789,
+                                                                  -34.5574447
+                                                              ],
+                                                              [
+                                                                  -58.5507882,
+                                                                  -34.5551738
+                                                              ],
+                                                              [
+                                                                  -58.5516316,
+                                                                  -34.5545037
+                                                              ],
+                                                              [
+                                                                  -58.5537175,
+                                                                  -34.5528466
+                                                              ],
+                                                              [
+                                                                  -58.5544683,
+                                                                  -34.5522499
+                                                              ],
+                                                              [
+                                                                  -58.5545723,
+                                                                  -34.5521678
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "electrified":  "rail",
+                                            "frequency":  "0",
+                                            "gauge":  "1676",
+                                            "maxspeed":  "80",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "GM-1",
+                                            "usage":  "main",
+                                            "voltage":  "830"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5450021,
+                                                                  -34.5597171
+                                                              ],
+                                                              [
+                                                                  -58.5457444,
+                                                                  -34.5591316
+                                                              ],
+                                                              [
+                                                                  -58.5460689,
+                                                                  -34.5588752
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "electrified":  "rail",
+                                            "frequency":  "0",
+                                            "gauge":  "1676",
+                                            "maxspeed":  "80",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "GM-1",
+                                            "usage":  "main",
+                                            "voltage":  "830"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5342849,
+                                                                  -34.5715917
+                                                              ],
+                                                              [
+                                                                  -58.5343798,
+                                                                  -34.5715033
+                                                              ],
+                                                              [
+                                                                  -58.5347858,
+                                                                  -34.5711129
+                                                              ],
+                                                              [
+                                                                  -58.5351853,
+                                                                  -34.5706774
+                                                              ],
+                                                              [
+                                                                  -58.5353954,
+                                                                  -34.5704036
+                                                              ],
+                                                              [
+                                                                  -58.5363002,
+                                                                  -34.5692114
+                                                              ],
+                                                              [
+                                                                  -58.5363425,
+                                                                  -34.5691560
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "electrified":  "rail",
+                                            "frequency":  "0",
+                                            "gauge":  "1676",
+                                            "maxspeed":  "80",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "GM-1",
+                                            "usage":  "main",
+                                            "voltage":  "830"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5278457,
+                                                                  -34.5767614
+                                                              ],
+                                                              [
+                                                                  -58.5281521,
+                                                                  -34.5765199
+                                                              ],
+                                                              [
+                                                                  -58.5297276,
+                                                                  -34.5752423
+                                                              ],
+                                                              [
+                                                                  -58.5300410,
+                                                                  -34.5749912
+                                                              ],
+                                                              [
+                                                                  -58.5301923,
+                                                                  -34.5748641
+                                                              ],
+                                                              [
+                                                                  -58.5309790,
+                                                                  -34.5742232
+                                                              ],
+                                                              [
+                                                                  -58.5316008,
+                                                                  -34.5737235
+                                                              ],
+                                                              [
+                                                                  -58.5341208,
+                                                                  -34.5717446
+                                                              ],
+                                                              [
+                                                                  -58.5342143,
+                                                                  -34.5716575
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "bridge":  "yes",
+                                            "electrified":  "rail",
+                                            "frequency":  "0",
+                                            "gauge":  "1676",
+                                            "layer":  "1",
+                                            "maxspeed":  "80",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "passenger_lines":  "2",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "GM-1",
+                                            "usage":  "main",
+                                            "voltage":  "830"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5151672,
+                                                                  -34.5813109
+                                                              ],
+                                                              [
+                                                                  -58.5152394,
+                                                                  -34.5813064
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "electrified":  "rail",
+                                            "frequency":  "0",
+                                            "gauge":  "1676",
+                                            "maxspeed":  "80",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "GM-1",
+                                            "usage":  "main",
+                                            "voltage":  "830"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5363425,
+                                                                  -34.5691560
+                                                              ],
+                                                              [
+                                                                  -58.5371458,
+                                                                  -34.5681186
+                                                              ],
+                                                              [
+                                                                  -58.5376566,
+                                                                  -34.5675002
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "electrified":  "rail",
+                                            "frequency":  "0",
+                                            "gauge":  "1676",
+                                            "maxspeed":  "80",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "GM-1",
+                                            "usage":  "main",
+                                            "voltage":  "830"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5376566,
+                                                                  -34.5675002
+                                                              ],
+                                                              [
+                                                                  -58.5377359,
+                                                                  -34.5674019
+                                                              ],
+                                                              [
+                                                                  -58.5393130,
+                                                                  -34.5653343
+                                                              ],
+                                                              [
+                                                                  -58.5405614,
+                                                                  -34.5637074
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "electrified":  "rail",
+                                            "electrified:rail":  "bottom",
+                                            "frequency":  "0",
+                                            "gauge":  "1676",
+                                            "maxspeed":  "80",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "GM-1",
+                                            "usage":  "main",
+                                            "voltage":  "830"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5611934,
+                                                                  -34.5468701
+                                                              ],
+                                                              [
+                                                                  -58.5623258,
+                                                                  -34.5459638
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "electrified":  "rail",
+                                            "frequency":  "0",
+                                            "gauge":  "1676",
+                                            "maxspeed":  "80",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "GM-1",
+                                            "usage":  "main",
+                                            "voltage":  "830"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5124388,
+                                                                  -34.5813264
+                                                              ],
+                                                              [
+                                                                  -58.5123726,
+                                                                  -34.5813249
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "electrified":  "rail",
+                                            "frequency":  "0",
+                                            "gauge":  "1676",
+                                            "maxspeed":  "80",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "GM-1",
+                                            "usage":  "main",
+                                            "voltage":  "830"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5123682,
+                                                                  -34.5813663
+                                                              ],
+                                                              [
+                                                                  -58.5124418,
+                                                                  -34.5813679
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "bridge":  "yes",
+                                            "electrified":  "rail",
+                                            "frequency":  "0",
+                                            "gauge":  "1676",
+                                            "layer":  "1",
+                                            "maxspeed":  "80",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "GM-1",
+                                            "usage":  "main",
+                                            "voltage":  "830"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5123726,
+                                                                  -34.5813249
+                                                              ],
+                                                              [
+                                                                  -58.5122965,
+                                                                  -34.5813226
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     },
+                     {
+                         "properties":  {
+                                            "bridge":  "yes",
+                                            "electrified":  "rail",
+                                            "frequency":  "0",
+                                            "gauge":  "1676",
+                                            "layer":  "1",
+                                            "maxspeed":  "80",
+                                            "name":  "FC Mitre",
+                                            "network":  "Mitre",
+                                            "official_name":  "Ferrocarril General BartolomÃ© Mitre",
+                                            "operator":  "Ferrocarriles Argentinos S.A. (FASA)",
+                                            "passenger_lines":  "2",
+                                            "railway":  "rail",
+                                            "railway:preferred_direction":  "forward",
+                                            "ref":  "GM-1",
+                                            "usage":  "main",
+                                            "voltage":  "830"
+                                        },
+                         "type":  "Feature",
+                         "geometry":  {
+                                          "coordinates":  [
+                                                              [
+                                                                  -58.5122925,
+                                                                  -34.5813624
+                                                              ],
+                                                              [
+                                                                  -58.5123682,
+                                                                  -34.5813663
+                                                              ]
+                                                          ],
+                                          "type":  "LineString"
+                                      }
+                     }
+                 ],
+    "type":  "FeatureCollection"
+}

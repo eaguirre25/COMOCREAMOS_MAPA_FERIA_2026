@@ -1,0 +1,9 @@
+{
+"type": "FeatureCollection",
+"name": "POSTAS 1 Y 2",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::22183" } },
+"features": [
+{ "type": "Feature", "properties": { "id": 1 }, "geometry": { "type": "MultiPoint", "coordinates": [ [ 4180883.142904493026435, 6150863.946413611061871 ] ] } },
+{ "type": "Feature", "properties": { "id": 2 }, "geometry": { "type": "MultiPoint", "coordinates": [ [ 4185090.438073444180191, 6147591.177942183800042 ] ] } }
+]
+}
