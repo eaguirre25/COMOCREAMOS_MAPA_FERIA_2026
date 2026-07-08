@@ -211,6 +211,37 @@ body, html {
     height: 100%;
     z-index: 1;
 }
+
+#locality-boundary-overlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 42;
+    pointer-events: none;
+    overflow: visible;
+}
+
+.locality-boundary-fill {
+    fill-opacity: 0.24;
+    stroke: #ffffff;
+    stroke-width: 2.2;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+    filter: drop-shadow(0 0 5px #00e5ff) drop-shadow(0 0 11px rgba(0, 229, 255, 0.95));
+}
+
+.locality-boundary-outline {
+    fill: none;
+    stroke: #00e5ff;
+    stroke-width: 8;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    stroke-opacity: 0.82;
+    vector-effect: non-scaling-stroke;
+    filter: drop-shadow(0 0 12px #00e5ff);
+}
 .map-hud {
     position: absolute;
     top: 0;
@@ -705,7 +736,7 @@ body, html {
 #editor-train-img { width: 250px; height: auto; transform: rotate(-90deg); transform-origin: center center; }
 .draggable-wheel { position: absolute; width: 15%; height: auto; aspect-ratio: 1; cursor: grab; transform: translate(-50%, -50%); z-index: 10; }
 .draggable-wheel:active { cursor: grabbing; }
-.spin-wheel { width: 100%; height: 100%; animation: spin 1s linear infinite; }
+.spin-wheel { width: 100%; height: 100%; animation: spin 0.38s linear infinite; }
 .editor-controls { display: flex; flex-direction: column; gap: 10px; }
 .editor-controls label { font-weight: bold; }
 .editor-buttons { display: flex; gap: 10px; justify-content: flex-end; }

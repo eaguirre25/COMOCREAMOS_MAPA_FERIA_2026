@@ -4,7 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EL CAMINO DE LA INVESTIGACIÓN</title>
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://server.arcgisonline.com" crossorigin>
     <link rel="stylesheet" href="style.css?v=26">
+    <link rel="preload" as="image" href="CIENCIA Y FICCION.png" fetchpriority="high">
+    <link rel="preload" as="image" href="EL CAMINO DE LA INVESTIGACION-TITULO.png">
+    <link rel="preload" as="image" href="ASPAS FERIA.svg">
+    <link rel="preload" as="image" href="colectivo_animado.gif">
+    <link rel="prefetch" as="image" href="tren_animado.gif">
+    <link rel="prefetch" as="image" href="posta2.gif">
+    <link rel="preload" as="fetch" href="SAN MARTIN LOCALIDADES.geojson" crossorigin>
     <!-- MapLibre GL JS CSS (versión debe coincidir con el JS al final del body) -->
     <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
 </head>
@@ -44,6 +54,7 @@
     <!-- Screen 3: Satellite Map with HUD -->
     <div id="screen-3" class="screen">
         <div id="map"></div>
+        <svg id="locality-boundary-overlay" aria-hidden="true"></svg>
         
         <!-- Sci-Fi HUD Overlay -->
         <div class="map-hud">
@@ -154,8 +165,8 @@
                 <label>Tamaño del Tren: <span id="train-size-val">250px</span></label>
                 <input type="range" id="train-size" min="100" max="1000" value="250">
                 
-                <label>Rotación del Tren: <span id="train-rot-val">-90°</span></label>
-                <input type="range" id="train-rot" min="-180" max="180" value="-90">
+                <label>Rotación del Tren: <span id="train-rot-val">0°</span></label>
+                <input type="range" id="train-rot" min="-180" max="180" value="0">
                 
                 <p style="font-size: 12px; margin-top: 10px; color: #ccc;">* Arrastra las 3 aspas de colores para ubicarlas en las ruedas.</p>
             </div>

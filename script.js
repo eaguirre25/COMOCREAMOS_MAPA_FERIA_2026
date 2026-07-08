@@ -1371,6 +1371,83 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    function setGifPlayback(img, playing) {
+        if (!img) return;
+        if (!img.dataset.animSrc) img.dataset.animSrc = img.src;
+        if (playing) {
+            if (img.dataset.pausedSrc) {
+                img.src = img.dataset.animSrc;
+                delete img.dataset.pausedSrc;
+            }
+            return;
+        }
+        if (img.dataset.pausedSrc) return;
+        if (!img.complete || !img.naturalWidth) {
+            img.addEventListener('load', () => setGifPlayback(img, false), { once: true });
+            return;
+        }
+        const canvas = document.createElement('canvas');
+        const width = img.naturalWidth || img.width || 1;
+        const height = img.naturalHeight || img.height || 1;
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        try {
+            ctx.drawImage(img, 0, 0, width, height);
+            img.dataset.pausedSrc = canvas.toDataURL('image/png');
+            img.src = img.dataset.pausedSrc;
+        } catch (e) {
+            // If the frame cannot be captured, keep the GIF running rather than hiding it.
+            console.warn('No se pudo pausar el GIF', e);
+        }
+    }
+
+    function buildLocalityPath(geometry) {
+        if (!geometry) return '';
+        const rings = [];
+        if (geometry.type === 'Polygon') {
+            rings.push(...geometry.coordinates);
+        } else if (geometry.type === 'MultiPolygon') {
+            geometry.coordinates.forEach(poly => rings.push(...poly));
+        }
+        return rings.map(ring => ring.map((coord, index) => {
+            const p = map.project(coord);
+            return `${index === 0 ? 'M' : 'L'}${p.x.toFixed(1)},${p.y.toFixed(1)}`;
+        }).join(' ') + ' Z').join(' ');
+    }
+
+    function renderLocalityBoundaryOverlay(data) {
+        const svg = document.getElementById('locality-boundary-overlay');
+        if (!svg || !data || !data.features) return;
+        svg.innerHTML = '';
+        const size = map.getContainer().getBoundingClientRect();
+        svg.setAttribute('viewBox', `0 0 ${size.width} ${size.height}`);
+
+        data.features.forEach(feature => {
+            const d = buildLocalityPath(feature.geometry);
+            if (!d) return;
+            const outline = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            outline.setAttribute('class', 'locality-boundary-outline');
+            outline.setAttribute('d', d);
+            svg.appendChild(outline);
+
+            const fill = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            fill.setAttribute('class', 'locality-boundary-fill');
+            fill.setAttribute('d', d);
+            fill.setAttribute('fill', feature.properties.fill || '#29b6f6');
+            svg.appendChild(fill);
+        });
+    }
+
+    let localityOverlayFrame = null;
+    function scheduleLocalityBoundaryOverlay() {
+        if (localityOverlayFrame) return;
+        localityOverlayFrame = requestAnimationFrame(() => {
+            localityOverlayFrame = null;
+            renderLocalityBoundaryOverlay(sanMartinLocalidadesGeoJSON);
+        });
+    }
+
     let trainCoords = [];
     if (typeof trainGeoJSON !== 'undefined') {
         const points = trainGeoJSON.features.map(f => f.geometry.coordinates);
@@ -1641,6 +1718,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const sanMartinSource = map.getSource('sm-locality-shape');
             if (sanMartinSource) sanMartinSource.setData(data);
             bringSanMartinMapLayersToFront();
+            renderLocalityBoundaryOverlay(data);
         }
 
         // La fuente 'sm-locality-shape' y sus capas ya vienen definidas en mapStyle.
@@ -1801,6 +1879,8 @@ document.addEventListener('DOMContentLoaded', () => {
         window.depot10MarkerEl = depot10El;
         window.depot10MarkerObj = new maplibregl.Marker({element: wrapMarkerEl(depot10El), anchor: 'bottom', offset: [depotConf.offX, depotConf.offY]}).setLngLat(fullPathArray[fullPathArray.length - 1]).addTo(map);
         bringSanMartinMapLayersToFront();
+        map.on('move', scheduleLocalityBoundaryOverlay);
+        map.on('resize', scheduleLocalityBoundaryOverlay);
     });
 
     // Interpolación suave de ángulos para evitar rotación brusca al inicio
@@ -2149,6 +2229,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 pinwheelDiv.appendChild(smoke);
                 pinwheelDiv.appendChild(w);
+                setGifPlayback(w, false);
                 pinwheelDiv.style.display = 'block';
                 mainPinwheelMarker.setLngLat(p1Coord);
                 // Bus z-index below depot (100) so it passes BEHIND it at Posta 3
@@ -2220,6 +2301,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (moveMode === 'street') {
                         const busImg = pinwheelDiv.querySelector('.bus-image');
                         if (busImg) busImg.src = 'colectivo_animado.gif';
+                        setGifPlayback(busImg, true);
                     } else if (moveMode === 'train') {
                         const trainImg = pinwheelDiv.querySelector('.train-gif-target');
                         if (trainImg) trainImg.src = 'tren_animado.gif';
@@ -2242,6 +2324,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (moveMode === 'street') {
                         const busImg = pinwheelDiv.querySelector('.bus-image');
                         if (busImg) busImg.src = 'colectivo_animado.gif';
+                        if (currentPathIndex === 1) setGifPlayback(busImg, false);
+                        else setGifPlayback(busImg, true);
                     } else if (moveMode === 'train') {
                         const trainImg = pinwheelDiv.querySelector('.train-gif-target');
                         if (trainImg) trainImg.src = 'tren_animado.gif';
@@ -2268,7 +2352,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         pinwheelDiv.innerHTML = '';
                         pinwheelDiv.appendChild(postaScreenEl);
                         
-                        const conf = JSON.parse(localStorage.getItem('trainConfig') || '{"size":750, "rot":-90, "w1":{"x":20,"y":80}, "w2":{"x":50,"y":80}, "w3":{"x":80,"y":80}}');
+                        const conf = JSON.parse(localStorage.getItem('trainConfig') || '{"size":750, "rot":0, "w1":{"x":20,"y":80}, "w2":{"x":50,"y":80}, "w3":{"x":80,"y":80}}');
+                        if (conf.rot === -90) conf.rot = 0;
                         
                         const trainContainer = document.createElement('div');
                         trainContainer.className = 'train-container';
@@ -2707,7 +2792,8 @@ const editorImg = document.getElementById('editor-train-img');
 const wheels = [document.getElementById('wheel-1'), document.getElementById('wheel-2'), document.getElementById('wheel-3')];
 
 function loadTrainConfig() {
-    const conf = JSON.parse(localStorage.getItem('trainConfig') || '{"size":750, "rot":-90, "w1":{"x":20,"y":80}, "w2":{"x":50,"y":80}, "w3":{"x":80,"y":80}}');
+    const conf = JSON.parse(localStorage.getItem('trainConfig') || '{"size":750, "rot":0, "w1":{"x":20,"y":80}, "w2":{"x":50,"y":80}, "w3":{"x":80,"y":80}}');
+    if (conf.rot === -90) conf.rot = 0;
     sizeSlider.value = conf.size; sizeVal.innerText = conf.size + 'px';
     rotSlider.value = conf.rot; rotVal.innerText = conf.rot + '°';
     editorImg.style.width = conf.size + 'px';
