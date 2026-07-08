@@ -951,18 +951,20 @@ body, html {
 .inter-posta-text { position: absolute; bottom: 5%; left: 50%; transform: translateX(-50%); width: 80%; text-align: center; background: rgba(10, 10, 10, 0.9); border: 2px solid #0ff; border-radius: 15px; padding: 20px; color: #fff; font-family: 'Faustina', sans-serif; font-size: 24px; box-shadow: 0 0 20px rgba(0,255,255,0.5); z-index: 60; opacity: 0; transition: opacity 0.5s, bottom 0.5s; pointer-events: none; }
 .inter-posta-text.visible { opacity: 1; bottom: 10%; }
 
-/* Embedded Modal — z-index debe superar posta-black-screen (2000) */
-#embedded-modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: min(98vw, 1440px); height: min(96vh, 960px); background: rgba(8, 12, 18, 0.98); border: 2px solid rgba(255,255,255,0.85); border-radius: 10px; z-index: 5000; display: flex; flex-direction: column; padding: 10px; color: white; font-family: 'Faustina', Orbitron, sans-serif; box-shadow: 0 0 50px rgba(255,255,255,0.28); pointer-events: auto; }
+/* Embedded Modal — ocupa casi todo el viewport para que las placas no se corten */
+#embedded-modal { position: fixed; top: 8px; left: 8px; right: 8px; bottom: 8px; width: auto; height: auto; max-width: none; max-height: none; transform: none; background: rgba(8, 12, 18, 0.98); border: 2px solid rgba(255,255,255,0.85); border-radius: 8px; z-index: 12000; display: flex; flex-direction: column; padding: 8px 10px 10px; color: white; font-family: 'Faustina', Orbitron, sans-serif; box-shadow: 0 0 50px rgba(255,255,255,0.28); pointer-events: auto; overflow: hidden; }
 #embedded-modal.hidden { display: none; }
-#btn-close-modal { align-self: flex-end; background: #ff0044; color: white; border: none; padding: 6px 12px; cursor: pointer; border-radius: 7px; font-size: 14px; font-weight: bold; font-family: 'Faustina', sans-serif; }
+#btn-close-modal { position: absolute; top: 8px; right: 8px; z-index: 3; background: #ff0044; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 7px; font-size: 13px; font-weight: bold; font-family: 'Faustina', sans-serif; }
 #btn-close-modal:hover { background: #ff3366; box-shadow: 0 0 15px #ff0044; }
-#modal-title { flex: 0 0 auto; font-size: clamp(18px, 2.1vw, 30px); line-height: 1.1; margin: 4px 0 6px !important; }
-#modal-body { margin-top: 4px; font-family: 'Faustina', sans-serif; font-size: 18px; overflow: hidden; flex-grow: 1; min-height: 0; }
+#modal-title { flex: 0 0 auto; font-size: clamp(16px, 1.75vw, 26px); line-height: 1.05; margin: 2px 104px 6px 0 !important; min-height: 28px; }
+#modal-body { margin-top: 0; font-family: 'Faustina', sans-serif; font-size: 18px; overflow: hidden; flex: 1 1 auto; min-height: 0; display: flex; }
 .slide-viewer {
+    width: 100%;
     height: 100%;
     display: grid;
-    grid-template-rows: minmax(0, 1fr) auto;
-    gap: 10px;
+    grid-template-rows: minmax(0, 1fr) 18px;
+    gap: 4px;
+    min-height: 0;
 }
 .slide-stage {
     position: relative;
@@ -974,7 +976,7 @@ body, html {
     border: 1px solid rgba(255,255,255,0.16);
     border-radius: 8px;
     overflow: hidden;
-    padding: 8px 42px;
+    padding: 4px 50px;
 }
 .slide-stage img {
     max-width: 100%;
@@ -989,7 +991,7 @@ body, html {
     align-items: center;
     justify-content: center;
     color: rgba(255,255,255,0.72);
-    font-size: 15px;
+    font-size: 13px;
     line-height: 1.2;
 }
 .slide-nav-btn {
@@ -997,8 +999,8 @@ body, html {
     top: 50%;
     transform: translateY(-50%);
     z-index: 2;
-    width: 34px;
-    height: 48px;
+    width: 32px;
+    height: 44px;
     border: 1px solid rgba(255,255,255,0.5);
     border-radius: 6px;
     background: rgba(0, 12, 22, 0.72);
