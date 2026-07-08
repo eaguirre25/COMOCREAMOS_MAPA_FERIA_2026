@@ -1527,8 +1527,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (map.getLayer('san-martin-active-glow')) map.setFilter('san-martin-active-glow', ['==', 'id', foundId]);
         if (map.getLayer('san-martin-active-fill')) map.setFilter('san-martin-active-fill', ['==', 'id', foundId]);
         if (map.getLayer('san-martin-active-labels')) map.setFilter('san-martin-active-labels', ['==', 'id', foundId]);
-        renderLocalityBoundaryOverlay(sanMartinLocalidadesGeoJSON);
-
         if (foundId !== lastLocalityId) {
             lastLocalityId = foundId;
             const localityDisplay = document.getElementById('locality-name-display');
@@ -1646,15 +1644,15 @@ document.addEventListener('DOMContentLoaded', () => {
         version: 8,
         glyphs: 'https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf',
         sources: {
-            'esri-satellite': { type: 'raster', tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'], tileSize: 256 },
-            'esri-transportation': { type: 'raster', tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}'], tileSize: 256 },
-            'esri-labels': { type: 'raster', tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}'], tileSize: 256 },
-            'sm-locality-shape': { type: 'geojson', data: sanMartinGeoJSON, tolerance: 0, buffer: 256, maxzoom: 18 }
+            'esri-satellite': { type: 'raster', tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'], tileSize: 256, maxzoom: 18 },
+            'esri-transportation': { type: 'raster', tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}'], tileSize: 256, maxzoom: 17 },
+            'esri-labels': { type: 'raster', tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}'], tileSize: 256, maxzoom: 17 },
+            'sm-locality-shape': { type: 'geojson', data: sanMartinGeoJSON, tolerance: 0.25, buffer: 128, maxzoom: 17 }
         },
         layers: [
-            { id: 'satellite-layer', type: 'raster', source: 'esri-satellite', minzoom: 0, maxzoom: 22 },
-            { id: 'transportation-layer', type: 'raster', source: 'esri-transportation', minzoom: 0, maxzoom: 22, paint: { 'raster-opacity': 0.4 } },
-            { id: 'labels-layer', type: 'raster', source: 'esri-labels', minzoom: 0, maxzoom: 22, paint: { 'raster-opacity': 0.4 } },
+            { id: 'satellite-layer', type: 'raster', source: 'esri-satellite', minzoom: 0, maxzoom: 19, paint: { 'raster-fade-duration': 0 } },
+            { id: 'transportation-layer', type: 'raster', source: 'esri-transportation', minzoom: 0, maxzoom: 18, paint: { 'raster-opacity': 0.3, 'raster-fade-duration': 0 } },
+            { id: 'labels-layer', type: 'raster', source: 'esri-labels', minzoom: 0, maxzoom: 18, paint: { 'raster-opacity': 0.3, 'raster-fade-duration': 0 } },
             { id: 'san-martin-base-fill', type: 'fill', source: 'sm-locality-shape', paint: { 'fill-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'fill-opacity': 0.22 } },
             { id: 'san-martin-map-fill', type: 'fill', source: 'sm-locality-shape', paint: { 'fill-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'fill-opacity': 0.22 } },
             { id: 'san-martin-map-boundary-glow', type: 'line', source: 'sm-locality-shape', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'line-width': 20, 'line-blur': 12, 'line-opacity': 0.88 } },
@@ -1676,7 +1674,10 @@ document.addEventListener('DOMContentLoaded', () => {
         pitch: 0,
         bearing: 0,
         interactive: false,
-        antialias: true
+        antialias: false,
+        fadeDuration: 0,
+        maxTileCacheSize: 80,
+        refreshExpiredTiles: false
     });
     window.map = map;
 
@@ -1856,7 +1857,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const sanMartinSource = map.getSource('sm-locality-shape');
             if (sanMartinSource) sanMartinSource.setData(data);
             bringSanMartinMapLayersToFront();
-            renderLocalityBoundaryOverlay(data);
         }
 
         // La fuente 'sm-locality-shape' y sus capas ya vienen definidas en mapStyle.
@@ -2015,8 +2015,6 @@ document.addEventListener('DOMContentLoaded', () => {
         window.depot10MarkerEl = depot10El;
         window.depot10MarkerObj = new maplibregl.Marker({element: wrapMarkerEl(depot10El), anchor: 'bottom', offset: [depotConf.offX, depotConf.offY]}).setLngLat(fullPathArray[fullPathArray.length - 1]).addTo(map);
         bringSanMartinMapLayersToFront();
-        map.on('move', scheduleLocalityBoundaryOverlay);
-        map.on('resize', scheduleLocalityBoundaryOverlay);
     });
 
     // Interpolación suave de ángulos para evitar rotación brusca al inicio
@@ -2162,14 +2160,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (mode === 'flight') speedKmh = 100;
         
         // Time lapse multiplier (make the simulation 20x faster than real life so it doesn't take 5 minutes)
-        const SIMULATION_SPEEDUP = 15;
+        const SIMULATION_SPEEDUP = 24;
         
         // Time in hours = distance / (speed * speedup)
         const durationHours = distance / (speedKmh * SIMULATION_SPEEDUP);
         const durationSecs = durationHours * 3600;
         
-        // Ensure animation takes at least 5 seconds but no more than 40 seconds
-        const clampedSecs = Math.max(5, Math.min(40, durationSecs));
+        // Keep travel readable but lighter on low-end phones.
+        const clampedSecs = Math.max(4, Math.min(26, durationSecs));
         
         // Assuming 60 frames per second
         const totalFrames = Math.floor(clampedSecs * 60); 
@@ -2268,12 +2266,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 
                 // When bus approaches Posta 3 depot, raise it and increase pitch
-                let pitchToUse = mode === 'flight' ? 45 : 65;
-                let zoomToUse = mode === 'flight' ? 14 : 17;
+                let pitchToUse = mode === 'flight' ? 45 : 60;
+                let zoomToUse = mode === 'flight' ? 13.5 : 16.35;
                 if (endIndex === 2 && mode === 'street' && progress > 0.5) {
                     const ap = (progress - 0.5) / 0.5; // 0→1
-                    pitchToUse = 65 + ap * 20; // 65→85°
-                    zoomToUse = 17 + ap * 0.5;
+                    pitchToUse = 60 + ap * 15; // 60→75°
+                    zoomToUse = 16.35 + ap * 0.25;
                     // Raise the bus marker upward so the depot image covers it
                     mainPinwheelMarker.setOffset([0, -(ap * 130)]);
                 }
@@ -2289,9 +2287,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     zoom: zoomToUse
                 });
 
-                if (frame % 3 === 0) {
-                    if (mode === 'street') spawnConfetti([lng, lat], 5); // Colectivo: rastro de confeti
-                    else if (mode === 'flight') spawnConfetti([lng, lat], 10);
+                if (frame % 6 === 0) {
+                    if (mode === 'street') spawnConfetti([lng, lat], 3); // Colectivo: rastro de confeti
+                    else if (mode === 'flight') spawnConfetti([lng, lat], 6);
                     else spawnSparkle([lng, lat]);
                 }
 
