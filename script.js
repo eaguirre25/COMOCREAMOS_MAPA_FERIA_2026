@@ -1371,6 +1371,22 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    function renderLocalityDomLabels(data) {
+        if (!window.map || typeof turf === 'undefined' || !data || !data.features) return;
+        if (window.localityDomLabelMarkers) {
+            window.localityDomLabelMarkers.forEach(marker => marker.remove());
+        }
+        window.localityDomLabelMarkers = data.features.map(feature => {
+            const centroid = turf.centroid(feature).geometry.coordinates;
+            const el = document.createElement('div');
+            el.className = 'locality-map-label';
+            el.textContent = feature.properties.Localidad || '';
+            return new maplibregl.Marker({ element: el, anchor: 'center' })
+                .setLngLat(centroid)
+                .addTo(map);
+        });
+    }
+
     let trainCoords = [];
     if (typeof trainGeoJSON !== 'undefined') {
         const points = trainGeoJSON.features.map(f => f.geometry.coordinates);
@@ -1440,17 +1456,17 @@ document.addEventListener('DOMContentLoaded', () => {
             { id: 'satellite-layer', type: 'raster', source: 'esri-satellite', minzoom: 0, maxzoom: 22 },
             { id: 'transportation-layer', type: 'raster', source: 'esri-transportation', minzoom: 0, maxzoom: 22, paint: { 'raster-opacity': 0.4 } },
             { id: 'labels-layer', type: 'raster', source: 'esri-labels', minzoom: 0, maxzoom: 22, paint: { 'raster-opacity': 0.4 } },
-            { id: 'san-martin-base-fill', type: 'fill', source: 'sm-locality-shape', paint: { 'fill-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'fill-opacity': 0.82 } },
-            { id: 'san-martin-map-fill', type: 'fill', source: 'sm-locality-shape', paint: { 'fill-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'fill-opacity': 0.82 } },
-            { id: 'san-martin-map-boundary-glow', type: 'line', source: 'sm-locality-shape', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': '#00e5ff', 'line-width': 26, 'line-blur': 14, 'line-opacity': 1 } },
-            { id: 'san-martin-map-boundary-core', type: 'line', source: 'sm-locality-shape', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': '#ffffff', 'line-width': 5, 'line-opacity': 1 } },
-            { id: 'san-martin-map-locality-labels', type: 'symbol', source: 'sm-locality-shape', layout: { 'text-field': ['get', 'Localidad'], 'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'], 'text-size': 24, 'text-anchor': 'center', 'text-allow-overlap': true, 'text-ignore-placement': true }, paint: { 'text-color': '#ffffff', 'text-halo-color': '#001018', 'text-halo-width': 4 } },
+            { id: 'san-martin-base-fill', type: 'fill', source: 'sm-locality-shape', paint: { 'fill-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'fill-opacity': 0.34 } },
+            { id: 'san-martin-map-fill', type: 'fill', source: 'sm-locality-shape', paint: { 'fill-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'fill-opacity': 0.34 } },
+            { id: 'san-martin-map-boundary-glow', type: 'line', source: 'sm-locality-shape', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': '#00e5ff', 'line-width': 18, 'line-blur': 10, 'line-opacity': 1 } },
+            { id: 'san-martin-map-boundary-core', type: 'line', source: 'sm-locality-shape', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': '#ffffff', 'line-width': 4, 'line-opacity': 1 } },
+            { id: 'san-martin-map-locality-labels', type: 'symbol', source: 'sm-locality-shape', layout: { 'text-field': ['get', 'Localidad'], 'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'], 'text-size': 18, 'text-anchor': 'center', 'text-allow-overlap': true, 'text-ignore-placement': true }, paint: { 'text-color': '#ffffff', 'text-halo-color': '#001018', 'text-halo-width': 4 } },
             { id: 'san-martin-active-fill', type: 'fill', source: 'sm-locality-shape', paint: { 'fill-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'fill-opacity': 0.3 }, filter: ['==', 'id', -1] },
             { id: 'san-martin-active-labels', type: 'symbol', source: 'sm-locality-shape', layout: { 'text-field': ['get', 'Localidad'], 'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'], 'text-size': 24, 'text-anchor': 'center' }, paint: { 'text-color': '#ffffff', 'text-halo-color': '#000000', 'text-halo-width': 2 }, filter: ['==', 'id', -1] },
             { id: 'san-martin-base-glow', type: 'line', source: 'sm-locality-shape', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': '#00d4ff', 'line-width': 12, 'line-blur': 8, 'line-opacity': 0.85 } },
             { id: 'san-martin-active-glow', type: 'line', source: 'sm-locality-shape', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': '#ff00ff', 'line-width': 35, 'line-blur': 20, 'line-opacity': 1 }, filter: ['==', 'id', -1] },
             { id: 'san-martin-core', type: 'line', source: 'sm-locality-shape', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': '#ffffff', 'line-width': 3 } },
-            { id: 'san-martin-labels', type: 'symbol', source: 'sm-locality-shape', layout: { 'text-field': ['get', 'Localidad'], 'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'], 'text-size': 20, 'text-anchor': 'center' }, paint: { 'text-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'text-halo-color': 'rgba(0,0,0,0.8)', 'text-halo-width': 3 } }
+            { id: 'san-martin-labels', type: 'symbol', source: 'sm-locality-shape', layout: { 'text-field': ['get', 'Localidad'], 'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'], 'text-size': 16, 'text-anchor': 'center', 'text-allow-overlap': true, 'text-ignore-placement': true }, paint: { 'text-color': '#ffffff', 'text-halo-color': 'rgba(0,0,0,0.9)', 'text-halo-width': 3 } }
         ]
     };
     const map = new maplibregl.Map({
@@ -1641,6 +1657,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const sanMartinSource = map.getSource('sm-locality-shape');
             if (sanMartinSource) sanMartinSource.setData(data);
             bringSanMartinMapLayersToFront();
+            renderLocalityDomLabels(data);
         }
 
         // La fuente 'sm-locality-shape' y sus capas ya vienen definidas en mapStyle.
@@ -2071,13 +2088,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
                 
-                // When bus approaches Posta 3 depot, raise it and increase pitch
-                let pitchToUse = mode === 'flight' ? 45 : 65;
-                let zoomToUse = mode === 'flight' ? 14 : 17;
+                // Keep the public version readable on mobile: strong pitch makes
+                // the satellite map and train look like they are lying down.
+                let pitchToUse = mode === 'flight' ? 20 : 0;
+                let zoomToUse = mode === 'flight' ? 14 : 16;
                 if (endIndex === 2 && mode === 'street' && progress > 0.5) {
                     const ap = (progress - 0.5) / 0.5; // 0→1
-                    pitchToUse = 65 + ap * 20; // 65→85°
-                    zoomToUse = 17 + ap * 0.5;
+                    pitchToUse = 0;
+                    zoomToUse = 16 + ap * 0.3;
                     // Raise the bus marker upward so the depot image covers it
                     mainPinwheelMarker.setOffset([0, -(ap * 130)]);
                 }
@@ -2127,7 +2145,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     initialBearing = b - 90;
                 }
 
-                map.flyTo({ center: p1Coord, zoom: 14, pitch: 45, bearing: initialBearing, duration: 2000 });
+                map.flyTo({ center: p1Coord, zoom: 14, pitch: 0, bearing: initialBearing, duration: 2000 });
 
                 // Wait for camera to fully settle before showing the bus.
                 // This prevents the bus from appearing to drift during the flyTo animation.
@@ -2268,7 +2286,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         pinwheelDiv.innerHTML = '';
                         pinwheelDiv.appendChild(postaScreenEl);
                         
-                        const conf = JSON.parse(localStorage.getItem('trainConfig') || '{"size":750, "rot":-90, "w1":{"x":20,"y":80}, "w2":{"x":50,"y":80}, "w3":{"x":80,"y":80}}');
+                        const conf = JSON.parse(localStorage.getItem('trainConfig') || '{"size":560, "rot":0, "w1":{"x":22,"y":72}, "w2":{"x":50,"y":72}, "w3":{"x":78,"y":72}}');
+                        if (conf.rot === -90) conf.rot = 0;
                         
                         const trainContainer = document.createElement('div');
                         trainContainer.className = 'train-container';
@@ -2682,7 +2701,7 @@ document.addEventListener('DOMContentLoaded', () => {
         mainPinwheelMarker.getElement().style.zIndex = '30';
         pinwheelDiv.style.display = 'block';
         setTimeout(() => postaScreenEl.classList.add('visible'), 200);
-        map.flyTo({ center: coord, zoom: 16, pitch: 55, bearing: 0, duration: 2000 });
+        map.flyTo({ center: coord, zoom: 16, pitch: 0, bearing: 0, duration: 2000 });
     };
 });
 
@@ -2707,7 +2726,8 @@ const editorImg = document.getElementById('editor-train-img');
 const wheels = [document.getElementById('wheel-1'), document.getElementById('wheel-2'), document.getElementById('wheel-3')];
 
 function loadTrainConfig() {
-    const conf = JSON.parse(localStorage.getItem('trainConfig') || '{"size":750, "rot":-90, "w1":{"x":20,"y":80}, "w2":{"x":50,"y":80}, "w3":{"x":80,"y":80}}');
+    const conf = JSON.parse(localStorage.getItem('trainConfig') || '{"size":560, "rot":0, "w1":{"x":22,"y":72}, "w2":{"x":50,"y":72}, "w3":{"x":78,"y":72}}');
+    if (conf.rot === -90) conf.rot = 0;
     sizeSlider.value = conf.size; sizeVal.innerText = conf.size + 'px';
     rotSlider.value = conf.rot; rotVal.innerText = conf.rot + '°';
     editorImg.style.width = conf.size + 'px';
