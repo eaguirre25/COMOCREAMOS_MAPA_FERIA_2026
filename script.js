@@ -19,12 +19,17 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
     let posta2SlideIndex = 0;
 
-    const preloadTargets = [
+    const criticalPreloadTargets = [
         'CIENCIA Y FICCION.png',
         'El camino de la investigación.png',
         'EL CAMINO DE LA INVESTIGACION-TITULO.png',
         'ASPAS FERIA.svg',
         'colectivo_animado.gif',
+        'SAN MARTIN LOCALIDADES.geojson',
+        posta2Slides[0]
+    ];
+
+    const deferredPreloadTargets = [
         'tren_animado.gif',
         'posta1.gif',
         'posta2.gif',
@@ -37,8 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'malaver.gif',
         'chilavert.gif',
         'jose_l_suarez.gif',
-        'SAN MARTIN LOCALIDADES.geojson',
-        ...posta2Slides
+        ...posta2Slides.slice(1)
     ];
 
     function updatePreloadStatus(done, total) {
@@ -48,23 +52,50 @@ document.addEventListener('DOMContentLoaded', () => {
         if (pct >= 100) preloadStatus.classList.add('complete');
     }
 
-    function preloadDevelopmentAssets() {
-        let done = 0;
-        updatePreloadStatus(done, preloadTargets.length);
-        preloadTargets.forEach(src => {
-            const finish = () => {
-                done += 1;
-                updatePreloadStatus(done, preloadTargets.length);
-            };
+    function preloadAsset(src) {
+        return new Promise(resolve => {
             if (/\.(png|jpe?g|gif|svg|webp)$/i.test(src)) {
                 const img = new Image();
-                img.onload = finish;
-                img.onerror = finish;
+                img.decoding = 'async';
+                img.onload = resolve;
+                img.onerror = resolve;
                 img.src = src;
             } else {
-                fetch(src, { cache: 'force-cache' }).then(finish).catch(finish);
+                fetch(src, { cache: 'force-cache' }).then(resolve).catch(resolve);
             }
         });
+    }
+
+    function preloadDevelopmentAssets() {
+        let done = 0;
+        updatePreloadStatus(done, criticalPreloadTargets.length);
+        criticalPreloadTargets.forEach(src => {
+            preloadAsset(src).then(() => {
+                done += 1;
+                updatePreloadStatus(done, criticalPreloadTargets.length);
+            });
+        });
+        const startDeferred = () => preloadQueue(deferredPreloadTargets, 2);
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(startDeferred, { timeout: 3500 });
+        } else {
+            setTimeout(startDeferred, 1800);
+        }
+    }
+
+    function preloadQueue(targets, concurrency = 2) {
+        let index = 0;
+        let active = 0;
+        function pump() {
+            while (active < concurrency && index < targets.length) {
+                active += 1;
+                preloadAsset(targets[index++]).finally(() => {
+                    active -= 1;
+                    pump();
+                });
+            }
+        }
+        pump();
     }
     preloadDevelopmentAssets();
 
@@ -1596,14 +1627,24 @@ document.addEventListener('DOMContentLoaded', () => {
         const body = document.getElementById('modal-body');
         if (!body) return;
         const src = posta2Slides[posta2SlideIndex];
+        const prevDisabled = posta2SlideIndex === 0 ? ' disabled' : '';
+        const nextDisabled = posta2SlideIndex === posta2Slides.length - 1 ? ' disabled' : '';
         body.innerHTML = `
             <div class="slide-viewer">
                 <div class="slide-stage">
+                    <button class="slide-nav-btn slide-prev" data-slide-dir="-1"${prevDisabled} aria-label="Retroceder material">&lt;</button>
                     <img id="posta2-slide-img" src="${src}" alt="Placa ${posta2SlideIndex + 1}">
+                    <button class="slide-nav-btn slide-next" data-slide-dir="1"${nextDisabled} aria-label="Avanzar material">&gt;</button>
                 </div>
                 <div class="slide-footer">${posta2SlideIndex + 1} / ${posta2Slides.length}</div>
             </div>
         `;
+        body.querySelectorAll('.slide-nav-btn').forEach(btn => {
+            btn.addEventListener('click', event => {
+                event.stopPropagation();
+                if (!btn.disabled) stepPosta2Slide(Number(btn.dataset.slideDir));
+            });
+        });
     }
 
     function showPostaModal(index) {

@@ -904,12 +904,12 @@ body, html {
 .inter-posta-text.visible { opacity: 1; bottom: 10%; }
 
 /* Embedded Modal — z-index debe superar posta-black-screen (2000) */
-#embedded-modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: min(92vw, 1180px); height: min(86vh, 760px); background: rgba(8, 12, 18, 0.97); border: 2px solid rgba(255,255,255,0.85); border-radius: 12px; z-index: 5000; display: flex; flex-direction: column; padding: 18px; color: white; font-family: 'Faustina', Orbitron, sans-serif; box-shadow: 0 0 50px rgba(255,255,255,0.28); pointer-events: auto; }
+#embedded-modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: min(98vw, 1440px); height: min(96vh, 960px); background: rgba(8, 12, 18, 0.98); border: 2px solid rgba(255,255,255,0.85); border-radius: 10px; z-index: 5000; display: flex; flex-direction: column; padding: 10px; color: white; font-family: 'Faustina', Orbitron, sans-serif; box-shadow: 0 0 50px rgba(255,255,255,0.28); pointer-events: auto; }
 #embedded-modal.hidden { display: none; }
-#btn-close-modal { align-self: flex-end; background: #ff0044; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 8px; font-size: 18px; font-weight: bold; font-family: 'Faustina', sans-serif; }
+#btn-close-modal { align-self: flex-end; background: #ff0044; color: white; border: none; padding: 6px 12px; cursor: pointer; border-radius: 7px; font-size: 14px; font-weight: bold; font-family: 'Faustina', sans-serif; }
 #btn-close-modal:hover { background: #ff3366; box-shadow: 0 0 15px #ff0044; }
-#modal-title { flex: 0 0 auto; }
-#modal-body { margin-top: 14px; font-family: 'Faustina', sans-serif; font-size: 18px; overflow: hidden; flex-grow: 1; min-height: 0; }
+#modal-title { flex: 0 0 auto; font-size: clamp(18px, 2.1vw, 30px); line-height: 1.1; margin: 4px 0 6px !important; }
+#modal-body { margin-top: 4px; font-family: 'Faustina', sans-serif; font-size: 18px; overflow: hidden; flex-grow: 1; min-height: 0; }
 .slide-viewer {
     height: 100%;
     display: grid;
@@ -917,6 +917,7 @@ body, html {
     gap: 10px;
 }
 .slide-stage {
+    position: relative;
     min-height: 0;
     display: flex;
     align-items: center;
@@ -942,6 +943,32 @@ body, html {
     font-size: 15px;
     line-height: 1.2;
 }
+.slide-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    width: 34px;
+    height: 48px;
+    border: 1px solid rgba(255,255,255,0.5);
+    border-radius: 6px;
+    background: rgba(0, 12, 22, 0.72);
+    color: #fff;
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 0 14px rgba(0,0,0,0.45);
+}
+.slide-nav-btn:hover {
+    background: rgba(0, 150, 180, 0.82);
+}
+.slide-nav-btn:disabled {
+    opacity: 0.25;
+    cursor: default;
+}
+.slide-prev { left: 8px; }
+.slide-next { right: 8px; }
 
 /* Botón de pantalla completa */
 #btn-fullscreen {
