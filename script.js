@@ -6,6 +6,67 @@ document.addEventListener('DOMContentLoaded', () => {
     const rollWrapper = document.getElementById('roll-wrapper');
     const postaBlackScreen = document.getElementById('posta-black-screen');
     const postaBlackTitle = document.getElementById('posta-black-title');
+    const preloadStatus = document.getElementById('preload-status');
+
+    const posta2Slides = [
+        'assets/posta2-slides/slide-01.webp',
+        'assets/posta2-slides/slide-02.webp',
+        'assets/posta2-slides/slide-03.webp',
+        'assets/posta2-slides/slide-04.webp',
+        'assets/posta2-slides/slide-05.webp',
+        'assets/posta2-slides/slide-06.webp',
+        'assets/posta2-slides/slide-07.webp'
+    ];
+    let posta2SlideIndex = 0;
+
+    const preloadTargets = [
+        'CIENCIA Y FICCION.png',
+        'El camino de la investigación.png',
+        'EL CAMINO DE LA INVESTIGACION-TITULO.png',
+        'ASPAS FERIA.svg',
+        'colectivo_animado.gif',
+        'tren_animado.gif',
+        'posta1.gif',
+        'posta2.gif',
+        'deposito_animado.gif',
+        'deposito_tren_final.gif',
+        'miguelete.gif',
+        'san_martin.gif',
+        'san_andres.gif',
+        'villa_ballester.gif',
+        'malaver.gif',
+        'chilavert.gif',
+        'jose_l_suarez.gif',
+        'SAN MARTIN LOCALIDADES.geojson',
+        ...posta2Slides
+    ];
+
+    function updatePreloadStatus(done, total) {
+        if (!preloadStatus || total <= 0) return;
+        const pct = Math.round((done / total) * 100);
+        preloadStatus.textContent = `Cargando ${pct}%`;
+        if (pct >= 100) preloadStatus.classList.add('complete');
+    }
+
+    function preloadDevelopmentAssets() {
+        let done = 0;
+        updatePreloadStatus(done, preloadTargets.length);
+        preloadTargets.forEach(src => {
+            const finish = () => {
+                done += 1;
+                updatePreloadStatus(done, preloadTargets.length);
+            };
+            if (/\.(png|jpe?g|gif|svg|webp)$/i.test(src)) {
+                const img = new Image();
+                img.onload = finish;
+                img.onerror = finish;
+                img.src = src;
+            } else {
+                fetch(src, { cache: 'force-cache' }).then(finish).catch(finish);
+            }
+        });
+    }
+    preloadDevelopmentAssets();
 
     // Add Close button dynamically
     const closeBtn = document.createElement('button');
@@ -1416,6 +1477,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }).join(' ') + ' Z').join(' ');
     }
 
+    let activeLocalityId = -1;
+
+    function getLocalityColor(feature) {
+        return (feature && feature.properties && (feature.properties.fill || feature.properties.stroke)) || '#29b6f6';
+    }
+
     function renderLocalityBoundaryOverlay(data) {
         const svg = document.getElementById('locality-boundary-overlay');
         if (!svg || !data || !data.features) return;
@@ -1426,15 +1493,21 @@ document.addEventListener('DOMContentLoaded', () => {
         data.features.forEach(feature => {
             const d = buildLocalityPath(feature.geometry);
             if (!d) return;
+            const color = getLocalityColor(feature);
+            const isActive = feature.properties && feature.properties.id === activeLocalityId;
             const outline = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-            outline.setAttribute('class', 'locality-boundary-outline');
+            outline.setAttribute('class', `locality-boundary-outline${isActive ? ' active' : ''}`);
             outline.setAttribute('d', d);
+            outline.setAttribute('stroke', color);
+            outline.style.filter = `drop-shadow(0 0 ${isActive ? 18 : 10}px ${color}) drop-shadow(0 0 ${isActive ? 34 : 18}px ${color})`;
             svg.appendChild(outline);
 
             const fill = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-            fill.setAttribute('class', 'locality-boundary-fill');
+            fill.setAttribute('class', `locality-boundary-fill${isActive ? ' active' : ''}`);
             fill.setAttribute('d', d);
-            fill.setAttribute('fill', feature.properties.fill || '#29b6f6');
+            fill.setAttribute('fill', color);
+            fill.setAttribute('stroke', color);
+            fill.style.filter = `drop-shadow(0 0 ${isActive ? 14 : 6}px ${color})`;
             svg.appendChild(fill);
         });
     }
@@ -1446,6 +1519,32 @@ document.addEventListener('DOMContentLoaded', () => {
             localityOverlayFrame = null;
             renderLocalityBoundaryOverlay(sanMartinLocalidadesGeoJSON);
         });
+    }
+
+    function setActiveLocality(foundId, localityFeatures) {
+        if (foundId === activeLocalityId && foundId === lastLocalityId) return;
+        activeLocalityId = foundId;
+        if (map.getLayer('san-martin-active-glow')) map.setFilter('san-martin-active-glow', ['==', 'id', foundId]);
+        if (map.getLayer('san-martin-active-fill')) map.setFilter('san-martin-active-fill', ['==', 'id', foundId]);
+        if (map.getLayer('san-martin-active-labels')) map.setFilter('san-martin-active-labels', ['==', 'id', foundId]);
+        renderLocalityBoundaryOverlay(sanMartinLocalidadesGeoJSON);
+
+        if (foundId !== lastLocalityId) {
+            lastLocalityId = foundId;
+            const localityDisplay = document.getElementById('locality-name-display');
+            if (!localityDisplay) return;
+            if (foundId !== -1) {
+                const feat = localityFeatures.find(f => f.properties.id === foundId);
+                if (feat) {
+                    localityDisplay.innerText = feat.properties.Localidad;
+                    localityDisplay.style.borderLeftColor = getLocalityColor(feat);
+                    localityDisplay.style.textShadow = `0 0 10px ${getLocalityColor(feat)}, 1px 1px 3px #000`;
+                    localityDisplay.classList.add('visible');
+                }
+            } else {
+                localityDisplay.classList.remove('visible');
+            }
+        }
     }
 
     let trainCoords = [];
@@ -1478,6 +1577,45 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('embedded-modal').classList.add('hidden');
         window.isAnimationPaused = false;
     });
+
+    function renderPosta2Slide() {
+        const body = document.getElementById('modal-body');
+        if (!body) return;
+        const src = posta2Slides[posta2SlideIndex];
+        body.innerHTML = `
+            <div class="slide-viewer">
+                <div class="slide-stage">
+                    <img id="posta2-slide-img" src="${src}" alt="Placa ${posta2SlideIndex + 1}">
+                </div>
+                <div class="slide-footer">${posta2SlideIndex + 1} / ${posta2Slides.length}</div>
+            </div>
+        `;
+    }
+
+    function showPostaModal(index) {
+        window.isAnimationPaused = true;
+        const modal = document.getElementById('embedded-modal');
+        const title = document.getElementById('modal-title');
+        const body = document.getElementById('modal-body');
+        if (!modal || !title || !body) return;
+        title.innerText = postasText[index] || 'Información de Posta';
+        modal.dataset.postaIndex = String(index);
+        if (index === 1) {
+            posta2SlideIndex = 0;
+            renderPosta2Slide();
+        } else {
+            body.innerHTML = 'Este es el contenido de la posta.';
+        }
+        modal.classList.remove('hidden');
+    }
+
+    function stepPosta2Slide(direction) {
+        const modal = document.getElementById('embedded-modal');
+        if (!modal || modal.classList.contains('hidden') || modal.dataset.postaIndex !== '1') return false;
+        posta2SlideIndex = Math.max(0, Math.min(posta2Slides.length - 1, posta2SlideIndex + direction));
+        renderPosta2Slide();
+        return true;
+    }
 
 
     // State Machine
@@ -1517,17 +1655,17 @@ document.addEventListener('DOMContentLoaded', () => {
             { id: 'satellite-layer', type: 'raster', source: 'esri-satellite', minzoom: 0, maxzoom: 22 },
             { id: 'transportation-layer', type: 'raster', source: 'esri-transportation', minzoom: 0, maxzoom: 22, paint: { 'raster-opacity': 0.4 } },
             { id: 'labels-layer', type: 'raster', source: 'esri-labels', minzoom: 0, maxzoom: 22, paint: { 'raster-opacity': 0.4 } },
-            { id: 'san-martin-base-fill', type: 'fill', source: 'sm-locality-shape', paint: { 'fill-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'fill-opacity': 0.82 } },
-            { id: 'san-martin-map-fill', type: 'fill', source: 'sm-locality-shape', paint: { 'fill-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'fill-opacity': 0.82 } },
-            { id: 'san-martin-map-boundary-glow', type: 'line', source: 'sm-locality-shape', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': '#00e5ff', 'line-width': 26, 'line-blur': 14, 'line-opacity': 1 } },
+            { id: 'san-martin-base-fill', type: 'fill', source: 'sm-locality-shape', paint: { 'fill-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'fill-opacity': 0.22 } },
+            { id: 'san-martin-map-fill', type: 'fill', source: 'sm-locality-shape', paint: { 'fill-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'fill-opacity': 0.22 } },
+            { id: 'san-martin-map-boundary-glow', type: 'line', source: 'sm-locality-shape', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'line-width': 20, 'line-blur': 12, 'line-opacity': 0.88 } },
             { id: 'san-martin-map-boundary-core', type: 'line', source: 'sm-locality-shape', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': '#ffffff', 'line-width': 5, 'line-opacity': 1 } },
-            { id: 'san-martin-map-locality-labels', type: 'symbol', source: 'sm-locality-shape', layout: { 'text-field': ['get', 'Localidad'], 'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'], 'text-size': 24, 'text-anchor': 'center', 'text-allow-overlap': true, 'text-ignore-placement': true }, paint: { 'text-color': '#ffffff', 'text-halo-color': '#001018', 'text-halo-width': 4 } },
-            { id: 'san-martin-active-fill', type: 'fill', source: 'sm-locality-shape', paint: { 'fill-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'fill-opacity': 0.3 }, filter: ['==', 'id', -1] },
-            { id: 'san-martin-active-labels', type: 'symbol', source: 'sm-locality-shape', layout: { 'text-field': ['get', 'Localidad'], 'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'], 'text-size': 24, 'text-anchor': 'center' }, paint: { 'text-color': '#ffffff', 'text-halo-color': '#000000', 'text-halo-width': 2 }, filter: ['==', 'id', -1] },
-            { id: 'san-martin-base-glow', type: 'line', source: 'sm-locality-shape', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': '#00d4ff', 'line-width': 12, 'line-blur': 8, 'line-opacity': 0.85 } },
-            { id: 'san-martin-active-glow', type: 'line', source: 'sm-locality-shape', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': '#ff00ff', 'line-width': 35, 'line-blur': 20, 'line-opacity': 1 }, filter: ['==', 'id', -1] },
+            { id: 'san-martin-map-locality-labels', type: 'symbol', source: 'sm-locality-shape', layout: { 'text-field': ['get', 'Localidad'], 'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'], 'text-size': 24, 'text-anchor': 'center', 'text-allow-overlap': true, 'text-ignore-placement': true }, paint: { 'text-color': '#ffffff', 'text-halo-color': '#001018', 'text-halo-width': 4, 'text-opacity': 0 } },
+            { id: 'san-martin-active-fill', type: 'fill', source: 'sm-locality-shape', paint: { 'fill-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'fill-opacity': 0.42 }, filter: ['==', 'id', -1] },
+            { id: 'san-martin-active-labels', type: 'symbol', source: 'sm-locality-shape', layout: { 'text-field': ['get', 'Localidad'], 'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'], 'text-size': 24, 'text-anchor': 'center' }, paint: { 'text-color': '#ffffff', 'text-halo-color': '#000000', 'text-halo-width': 2, 'text-opacity': 0 }, filter: ['==', 'id', -1] },
+            { id: 'san-martin-base-glow', type: 'line', source: 'sm-locality-shape', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'line-width': 10, 'line-blur': 7, 'line-opacity': 0.72 } },
+            { id: 'san-martin-active-glow', type: 'line', source: 'sm-locality-shape', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'line-width': 35, 'line-blur': 20, 'line-opacity': 1 }, filter: ['==', 'id', -1] },
             { id: 'san-martin-core', type: 'line', source: 'sm-locality-shape', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': '#ffffff', 'line-width': 3 } },
-            { id: 'san-martin-labels', type: 'symbol', source: 'sm-locality-shape', layout: { 'text-field': ['get', 'Localidad'], 'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'], 'text-size': 20, 'text-anchor': 'center' }, paint: { 'text-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'text-halo-color': 'rgba(0,0,0,0.8)', 'text-halo-width': 3 } }
+            { id: 'san-martin-labels', type: 'symbol', source: 'sm-locality-shape', layout: { 'text-field': ['get', 'Localidad'], 'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'], 'text-size': 20, 'text-anchor': 'center' }, paint: { 'text-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'text-halo-color': 'rgba(0,0,0,0.8)', 'text-halo-width': 3, 'text-opacity': 0 } }
         ]
     };
     const map = new maplibregl.Map({
@@ -1774,9 +1912,7 @@ document.addEventListener('DOMContentLoaded', () => {
         postaScreenEl.className = 'posta-screen';
         postaScreenEl.onclick = (e) => {
             e.stopPropagation();
-            window.isAnimationPaused = true;
-            document.getElementById('modal-title').innerText = postasText[currentPathIndex];
-            document.getElementById('embedded-modal').classList.remove('hidden');
+            showPostaModal(currentPathIndex);
         };
         pinwheelDiv.appendChild(postaScreenEl);
 
@@ -2065,7 +2201,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Hide locality name when vehicle arrives
                     const _ld = document.getElementById('locality-name-display');
                     if (_ld) _ld.classList.remove('visible');
-                    lastLocalityId = -1;
+                    setActiveLocality(-1, []);
                     // Hide inter-posta text on arrival
                     const _it = document.getElementById('inter-posta-text');
                     if (_it) _it.classList.remove('visible');
@@ -2128,27 +2264,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             break;
                         }
                     }
-                    map.setFilter('san-martin-active-glow', ['==', 'id', foundId]);
-                    map.setFilter('san-martin-active-fill', ['==', 'id', foundId]);
-                    if (map.getLayer('san-martin-active-labels')) {
-                        map.setFilter('san-martin-active-labels', ['==', 'id', foundId]);
-                    }
-                    // Show locality name overlay when entering a new locality
-                    if (foundId !== lastLocalityId) {
-                        lastLocalityId = foundId;
-                        const localityDisplay = document.getElementById('locality-name-display');
-                        if (localityDisplay) {
-                            if (foundId !== -1) {
-                                const feat = localityFeatures.find(f => f.properties.id === foundId);
-                                if (feat) {
-                                    localityDisplay.innerText = feat.properties.Localidad;
-                                    localityDisplay.classList.add('visible');
-                                }
-                            } else {
-                                localityDisplay.classList.remove('visible');
-                            }
-                        }
-                    }
+                    setActiveLocality(foundId, localityFeatures);
                 }
                 
                 // When bus approaches Posta 3 depot, raise it and increase pitch
@@ -2397,9 +2513,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     postaScreenEl.style.color = '#fff';
                     postaScreenEl.style.cursor = 'pointer';
                     postaScreenEl.onclick = () => {
-                        window.isAnimationPaused = true;
-                        document.getElementById('modal-title').innerText = postasText[currentPathIndex];
-                        document.getElementById('embedded-modal').classList.remove('hidden');
+                        showPostaModal(currentPathIndex);
                     };
                     if (moveMode === 'street') {
                         postaScreenEl.style.bottom = 'auto';
@@ -2526,10 +2640,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 postaScreenEl.style.color = '#fff';
                 postaScreenEl.style.cursor = 'pointer';
                 postaScreenEl.onclick = () => {
-                    window.isAnimationPaused = true;
-                    document.getElementById('modal-title').innerText = postasText[currentPathIndex];
-                    document.getElementById('modal-title').innerText = postasText[currentPathIndex];
-                    document.getElementById('embedded-modal').classList.remove('hidden');
+                    showPostaModal(currentPathIndex);
                 };
                 if (moveMode === 'street') {
                     postaScreenEl.style.bottom = 'auto';
@@ -2555,6 +2666,26 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Keyboard Controls ---
     document.addEventListener('keydown', (e) => {
         const editorOverlay = document.getElementById('train-editor-overlay');
+        const embeddedModal = document.getElementById('embedded-modal');
+
+        if (embeddedModal && !embeddedModal.classList.contains('hidden')) {
+            if (embeddedModal.dataset.postaIndex === '1' && e.key === 'ArrowRight') {
+                e.preventDefault();
+                stepPosta2Slide(1);
+                return;
+            }
+            if (embeddedModal.dataset.postaIndex === '1' && e.key === 'ArrowLeft') {
+                e.preventDefault();
+                stepPosta2Slide(-1);
+                return;
+            }
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                embeddedModal.classList.add('hidden');
+                window.isAnimationPaused = false;
+                return;
+            }
+        }
         
         if (e.key.toLowerCase() === 'e') {
             if (editorOverlay.classList.contains('hidden')) {
