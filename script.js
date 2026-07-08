@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'EL CAMINO DE LA INVESTIGACION-TITULO.png',
         'ASPAS FERIA.svg',
         'colectivo_animado.gif',
+        'assets/feria-fondo.jpg',
         'SAN MARTIN LOCALIDADES.geojson',
         posta2Slides[0]
     ];
@@ -54,14 +55,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function preloadAsset(src) {
         return new Promise(resolve => {
+            let settled = false;
+            const done = () => {
+                if (settled) return;
+                settled = true;
+                resolve();
+            };
+            const timeout = setTimeout(done, 4500);
             if (/\.(png|jpe?g|gif|svg|webp)$/i.test(src)) {
                 const img = new Image();
                 img.decoding = 'async';
-                img.onload = resolve;
-                img.onerror = resolve;
+                img.onload = () => { clearTimeout(timeout); done(); };
+                img.onerror = () => { clearTimeout(timeout); done(); };
                 img.src = src;
             } else {
-                fetch(src, { cache: 'force-cache' }).then(resolve).catch(resolve);
+                fetch(src, { cache: 'force-cache' })
+                    .then(() => { clearTimeout(timeout); done(); })
+                    .catch(() => { clearTimeout(timeout); done(); });
             }
         });
     }
@@ -1499,15 +1509,107 @@ document.addEventListener('DOMContentLoaded', () => {
     function keepGifPlaying(img, src) {
         if (!img) return;
         const absSrc = new URL(src, window.location.href).href;
-        if (!img.dataset.animSrc || img.dataset.animSrc.endsWith('/')) img.dataset.animSrc = absSrc;
+        img.dataset.animSrc = absSrc;
         if (img.dataset.pausedSrc) {
             setGifPlayback(img, true);
             return;
         }
         if (img.src !== absSrc) {
-            img.dataset.animSrc = absSrc;
             img.src = absSrc;
         }
+    }
+
+    const DEFAULT_TRAIN_CONFIG = {
+        size: 750,
+        rot: 0,
+        w1: { x: 64, y: 4 },
+        w2: { x: 72, y: 6 },
+        w3: { x: 80, y: 8 }
+    };
+
+    function getTrainConfig() {
+        const conf = JSON.parse(localStorage.getItem('trainConfig') || JSON.stringify(DEFAULT_TRAIN_CONFIG));
+        if (conf.rot === -90) conf.rot = 0;
+        if (!conf.w1 || !conf.w2 || !conf.w3 || (conf.w1.y >= 12 && conf.w2.y >= 12 && conf.w3.y >= 12)) {
+            conf.w1 = { ...DEFAULT_TRAIN_CONFIG.w1 };
+            conf.w2 = { ...DEFAULT_TRAIN_CONFIG.w2 };
+            conf.w3 = { ...DEFAULT_TRAIN_CONFIG.w3 };
+        }
+        return conf;
+    }
+
+    function clearFloatingTrainMarkers() {
+        if (!window.trainMarkers) window.trainMarkers = [];
+        window.trainMarkers.forEach(m => m.remove());
+        window.trainMarkers = [];
+    }
+
+    function setVehicleMarkerZ(kind) {
+        if (!mainPinwheelMarker) return;
+        const el = mainPinwheelMarker.getElement();
+        el.classList.toggle('vehicle-marker', kind === 'train');
+        el.style.zIndex = kind === 'train' ? '260' : '70';
+    }
+
+    function showBusVehicle(coord, pauseAtStop = false) {
+        if (!pinwheelDiv) return;
+        clearFloatingTrainMarkers();
+        pinwheelDiv.innerHTML = '';
+        const smoke = document.createElement('div');
+        smoke.className = 'smoke-effect';
+        const bus = document.createElement('img');
+        bus.src = 'colectivo_animado.gif';
+        bus.className = 'bus-image';
+        bus.dataset.animSrc = new URL('colectivo_animado.gif', window.location.href).href;
+        const busConf = JSON.parse(localStorage.getItem('busConfig') || '{"size":300, "rot":0}');
+        bus.style.width = busConf.size + 'px';
+        bus.style.transform = `translateY(-85%) rotate(${busConf.rot}deg)`;
+        pinwheelDiv.appendChild(smoke);
+        pinwheelDiv.appendChild(bus);
+        pinwheelDiv.appendChild(postaScreenEl);
+        pinwheelDiv.style.display = 'block';
+        if (coord) mainPinwheelMarker.setLngLat(coord);
+        setVehicleMarkerZ('bus');
+        if (pauseAtStop) {
+            setGifPlayback(bus, false);
+        } else {
+            keepGifPlaying(bus, 'colectivo_animado.gif');
+        }
+    }
+
+    function showTrainVehicle(coord) {
+        if (!pinwheelDiv) return;
+        clearFloatingTrainMarkers();
+        pinwheelDiv.innerHTML = '';
+        pinwheelDiv.appendChild(postaScreenEl);
+        const conf = getTrainConfig();
+        const trainContainer = document.createElement('div');
+        trainContainer.className = 'train-container';
+        trainContainer.style.position = 'relative';
+        trainContainer.style.width = conf.size + 'px';
+        trainContainer.style.transform = `translateY(-40%) rotate(${conf.rot}deg)`;
+        const img = document.createElement('img');
+        img.src = 'tren_animado.gif';
+        img.className = 'train-gif-target';
+        img.style.width = '100%';
+        img.style.height = 'auto';
+        img.style.display = 'block';
+        trainContainer.appendChild(img);
+        [conf.w1, conf.w2, conf.w3].forEach(wConf => {
+            const wheel = document.createElement('div');
+            wheel.className = 'draggable-wheel';
+            wheel.style.left = wConf.x + '%';
+            wheel.style.top = wConf.y + '%';
+            wheel.innerHTML = '<img src="ASPAS FERIA.svg" class="spin-wheel">';
+            trainContainer.appendChild(wheel);
+        });
+        const smoke = document.createElement('div');
+        smoke.className = 'smoke-effect';
+        trainContainer.appendChild(smoke);
+        pinwheelDiv.appendChild(trainContainer);
+        pinwheelDiv.style.display = 'block';
+        if (coord) mainPinwheelMarker.setLngLat(coord);
+        setVehicleMarkerZ('train');
     }
 
     function buildLocalityPath(geometry) {
@@ -1530,8 +1632,17 @@ document.addEventListener('DOMContentLoaded', () => {
         return (feature && feature.properties && (feature.properties.fill || feature.properties.stroke)) || '#29b6f6';
     }
 
+    function ensureLocalityBoundaryOverlay() {
+        let svg = document.getElementById('locality-boundary-overlay');
+        if (svg) return svg;
+        svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.id = 'locality-boundary-overlay';
+        map.getContainer().appendChild(svg);
+        return svg;
+    }
+
     function renderLocalityBoundaryOverlay(data) {
-        const svg = document.getElementById('locality-boundary-overlay');
+        const svg = ensureLocalityBoundaryOverlay();
         if (!svg || !data || !data.features) return;
         svg.innerHTML = '';
         const size = map.getContainer().getBoundingClientRect();
@@ -1574,6 +1685,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (map.getLayer('san-martin-active-glow')) map.setFilter('san-martin-active-glow', ['==', 'id', foundId]);
         if (map.getLayer('san-martin-active-fill')) map.setFilter('san-martin-active-fill', ['==', 'id', foundId]);
         if (map.getLayer('san-martin-active-labels')) map.setFilter('san-martin-active-labels', ['==', 'id', foundId]);
+        scheduleLocalityBoundaryOverlay();
         if (foundId !== lastLocalityId) {
             lastLocalityId = foundId;
             const localityDisplay = document.getElementById('locality-name-display');
@@ -1611,6 +1723,17 @@ document.addEventListener('DOMContentLoaded', () => {
     let p2Coord = [-58.5320, -34.5800]; // Fallback hasta que cargue POSTAS 1 Y 2.geojson
     // Postas 1 y 2 vienen de POSTAS 1 Y 2.geojson; postas 3-9 son las 7 estaciones del tren
     let fullPathArray = [p1Coord, p2Coord, ...trainCoords];
+
+    function getTrainPathCoordinates(startIndex, endIndex) {
+        if (startIndex < 2 || endIndex < 2 || !trainCoords.length) return null;
+        const startTrainIndex = startIndex - 2;
+        const endTrainIndex = endIndex - 2;
+        const minIndex = Math.min(startTrainIndex, endTrainIndex);
+        const maxIndex = Math.max(startTrainIndex, endTrainIndex);
+        const coords = trainCoords.slice(minIndex, maxIndex + 1);
+        if (startTrainIndex > endTrainIndex) coords.reverse();
+        return coords.length > 1 ? coords : null;
+    }
     
     const postaColors = [
         '#ff0055', '#00ff55', '#0055ff', '#ffdd00', '#ff00ff',
@@ -1914,10 +2037,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const sanMartinSource = map.getSource('sm-locality-shape');
             if (sanMartinSource) sanMartinSource.setData(data);
             bringSanMartinMapLayersToFront();
+            scheduleLocalityBoundaryOverlay();
         }
 
         // La fuente 'sm-locality-shape' y sus capas ya vienen definidas en mapStyle.
         // Se usa una sola capa de localidades para evitar carreras de renderizado.
+        ensureLocalityBoundaryOverlay();
+        map.on('move', scheduleLocalityBoundaryOverlay);
+        map.on('resize', scheduleLocalityBoundaryOverlay);
         setSanMartinLocalities(sanMartinGeoJSON);
         if (window.location.protocol !== 'file:') {
             fetch('SAN MARTIN LOCALIDADES.geojson')
@@ -2020,8 +2147,8 @@ document.addEventListener('DOMContentLoaded', () => {
         window.posta2MarkerEl = p2El;
         new maplibregl.Marker({element: wrapMarkerEl(p2El), anchor: 'bottom'}).setLngLat(fullPathArray[1]).addTo(map);
 
-        const depotConf = JSON.parse(localStorage.getItem('depotConfig') || '{"size": 828, "offX": 0, "offY": 0}');
-        if (depotConf.size === 720) depotConf.size = 828;
+        const depotConf = JSON.parse(localStorage.getItem('depotConfig') || '{"size": 960, "offX": 0, "offY": 0}');
+        if (depotConf.size <= 828) depotConf.size = 960;
 
         // Posta 3 Depot
         const depot3El = document.createElement('img');
@@ -2068,7 +2195,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const depot10El = document.createElement('img');
         depot10El.src = 'deposito_tren_final.gif';
         depot10El.className = 'posta1-gif';
-        depot10El.style.width = depotConf.size + 'px';
+        depot10El.style.width = Math.round(depotConf.size * 1.25) + 'px';
         depot10El.style.zIndex = 50;
         window.depot10MarkerEl = depot10El;
         window.depot10MarkerObj = new maplibregl.Marker({element: wrapMarkerEl(depot10El), anchor: 'bottom', offset: [depotConf.offX, depotConf.offY]}).setLngLat(fullPathArray[fullPathArray.length - 1]).addTo(map);
@@ -2120,7 +2247,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const W = window.innerWidth, H = window.innerHeight;
         for (let i = 0; i < 400; i++) {
-            (()=>{ 
+            setTimeout(() => {
                 const c = document.createElement('div');
                 const sz = Math.random() * 14 + 5;
                 c.style.cssText = `position:fixed;left:${Math.random()*W}px;top:${Math.random()*H}px;width:${sz}px;height:${sz}px;background:${colors[Math.floor(Math.random()*colors.length)]};z-index:9001;pointer-events:none;border-radius:${Math.random()>0.5?'50%':'2px'};animation:confettiFall 2.5s ease-out forwards;`;
@@ -2154,8 +2281,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (oldArrow) oldArrow.remove();
         
         let pathLine = null;
+        const trainPathCoords = mode === 'train' ? getTrainPathCoordinates(startIndex, endIndex) : null;
+        if (trainPathCoords) {
+            pathLine = { type: 'LineString', coordinates: trainPathCoords };
+        }
 
-        if (mode === 'street') {
+        if (!pathLine && mode === 'street') {
             try {
                 // Fetch OSRM route (driving mode follows streets)
                 const osrmUrl = `https://router.project-osrm.org/route/v1/driving/${start[0]},${start[1]};${end[0]},${end[1]}?geometries=geojson&overview=full`;
@@ -2172,7 +2303,7 @@ document.addEventListener('DOMContentLoaded', () => {
             pathLine = { type: 'LineString', coordinates: [start, end] };
         }
 
-        if (mode === 'train' && railNetwork && typeof turf !== 'undefined') {
+        if (!trainPathCoords && mode === 'train' && railNetwork && typeof turf !== 'undefined') {
             // Sample the straight line and snap to actual tracks
             const straightLine = turf.lineString([start, end]);
             const length = turf.length(straightLine, {units: 'kilometers'});
@@ -2388,25 +2519,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     setTimeout(r, 2500); // Safety fallback if moveend fires early
                 });
 
-                pinwheelDiv.innerHTML = '';
-                const w = document.createElement('img');
-                w.src = 'colectivo_animado.gif';
-                w.className = 'bus-image';
-                w.dataset.animSrc = new URL('colectivo_animado.gif', window.location.href).href;
-                const busConf = JSON.parse(localStorage.getItem('busConfig') || '{"size":300, "rot":0}');
-                w.style.width = busConf.size + 'px';
-                w.style.transform = `translateY(-85%) rotate(${busConf.rot}deg)`;
-
-                const smoke = document.createElement('div');
-                smoke.className = 'smoke-effect';
-
-                pinwheelDiv.appendChild(smoke);
-                pinwheelDiv.appendChild(w);
-                setGifPlayback(w, false);
-                pinwheelDiv.style.display = 'block';
-                mainPinwheelMarker.setLngLat(p1Coord);
-                // Bus z-index below depot (100) so it passes BEHIND it at Posta 3
-                mainPinwheelMarker.getElement().style.zIndex = "30";
+                showBusVehicle(p1Coord, true);
 
                 // Mostrar todos los GIFs de postas y localidades
                 if (window.posta1MarkerEl) window.posta1MarkerEl.classList.add('visible');
@@ -2514,57 +2627,18 @@ document.addEventListener('DOMContentLoaded', () => {
                         // Full-screen light show + confetti
                         setTimeout(() => spawnFullScreenCelebration(), 400);
                         // Mostrar botón de reinicio (el panel se abre al tocarlo)
-                        (()=>{ 
+                        setTimeout(() => {
                             const _btn = document.getElementById('btn-show-restart');
-                            if (_btn) _btn.classList.remove('hidden');
+                            if (_btn) {
+                                _btn.classList.remove('hidden');
+                                _btn.classList.add('celebrate');
+                                setTimeout(() => _btn.classList.remove('celebrate'), 8000);
+                            }
                         }, 3500);
                     }
                     
                     if (currentPathIndex === 2 && forward) { // Arrived at Posta 3 (Train morph)
-                        pinwheelDiv.innerHTML = '';
-                        pinwheelDiv.appendChild(postaScreenEl);
-                        
-                        const conf = JSON.parse(localStorage.getItem('trainConfig') || '{"size":750, "rot":0, "w1":{"x":72,"y":16}, "w2":{"x":78,"y":24}, "w3":{"x":84,"y":32}}');
-                        if (conf.rot === -90) conf.rot = 0;
-                        if (conf.w1 && conf.w1.y >= 70 && conf.w2 && conf.w2.y >= 70 && conf.w3 && conf.w3.y >= 70) {
-                            conf.w1 = {x: 72, y: 16};
-                            conf.w2 = {x: 78, y: 24};
-                            conf.w3 = {x: 84, y: 32};
-                        }
-                        
-                        const trainContainer = document.createElement('div');
-                        trainContainer.className = 'train-container';
-                        trainContainer.style.position = 'relative';
-                        trainContainer.style.width = conf.size + 'px';
-                        trainContainer.style.transform = `translateY(-40%) rotate(${conf.rot}deg)`;
-                        
-                        const img = document.createElement('img');
-                        img.src = 'tren_animado.gif';
-                        img.className = 'train-gif-target';
-                        img.style.width = '100%';
-                        img.style.height = 'auto';
-                        img.style.display = 'block';
-                        trainContainer.appendChild(img);
-                        
-                        [conf.w1, conf.w2, conf.w3].forEach(wConf => {
-                            const w = document.createElement('div');
-                            w.className = 'draggable-wheel';
-                            w.style.left = wConf.x + '%';
-                            w.style.top = wConf.y + '%';
-                            w.innerHTML = '<img src="ASPAS FERIA.svg" class="spin-wheel">';
-                            trainContainer.appendChild(w);
-                        });
-                        
-                        const smoke = document.createElement('div');
-                        smoke.className = 'smoke-effect';
-                        trainContainer.appendChild(smoke);
-                        
-                        pinwheelDiv.appendChild(trainContainer);
-                        
-                        if (window.trainMarkers) {
-                            window.trainMarkers.forEach(m => m.remove());
-                            window.trainMarkers = [];
-                        }
+                        showTrainVehicle(fullPathArray[2]);
                     }
 
                     const color = postaColors[currentPathIndex % postaColors.length];
@@ -2597,9 +2671,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     if (moveMode === 'street') {    
                         // Make sure the train marker is behind it
-                        if (mainPinwheelMarker) {
-                            mainPinwheelMarker.getElement().style.zIndex = "40";
-                        }
+                        setVehicleMarkerZ('bus');
                     } else if (currentPathIndex !== 2 && depotMarker) {
                     }
                 }
@@ -2616,27 +2688,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // If leaving Posta 3 backwards, revert to bus
                 if (currentPathIndex === 2) {
-                    if (window.trainMarkers) {
-                        window.trainMarkers.forEach(m => m.remove());
-                        window.trainMarkers = [];
-                    }
-                    pinwheelDiv.innerHTML = '';
-                    const w = document.createElement('img');
-                    w.src = 'colectivo_animado.gif';
-                    w.className = 'bus-image';
-                    w.dataset.animSrc = new URL('colectivo_animado.gif', window.location.href).href;
-                    const busConf = JSON.parse(localStorage.getItem('busConfig') || '{"size":300, "rot":0}');
-                    w.style.width = busConf.size + 'px';
-                    w.style.transform = `translateY(-85%) rotate(${busConf.rot}deg)`;
-                    
-                    const smoke = document.createElement('div');
-                    smoke.className = 'smoke-effect';
-                    
-                    pinwheelDiv.appendChild(smoke);
-                    pinwheelDiv.appendChild(w);
-                    pinwheelDiv.appendChild(postaScreenEl);
-                    pinwheelDiv.style.display = 'block';
-                    mainPinwheelMarker.getElement().style.zIndex = "30";
+                    showBusVehicle(fullPathArray[2], false);
 
                     const color = postaColors[currentPathIndex % postaColors.length];
                     postaScreenEl.innerText = postasText[currentPathIndex];
@@ -2951,12 +3003,17 @@ document.addEventListener('DOMContentLoaded', () => {
         postaScreenEl.style.boxShadow = `0 0 15px ${color}`;
         postaScreenEl.style.color = '#fff';
         postaScreenEl.style.cursor = 'pointer';
-        postaScreenEl.style.top = 'auto';
-        postaScreenEl.style.bottom = '-150px';
-        if (!pinwheelDiv.contains(postaScreenEl)) pinwheelDiv.appendChild(postaScreenEl);
-        mainPinwheelMarker.setLngLat(coord);
-        mainPinwheelMarker.getElement().style.zIndex = '30';
-        pinwheelDiv.style.display = 'block';
+        if (index <= 1) {
+            showBusVehicle(coord, index === 0 || index === 1);
+            postaScreenEl.style.bottom = 'auto';
+            postaScreenEl.style.top = index === 1 ? '150px' : '-120px';
+            mapPhase = Math.max(mapPhase, index === 1 ? 2 : 1);
+        } else {
+            showTrainVehicle(coord);
+            postaScreenEl.style.top = 'auto';
+            postaScreenEl.style.bottom = '-150px';
+            mapPhase = Math.max(mapPhase, 3);
+        }
         setTimeout(() => postaScreenEl.classList.add('visible'), 200);
         map.flyTo({ center: coord, zoom: 16, pitch: 55, bearing: 0, duration: 2000 });
     };
@@ -2983,12 +3040,12 @@ const editorImg = document.getElementById('editor-train-img');
 const wheels = [document.getElementById('wheel-1'), document.getElementById('wheel-2'), document.getElementById('wheel-3')];
 
 function loadTrainConfig() {
-    const conf = JSON.parse(localStorage.getItem('trainConfig') || '{"size":750, "rot":0, "w1":{"x":72,"y":16}, "w2":{"x":78,"y":24}, "w3":{"x":84,"y":32}}');
+    const conf = JSON.parse(localStorage.getItem('trainConfig') || '{"size":750, "rot":0, "w1":{"x":64,"y":4}, "w2":{"x":72,"y":6}, "w3":{"x":80,"y":8}}');
     if (conf.rot === -90) conf.rot = 0;
-    if (conf.w1 && conf.w1.y >= 70 && conf.w2 && conf.w2.y >= 70 && conf.w3 && conf.w3.y >= 70) {
-        conf.w1 = {x: 72, y: 16};
-        conf.w2 = {x: 78, y: 24};
-        conf.w3 = {x: 84, y: 32};
+    if (!conf.w1 || !conf.w2 || !conf.w3 || (conf.w1.y >= 12 && conf.w2.y >= 12 && conf.w3.y >= 12)) {
+        conf.w1 = {x: 64, y: 4};
+        conf.w2 = {x: 72, y: 6};
+        conf.w3 = {x: 80, y: 8};
     }
     sizeSlider.value = conf.size; sizeVal.innerText = conf.size + 'px';
     rotSlider.value = conf.rot; rotVal.innerText = conf.rot + '°';
@@ -3172,7 +3229,7 @@ function updateDepotsLive() {
     if (window.depot3MarkerEl) window.depot3MarkerEl.style.width = s + 'px';
     if (window.depot3MarkerObj) window.depot3MarkerObj.setOffset([ox, oy]);
     
-    if (window.depot10MarkerEl) window.depot10MarkerEl.style.width = s + 'px';
+    if (window.depot10MarkerEl) window.depot10MarkerEl.style.width = Math.round(s * 1.25) + 'px';
     if (window.depot10MarkerObj) window.depot10MarkerObj.setOffset([ox, oy]);
 }
 
@@ -3194,8 +3251,8 @@ if (depotSizeSlider) {
         alert('Depósito guardado exitosamente.');
     });
     
-    const dConf = JSON.parse(localStorage.getItem('depotConfig') || '{"size": 828, "offX": 0, "offY": 0}');
-    if (dConf.size === 720) dConf.size = 828;
+    const dConf = JSON.parse(localStorage.getItem('depotConfig') || '{"size": 960, "offX": 0, "offY": 0}');
+    if (dConf.size <= 828) dConf.size = 960;
     depotSizeSlider.value = dConf.size;
     depotOffXSlider.value = dConf.offX;
     depotOffYSlider.value = dConf.offY;

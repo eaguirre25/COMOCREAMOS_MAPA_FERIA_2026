@@ -97,6 +97,10 @@ body, html {
     padding: 8px 16px;
     pointer-events: none;
 }
+.preload-status.complete {
+    background: rgba(0,0,0,0.22);
+    border-color: rgba(255,255,255,0.15);
+}
 
 /* Improved Glow Animation for Cover */
 .sci-fi-glow {
@@ -153,13 +157,29 @@ body, html {
 }
 
 /* Screen 2 Layout */
+#screen-2 {
+    background: #020306;
+    overflow: hidden;
+}
+#screen-2::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(rgba(0,0,0,0.58), rgba(0,0,0,0.68)),
+        url('assets/feria-fondo.jpg') center / cover no-repeat;
+    opacity: 0.88;
+    z-index: 0;
+}
 .layout-container {
+    position: relative;
+    z-index: 1;
     width: 100%;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: radial-gradient(circle at center, #1a1a2e 0%, #000 100%);
+    background: radial-gradient(circle at center, rgba(26,26,46,0.42) 0%, rgba(0,0,0,0.48) 100%);
     padding: 60px;
     gap: 50px;
 }
@@ -228,11 +248,17 @@ body, html {
 #map {
     width: 100%;
     height: 100%;
+    position: relative;
     z-index: 1;
 }
 
 #locality-boundary-overlay {
-    display: none;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    pointer-events: none;
 }
 
 .locality-boundary-fill {
@@ -275,6 +301,10 @@ body, html {
 
 .maplibregl-marker {
     z-index: 80 !important;
+}
+
+.maplibregl-marker.vehicle-marker {
+    z-index: 260 !important;
 }
 
 /* Draggable HUD Elements */
@@ -826,6 +856,16 @@ body, html {
     box-shadow: 0 0 35px rgba(0,255,255,0.8);
 }
 .restart-trigger-btn.hidden { display: none; }
+.restart-trigger-btn.celebrate {
+    animation: restartCelebrate 0.8s ease-in-out infinite alternate;
+    background: linear-gradient(45deg, #ff0055, #ffdd00, #00ffaa, #00aaff);
+    border-color: #fff;
+}
+
+@keyframes restartCelebrate {
+    from { transform: scale(1); box-shadow: 0 0 20px rgba(255,255,255,0.55), 0 0 35px rgba(0,255,255,0.8); }
+    to { transform: scale(1.16); box-shadow: 0 0 38px rgba(255,255,255,0.9), 0 0 70px rgba(255,0,100,0.9); }
+}
 
 /* Panel de reinicio (Posta 9) */
 .restart-panel {
@@ -926,6 +966,7 @@ body, html {
     border: 1px solid rgba(255,255,255,0.16);
     border-radius: 8px;
     overflow: hidden;
+    padding: 8px 42px;
 }
 .slide-stage img {
     max-width: 100%;
