@@ -1439,6 +1439,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (img.dataset.pausedSrc) {
                 img.src = img.dataset.animSrc;
                 delete img.dataset.pausedSrc;
+            } else if (img.src !== img.dataset.animSrc && img.dataset.animSrc) {
+                img.src = img.dataset.animSrc;
             }
             return;
         }
@@ -1460,6 +1462,20 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (e) {
             // If the frame cannot be captured, keep the GIF running rather than hiding it.
             console.warn('No se pudo pausar el GIF', e);
+        }
+    }
+
+    function keepGifPlaying(img, src) {
+        if (!img) return;
+        const absSrc = new URL(src, window.location.href).href;
+        if (!img.dataset.animSrc || img.dataset.animSrc.endsWith('/')) img.dataset.animSrc = absSrc;
+        if (img.dataset.pausedSrc) {
+            setGifPlayback(img, true);
+            return;
+        }
+        if (img.src !== absSrc) {
+            img.dataset.animSrc = absSrc;
+            img.src = absSrc;
         }
     }
 
@@ -1653,14 +1669,14 @@ document.addEventListener('DOMContentLoaded', () => {
             { id: 'satellite-layer', type: 'raster', source: 'esri-satellite', minzoom: 0, maxzoom: 19, paint: { 'raster-fade-duration': 0 } },
             { id: 'transportation-layer', type: 'raster', source: 'esri-transportation', minzoom: 0, maxzoom: 18, paint: { 'raster-opacity': 0.3, 'raster-fade-duration': 0 } },
             { id: 'labels-layer', type: 'raster', source: 'esri-labels', minzoom: 0, maxzoom: 18, paint: { 'raster-opacity': 0.3, 'raster-fade-duration': 0 } },
-            { id: 'san-martin-base-fill', type: 'fill', source: 'sm-locality-shape', paint: { 'fill-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'fill-opacity': 0.22 } },
-            { id: 'san-martin-map-fill', type: 'fill', source: 'sm-locality-shape', paint: { 'fill-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'fill-opacity': 0.22 } },
-            { id: 'san-martin-map-boundary-glow', type: 'line', source: 'sm-locality-shape', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'line-width': 20, 'line-blur': 12, 'line-opacity': 0.88 } },
-            { id: 'san-martin-map-boundary-core', type: 'line', source: 'sm-locality-shape', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': '#ffffff', 'line-width': 5, 'line-opacity': 1 } },
+            { id: 'san-martin-base-fill', type: 'fill', source: 'sm-locality-shape', paint: { 'fill-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'fill-opacity': 0.36 } },
+            { id: 'san-martin-map-fill', type: 'fill', source: 'sm-locality-shape', paint: { 'fill-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'fill-opacity': 0.34 } },
+            { id: 'san-martin-map-boundary-glow', type: 'line', source: 'sm-locality-shape', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'line-width': 24, 'line-blur': 13, 'line-opacity': 0.95 } },
+            { id: 'san-martin-map-boundary-core', type: 'line', source: 'sm-locality-shape', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': ['coalesce', ['get', 'fill'], '#ffffff'], 'line-width': 7, 'line-opacity': 1 } },
             { id: 'san-martin-map-locality-labels', type: 'symbol', source: 'sm-locality-shape', layout: { 'text-field': ['get', 'Localidad'], 'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'], 'text-size': 24, 'text-anchor': 'center', 'text-allow-overlap': true, 'text-ignore-placement': true }, paint: { 'text-color': '#ffffff', 'text-halo-color': '#001018', 'text-halo-width': 4, 'text-opacity': 0 } },
-            { id: 'san-martin-active-fill', type: 'fill', source: 'sm-locality-shape', paint: { 'fill-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'fill-opacity': 0.42 }, filter: ['==', 'id', -1] },
+            { id: 'san-martin-active-fill', type: 'fill', source: 'sm-locality-shape', paint: { 'fill-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'fill-opacity': 0.52 }, filter: ['==', 'id', -1] },
             { id: 'san-martin-active-labels', type: 'symbol', source: 'sm-locality-shape', layout: { 'text-field': ['get', 'Localidad'], 'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'], 'text-size': 24, 'text-anchor': 'center' }, paint: { 'text-color': '#ffffff', 'text-halo-color': '#000000', 'text-halo-width': 2, 'text-opacity': 0 }, filter: ['==', 'id', -1] },
-            { id: 'san-martin-base-glow', type: 'line', source: 'sm-locality-shape', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'line-width': 10, 'line-blur': 7, 'line-opacity': 0.72 } },
+            { id: 'san-martin-base-glow', type: 'line', source: 'sm-locality-shape', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'line-width': 14, 'line-blur': 8, 'line-opacity': 0.82 } },
             { id: 'san-martin-active-glow', type: 'line', source: 'sm-locality-shape', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'line-width': 35, 'line-blur': 20, 'line-opacity': 1 }, filter: ['==', 'id', -1] },
             { id: 'san-martin-core', type: 'line', source: 'sm-locality-shape', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': '#ffffff', 'line-width': 3 } },
             { id: 'san-martin-labels', type: 'symbol', source: 'sm-locality-shape', layout: { 'text-field': ['get', 'Localidad'], 'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'], 'text-size': 20, 'text-anchor': 'center' }, paint: { 'text-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'text-halo-color': 'rgba(0,0,0,0.8)', 'text-halo-width': 3, 'text-opacity': 0 } }
@@ -1963,7 +1979,8 @@ document.addEventListener('DOMContentLoaded', () => {
         window.posta2MarkerEl = p2El;
         new maplibregl.Marker({element: wrapMarkerEl(p2El), anchor: 'bottom'}).setLngLat(fullPathArray[1]).addTo(map);
 
-        const depotConf = JSON.parse(localStorage.getItem('depotConfig') || '{"size": 720, "offX": 0, "offY": 0}');
+        const depotConf = JSON.parse(localStorage.getItem('depotConfig') || '{"size": 828, "offX": 0, "offY": 0}');
+        if (depotConf.size === 720) depotConf.size = 828;
 
         // Posta 3 Depot
         const depot3El = document.createElement('img');
@@ -2334,6 +2351,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const w = document.createElement('img');
                 w.src = 'colectivo_animado.gif';
                 w.className = 'bus-image';
+                w.dataset.animSrc = new URL('colectivo_animado.gif', window.location.href).href;
                 const busConf = JSON.parse(localStorage.getItem('busConfig') || '{"size":300, "rot":0}');
                 w.style.width = busConf.size + 'px';
                 w.style.transform = `translateY(-85%) rotate(${busConf.rot}deg)`;
@@ -2414,8 +2432,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     if (moveMode === 'street') {
                         const busImg = pinwheelDiv.querySelector('.bus-image');
-                        if (busImg) busImg.src = 'colectivo_animado.gif';
-                        setGifPlayback(busImg, true);
+                        keepGifPlaying(busImg, 'colectivo_animado.gif');
                     } else if (moveMode === 'train') {
                         const trainImg = pinwheelDiv.querySelector('.train-gif-target');
                         if (trainImg) trainImg.src = 'tren_animado.gif';
@@ -2437,7 +2454,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     if (moveMode === 'street') {
                         const busImg = pinwheelDiv.querySelector('.bus-image');
-                        if (busImg) busImg.src = 'colectivo_animado.gif';
+                        keepGifPlaying(busImg, 'colectivo_animado.gif');
                         if (currentPathIndex === 1) setGifPlayback(busImg, false);
                         else setGifPlayback(busImg, true);
                     } else if (moveMode === 'train') {
@@ -2466,8 +2483,13 @@ document.addEventListener('DOMContentLoaded', () => {
                         pinwheelDiv.innerHTML = '';
                         pinwheelDiv.appendChild(postaScreenEl);
                         
-                        const conf = JSON.parse(localStorage.getItem('trainConfig') || '{"size":750, "rot":0, "w1":{"x":20,"y":80}, "w2":{"x":50,"y":80}, "w3":{"x":80,"y":80}}');
+                        const conf = JSON.parse(localStorage.getItem('trainConfig') || '{"size":750, "rot":0, "w1":{"x":72,"y":16}, "w2":{"x":78,"y":24}, "w3":{"x":84,"y":32}}');
                         if (conf.rot === -90) conf.rot = 0;
+                        if (conf.w1 && conf.w1.y >= 70 && conf.w2 && conf.w2.y >= 70 && conf.w3 && conf.w3.y >= 70) {
+                            conf.w1 = {x: 72, y: 16};
+                            conf.w2 = {x: 78, y: 24};
+                            conf.w3 = {x: 84, y: 32};
+                        }
                         
                         const trainContainer = document.createElement('div');
                         trainContainer.className = 'train-container';
@@ -2516,9 +2538,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (moveMode === 'street') {
                         postaScreenEl.style.bottom = 'auto';
                         if (currentPathIndex === 1) {
-                            // Posta 2: cartel a la izquierda para no tapar el colectivo
-                            postaScreenEl.style.top = '-120px';
-                            postaScreenEl.style.left = 'calc(50% - 380px)';
+                            postaScreenEl.style.top = '150px';
+                            postaScreenEl.style.left = '';
                         } else {
                             postaScreenEl.style.top = '-120px';
                             postaScreenEl.style.left = '';
@@ -2562,6 +2583,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const w = document.createElement('img');
                     w.src = 'colectivo_animado.gif';
                     w.className = 'bus-image';
+                    w.dataset.animSrc = new URL('colectivo_animado.gif', window.location.href).href;
                     const busConf = JSON.parse(localStorage.getItem('busConfig') || '{"size":300, "rot":0}');
                     w.style.width = busConf.size + 'px';
                     w.style.transform = `translateY(-85%) rotate(${busConf.rot}deg)`;
@@ -2584,9 +2606,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (moveMode === 'street') {
                         postaScreenEl.style.bottom = 'auto';
                         if (currentPathIndex === 1) {
-                            // Posta 2: cartel a la izquierda para no tapar el colectivo
-                            postaScreenEl.style.top = '-120px';
-                            postaScreenEl.style.left = 'calc(50% - 380px)';
+                            postaScreenEl.style.top = '150px';
+                            postaScreenEl.style.left = '';
                         } else {
                             postaScreenEl.style.top = '-120px';
                             postaScreenEl.style.left = '';
@@ -2602,7 +2623,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (moveMode === 'street') {
                     const busImg = pinwheelDiv.querySelector('.bus-image');
-                    if (busImg) busImg.src = 'colectivo_animado.gif';
+                    keepGifPlaying(busImg, 'colectivo_animado.gif');
                 } else if (moveMode === 'train') {
                     const trainImg = pinwheelDiv.querySelector('.train-gif-target');
                     if (trainImg) trainImg.src = 'tren_animado.gif';
@@ -2619,7 +2640,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 if (moveMode === 'street') {
                     const busImg = pinwheelDiv.querySelector('.bus-image');
-                    if (busImg) busImg.src = 'colectivo_animado.gif';
+                keepGifPlaying(busImg, 'colectivo_animado.gif');
                 } else if (moveMode === 'train') {
                     const trainImg = pinwheelDiv.querySelector('.train-gif-target');
                     if (trainImg) trainImg.src = 'tren_animado.gif';
@@ -2643,8 +2664,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (moveMode === 'street') {
                     postaScreenEl.style.bottom = 'auto';
                     if (currentPathIndex === 1) {
-                        postaScreenEl.style.top = '-120px';
-                        postaScreenEl.style.left = 'calc(50% - 380px)';
+                        postaScreenEl.style.top = '150px';
+                        postaScreenEl.style.left = '';
                     } else {
                         postaScreenEl.style.top = '-300px';
                         postaScreenEl.style.left = '';
@@ -2921,8 +2942,13 @@ const editorImg = document.getElementById('editor-train-img');
 const wheels = [document.getElementById('wheel-1'), document.getElementById('wheel-2'), document.getElementById('wheel-3')];
 
 function loadTrainConfig() {
-    const conf = JSON.parse(localStorage.getItem('trainConfig') || '{"size":750, "rot":0, "w1":{"x":20,"y":80}, "w2":{"x":50,"y":80}, "w3":{"x":80,"y":80}}');
+    const conf = JSON.parse(localStorage.getItem('trainConfig') || '{"size":750, "rot":0, "w1":{"x":72,"y":16}, "w2":{"x":78,"y":24}, "w3":{"x":84,"y":32}}');
     if (conf.rot === -90) conf.rot = 0;
+    if (conf.w1 && conf.w1.y >= 70 && conf.w2 && conf.w2.y >= 70 && conf.w3 && conf.w3.y >= 70) {
+        conf.w1 = {x: 72, y: 16};
+        conf.w2 = {x: 78, y: 24};
+        conf.w3 = {x: 84, y: 32};
+    }
     sizeSlider.value = conf.size; sizeVal.innerText = conf.size + 'px';
     rotSlider.value = conf.rot; rotVal.innerText = conf.rot + '°';
     editorImg.style.width = conf.size + 'px';
@@ -3127,7 +3153,8 @@ if (depotSizeSlider) {
         alert('Depósito guardado exitosamente.');
     });
     
-    const dConf = JSON.parse(localStorage.getItem('depotConfig') || '{"size": 720, "offX": 0, "offY": 0}');
+    const dConf = JSON.parse(localStorage.getItem('depotConfig') || '{"size": 828, "offX": 0, "offY": 0}');
+    if (dConf.size === 720) dConf.size = 828;
     depotSizeSlider.value = dConf.size;
     depotOffXSlider.value = dConf.offX;
     depotOffYSlider.value = dConf.offY;
