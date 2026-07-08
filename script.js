@@ -1552,7 +1552,21 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!mainPinwheelMarker) return;
         const el = mainPinwheelMarker.getElement();
         el.classList.toggle('vehicle-marker', kind === 'train');
-        el.style.zIndex = kind === 'train' ? '260' : '70';
+        el.style.setProperty('z-index', kind === 'train' ? '5000' : '70', 'important');
+    }
+
+    function markRailSignMarker(marker) {
+        const el = marker.getElement();
+        el.classList.add('rail-sign-marker');
+        el.style.setProperty('z-index', '160', 'important');
+        return marker;
+    }
+
+    function markDepotMarker(marker) {
+        const el = marker.getElement();
+        el.classList.add('depot-marker');
+        el.style.setProperty('z-index', '7000', 'important');
+        return marker;
     }
 
     function showBusVehicle(coord, pauseAtStop = false) {
@@ -2149,7 +2163,7 @@ document.addEventListener('DOMContentLoaded', () => {
         p2El.style.width = '765px'; // ~1.7x Posta 1 (900 * 0.85)
         p2El.style.zIndex = 10;
         window.posta2MarkerEl = p2El;
-        new maplibregl.Marker({element: wrapMarkerEl(p2El), anchor: 'bottom'}).setLngLat(fullPathArray[1]).addTo(map);
+        markRailSignMarker(new maplibregl.Marker({element: wrapMarkerEl(p2El), anchor: 'bottom'}).setLngLat(fullPathArray[1]).addTo(map));
 
         const depotConf = JSON.parse(localStorage.getItem('depotConfig') || '{"size": 960, "offX": 0, "offY": 0}');
         if (depotConf.size <= 828) depotConf.size = 960;
@@ -2162,14 +2176,14 @@ document.addEventListener('DOMContentLoaded', () => {
         depot3El.style.zIndex = 100;
         window.depot3MarkerEl = depot3El;
         window.depot3MarkerObj = new maplibregl.Marker({element: wrapMarkerEl(depot3El), anchor: 'bottom', offset: [depotConf.offX, depotConf.offY]}).setLngLat(fullPathArray[2]).addTo(map);
-        window.depot3MarkerObj.getElement().classList.add('depot-marker');
+        markDepotMarker(window.depot3MarkerObj);
 
         // Miguelete.gif al costado del depósito de Posta 3
         const migEl = document.createElement('img');
         migEl.src = 'miguelete.gif';
         migEl.className = 'posta1-gif locality-gif';
         window.migueletMarkerEl = migEl;
-        new maplibregl.Marker({element: wrapMarkerEl(migEl), anchor: 'bottom', offset: [600, 0]}).setLngLat(fullPathArray[2]).addTo(map);
+        markRailSignMarker(new maplibregl.Marker({element: wrapMarkerEl(migEl), anchor: 'bottom', offset: [600, 0]}).setLngLat(fullPathArray[2]).addTo(map));
 
         // GIFs de localidades en Postas 4-8 (índices 3-7)
         const localityGifs = [
@@ -2186,7 +2200,7 @@ document.addEventListener('DOMContentLoaded', () => {
             el.src = src;
             el.className = 'posta1-gif locality-gif';
             window.localityGifEls.push(el);
-            new maplibregl.Marker({element: wrapMarkerEl(el), anchor: 'bottom'}).setLngLat(fullPathArray[idx]).addTo(map);
+            markRailSignMarker(new maplibregl.Marker({element: wrapMarkerEl(el), anchor: 'bottom'}).setLngLat(fullPathArray[idx]).addTo(map));
         });
 
         // José L. Suárez al lado (antes) del depósito de Posta 9
@@ -2194,7 +2208,7 @@ document.addEventListener('DOMContentLoaded', () => {
         jlsEl.src = 'jose_l_suarez.gif';
         jlsEl.className = 'posta1-gif locality-gif';
         window.jlsMarkerEl = jlsEl;
-        new maplibregl.Marker({element: wrapMarkerEl(jlsEl), anchor: 'bottom'}).setLngLat(fullPathArray[fullPathArray.length - 2]).addTo(map);
+        markRailSignMarker(new maplibregl.Marker({element: wrapMarkerEl(jlsEl), anchor: 'bottom'}).setLngLat(fullPathArray[fullPathArray.length - 2]).addTo(map));
 
         // Posta 9 Depot (final)
         const depot10El = document.createElement('img');
@@ -2204,7 +2218,7 @@ document.addEventListener('DOMContentLoaded', () => {
         depot10El.style.zIndex = 50;
         window.depot10MarkerEl = depot10El;
         window.depot10MarkerObj = new maplibregl.Marker({element: wrapMarkerEl(depot10El), anchor: 'bottom', offset: [depotConf.offX, depotConf.offY + 220]}).setLngLat(fullPathArray[fullPathArray.length - 1]).addTo(map);
-        window.depot10MarkerObj.getElement().classList.add('depot-marker');
+        markDepotMarker(window.depot10MarkerObj);
         bringSanMartinMapLayersToFront();
     });
 
@@ -2441,6 +2455,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 let droneBearing = lerpAngle(map.getBearing(), targetBearing, blendT);
                 
                 mainPinwheelMarker.setLngLat([lng, lat]);
+                if (mode === 'train') setVehicleMarkerZ('train');
                 
                 pathHistory.unshift([lng, lat]);
                 if (pathHistory.length > 300) pathHistory.pop();

@@ -304,11 +304,15 @@ body, html {
 }
 
 .maplibregl-marker.vehicle-marker {
-    z-index: 1200 !important;
+    z-index: 5000 !important;
 }
 
 .maplibregl-marker.depot-marker {
-    z-index: 1500 !important;
+    z-index: 7000 !important;
+}
+
+.maplibregl-marker.rail-sign-marker {
+    z-index: 160 !important;
 }
 
 /* Draggable HUD Elements */
