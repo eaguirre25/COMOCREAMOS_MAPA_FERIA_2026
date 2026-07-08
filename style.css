@@ -263,23 +263,6 @@ body, html {
     pointer-events: none;
 }
 
-.locality-map-label {
-    padding: 4px 10px;
-    border: 1px solid rgba(0, 229, 255, 0.95);
-    border-radius: 4px;
-    background: rgba(0, 12, 22, 0.78);
-    color: #fff;
-    font-family: 'Faustina', sans-serif;
-    font-size: 15px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    white-space: nowrap;
-    text-shadow: 0 0 7px #001018;
-    box-shadow: 0 0 12px rgba(0, 229, 255, 0.65);
-    pointer-events: none;
-}
-
 .hud-aspas {
     position: absolute;
     left: -80px; /* Stick out to the left */
@@ -712,11 +695,6 @@ body, html {
 }
 
 .train-image { width: 120px; height: auto; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.8)); transform: translateY(-50%) rotate(-90deg); }
-
-.train-container {
-    max-width: min(560px, 78vw);
-    transform-origin: center center;
-}
 
 /* Train Editor */
 #train-editor-overlay, #bus-editor-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; display: flex; justify-content: center; align-items: center; }
