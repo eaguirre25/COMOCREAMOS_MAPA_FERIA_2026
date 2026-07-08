@@ -2162,6 +2162,7 @@ document.addEventListener('DOMContentLoaded', () => {
         depot3El.style.zIndex = 100;
         window.depot3MarkerEl = depot3El;
         window.depot3MarkerObj = new maplibregl.Marker({element: wrapMarkerEl(depot3El), anchor: 'bottom', offset: [depotConf.offX, depotConf.offY]}).setLngLat(fullPathArray[2]).addTo(map);
+        window.depot3MarkerObj.getElement().classList.add('depot-marker');
 
         // Miguelete.gif al costado del depósito de Posta 3
         const migEl = document.createElement('img');
@@ -2199,10 +2200,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const depot10El = document.createElement('img');
         depot10El.src = 'deposito_tren_final.gif';
         depot10El.className = 'posta1-gif';
-        depot10El.style.width = Math.round(depotConf.size * 1.06) + 'px';
+        depot10El.style.width = Math.round(depotConf.size * 1.12) + 'px';
         depot10El.style.zIndex = 50;
         window.depot10MarkerEl = depot10El;
         window.depot10MarkerObj = new maplibregl.Marker({element: wrapMarkerEl(depot10El), anchor: 'bottom', offset: [depotConf.offX, depotConf.offY + 220]}).setLngLat(fullPathArray[fullPathArray.length - 1]).addTo(map);
+        window.depot10MarkerObj.getElement().classList.add('depot-marker');
         bringSanMartinMapLayersToFront();
     });
 
@@ -3241,7 +3243,7 @@ function updateDepotsLive() {
     if (window.depot3MarkerEl) window.depot3MarkerEl.style.width = s + 'px';
     if (window.depot3MarkerObj) window.depot3MarkerObj.setOffset([ox, oy]);
     
-    if (window.depot10MarkerEl) window.depot10MarkerEl.style.width = Math.round(s * 1.06) + 'px';
+    if (window.depot10MarkerEl) window.depot10MarkerEl.style.width = Math.round(s * 1.12) + 'px';
     if (window.depot10MarkerObj) window.depot10MarkerObj.setOffset([ox, oy + 220]);
 }
 
