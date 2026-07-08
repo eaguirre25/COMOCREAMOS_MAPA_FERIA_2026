@@ -22,18 +22,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const criticalPreloadTargets = [
         'CIENCIA Y FICCION.png',
         'El camino de la investigación.png',
+        'assets/feria-fondo.jpg'
+    ];
+
+    const routePreloadTargets = [
         'EL CAMINO DE LA INVESTIGACION-TITULO.png',
         'ASPAS FERIA.svg',
-        'colectivo_animado.gif',
-        'assets/feria-fondo.jpg',
         'SAN MARTIN LOCALIDADES.geojson',
+        'colectivo_animado.gif',
+        'posta1.gif',
+        'posta2.gif',
         posta2Slides[0]
     ];
 
     const deferredPreloadTargets = [
         'tren_animado.gif',
-        'posta1.gif',
-        'posta2.gif',
         'deposito_animado.gif',
         'deposito_tren_final.gif',
         'miguelete.gif',
@@ -61,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 settled = true;
                 resolve();
             };
-            const timeout = setTimeout(done, 4500);
+            const timeout = setTimeout(done, 3200);
             if (/\.(png|jpe?g|gif|svg|webp)$/i.test(src)) {
                 const img = new Image();
                 img.decoding = 'async';
@@ -85,11 +88,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 updatePreloadStatus(done, criticalPreloadTargets.length);
             });
         });
-        const startDeferred = () => preloadQueue(deferredPreloadTargets, 2);
+        preloadQueue(routePreloadTargets, 1);
+        const startDeferred = () => preloadQueue(deferredPreloadTargets, 1);
         if ('requestIdleCallback' in window) {
-            requestIdleCallback(startDeferred, { timeout: 3500 });
+            requestIdleCallback(startDeferred, { timeout: 2200 });
         } else {
-            setTimeout(startDeferred, 1800);
+            setTimeout(startDeferred, 1400);
         }
     }
 
@@ -1657,7 +1661,7 @@ document.addEventListener('DOMContentLoaded', () => {
             outline.setAttribute('class', `locality-boundary-outline${isActive ? ' active' : ''}`);
             outline.setAttribute('d', d);
             outline.setAttribute('stroke', color);
-            outline.style.filter = `drop-shadow(0 0 ${isActive ? 18 : 10}px ${color}) drop-shadow(0 0 ${isActive ? 34 : 18}px ${color})`;
+            outline.style.filter = `drop-shadow(0 0 ${isActive ? 10 : 5}px ${color})`;
             svg.appendChild(outline);
 
             const fill = document.createElementNS('http://www.w3.org/2000/svg', 'path');
@@ -1665,7 +1669,7 @@ document.addEventListener('DOMContentLoaded', () => {
             fill.setAttribute('d', d);
             fill.setAttribute('fill', color);
             fill.setAttribute('stroke', color);
-            fill.style.filter = `drop-shadow(0 0 ${isActive ? 14 : 6}px ${color})`;
+            fill.style.filter = `drop-shadow(0 0 ${isActive ? 6 : 2}px ${color})`;
             svg.appendChild(fill);
         });
     }
@@ -1833,16 +1837,16 @@ document.addEventListener('DOMContentLoaded', () => {
             { id: 'satellite-layer', type: 'raster', source: 'esri-satellite', minzoom: 0, maxzoom: 19, paint: { 'raster-fade-duration': 0 } },
             { id: 'transportation-layer', type: 'raster', source: 'esri-transportation', minzoom: 0, maxzoom: 18, paint: { 'raster-opacity': 0.3, 'raster-fade-duration': 0 } },
             { id: 'labels-layer', type: 'raster', source: 'esri-labels', minzoom: 0, maxzoom: 18, paint: { 'raster-opacity': 0.3, 'raster-fade-duration': 0 } },
-            { id: 'san-martin-base-fill', type: 'fill', source: 'sm-locality-shape', paint: { 'fill-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'fill-opacity': 0.36 } },
-            { id: 'san-martin-map-fill', type: 'fill', source: 'sm-locality-shape', paint: { 'fill-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'fill-opacity': 0.34 } },
-            { id: 'san-martin-map-boundary-glow', type: 'line', source: 'sm-locality-shape', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'line-width': 24, 'line-blur': 13, 'line-opacity': 0.95 } },
-            { id: 'san-martin-map-boundary-core', type: 'line', source: 'sm-locality-shape', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': ['coalesce', ['get', 'fill'], '#ffffff'], 'line-width': 7, 'line-opacity': 1 } },
+            { id: 'san-martin-base-fill', type: 'fill', source: 'sm-locality-shape', paint: { 'fill-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'fill-opacity': 0.16 } },
+            { id: 'san-martin-map-fill', type: 'fill', source: 'sm-locality-shape', paint: { 'fill-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'fill-opacity': 0.14 } },
+            { id: 'san-martin-map-boundary-glow', type: 'line', source: 'sm-locality-shape', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'line-width': 13, 'line-blur': 9, 'line-opacity': 0.48 } },
+            { id: 'san-martin-map-boundary-core', type: 'line', source: 'sm-locality-shape', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': ['coalesce', ['get', 'fill'], '#ffffff'], 'line-width': 4, 'line-opacity': 0.76 } },
             { id: 'san-martin-map-locality-labels', type: 'symbol', source: 'sm-locality-shape', layout: { 'text-field': ['get', 'Localidad'], 'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'], 'text-size': 24, 'text-anchor': 'center', 'text-allow-overlap': true, 'text-ignore-placement': true }, paint: { 'text-color': '#ffffff', 'text-halo-color': '#001018', 'text-halo-width': 4, 'text-opacity': 0 } },
-            { id: 'san-martin-active-fill', type: 'fill', source: 'sm-locality-shape', paint: { 'fill-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'fill-opacity': 0.52 }, filter: ['==', 'id', -1] },
+            { id: 'san-martin-active-fill', type: 'fill', source: 'sm-locality-shape', paint: { 'fill-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'fill-opacity': 0.25 }, filter: ['==', 'id', -1] },
             { id: 'san-martin-active-labels', type: 'symbol', source: 'sm-locality-shape', layout: { 'text-field': ['get', 'Localidad'], 'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'], 'text-size': 24, 'text-anchor': 'center' }, paint: { 'text-color': '#ffffff', 'text-halo-color': '#000000', 'text-halo-width': 2, 'text-opacity': 0 }, filter: ['==', 'id', -1] },
-            { id: 'san-martin-base-glow', type: 'line', source: 'sm-locality-shape', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'line-width': 14, 'line-blur': 8, 'line-opacity': 0.82 } },
-            { id: 'san-martin-active-glow', type: 'line', source: 'sm-locality-shape', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'line-width': 35, 'line-blur': 20, 'line-opacity': 1 }, filter: ['==', 'id', -1] },
-            { id: 'san-martin-core', type: 'line', source: 'sm-locality-shape', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': '#ffffff', 'line-width': 3 } },
+            { id: 'san-martin-base-glow', type: 'line', source: 'sm-locality-shape', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'line-width': 8, 'line-blur': 6, 'line-opacity': 0.42 } },
+            { id: 'san-martin-active-glow', type: 'line', source: 'sm-locality-shape', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'line-width': 18, 'line-blur': 12, 'line-opacity': 0.68 }, filter: ['==', 'id', -1] },
+            { id: 'san-martin-core', type: 'line', source: 'sm-locality-shape', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': '#ffffff', 'line-width': 2, 'line-opacity': 0.7 } },
             { id: 'san-martin-labels', type: 'symbol', source: 'sm-locality-shape', layout: { 'text-field': ['get', 'Localidad'], 'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'], 'text-size': 20, 'text-anchor': 'center' }, paint: { 'text-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'text-halo-color': 'rgba(0,0,0,0.8)', 'text-halo-width': 3, 'text-opacity': 0 } }
         ]
     };
@@ -2195,10 +2199,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const depot10El = document.createElement('img');
         depot10El.src = 'deposito_tren_final.gif';
         depot10El.className = 'posta1-gif';
-        depot10El.style.width = Math.round(depotConf.size * 1.25) + 'px';
+        depot10El.style.width = Math.round(depotConf.size * 1.06) + 'px';
         depot10El.style.zIndex = 50;
         window.depot10MarkerEl = depot10El;
-        window.depot10MarkerObj = new maplibregl.Marker({element: wrapMarkerEl(depot10El), anchor: 'bottom', offset: [depotConf.offX, depotConf.offY]}).setLngLat(fullPathArray[fullPathArray.length - 1]).addTo(map);
+        window.depot10MarkerObj = new maplibregl.Marker({element: wrapMarkerEl(depot10El), anchor: 'bottom', offset: [depotConf.offX, depotConf.offY + 220]}).setLngLat(fullPathArray[fullPathArray.length - 1]).addTo(map);
         bringSanMartinMapLayersToFront();
     });
 
@@ -2303,6 +2307,15 @@ document.addEventListener('DOMContentLoaded', () => {
             pathLine = { type: 'LineString', coordinates: [start, end] };
         }
 
+        if (mode === 'street' && startIndex === 0 && endIndex === 1 && typeof turf !== 'undefined' && pathLine.coordinates.length > 2) {
+            const firstRoute = turf.lineString(pathLine.coordinates);
+            const routeLength = turf.length(firstRoute, { units: 'kilometers' });
+            if (routeLength > 0.1) {
+                pathLine = turf.lineSliceAlong(firstRoute, routeLength * 0.16, routeLength, { units: 'kilometers' }).geometry;
+                if (pathLine.coordinates.length > 1) mainPinwheelMarker.setLngLat(pathLine.coordinates[0]);
+            }
+        }
+
         if (!trainPathCoords && mode === 'train' && railNetwork && typeof turf !== 'undefined') {
             // Sample the straight line and snap to actual tracks
             const straightLine = turf.lineString([start, end]);
@@ -2348,18 +2361,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (mode === 'train') speedKmh = 50;
         if (mode === 'flight') speedKmh = 100;
         
-        // Time lapse multiplier (make the simulation 20x faster than real life so it doesn't take 5 minutes)
-        const SIMULATION_SPEEDUP = 24;
+        // Time lapse multiplier: keep the route dynamic and light enough for mobile.
+        const SIMULATION_SPEEDUP = 64;
         
         // Time in hours = distance / (speed * speedup)
         const durationHours = distance / (speedKmh * SIMULATION_SPEEDUP);
         const durationSecs = durationHours * 3600;
         
         // Keep travel readable but lighter on low-end phones.
-        const clampedSecs = Math.max(4, Math.min(26, durationSecs));
+        const clampedSecs = Math.max(2.2, Math.min(12, durationSecs));
         
-        // Assuming 60 frames per second
-        const totalFrames = Math.floor(clampedSecs * 60); 
+        const totalFrames = Math.floor(clampedSecs * 30);
         
         if ((startIndex === 0 && endIndex === 1) || (startIndex === 1 && endIndex === 0)) {
             const interText = document.getElementById('inter-posta-text');
@@ -3229,8 +3241,8 @@ function updateDepotsLive() {
     if (window.depot3MarkerEl) window.depot3MarkerEl.style.width = s + 'px';
     if (window.depot3MarkerObj) window.depot3MarkerObj.setOffset([ox, oy]);
     
-    if (window.depot10MarkerEl) window.depot10MarkerEl.style.width = Math.round(s * 1.25) + 'px';
-    if (window.depot10MarkerObj) window.depot10MarkerObj.setOffset([ox, oy]);
+    if (window.depot10MarkerEl) window.depot10MarkerEl.style.width = Math.round(s * 1.06) + 'px';
+    if (window.depot10MarkerObj) window.depot10MarkerObj.setOffset([ox, oy + 220]);
 }
 
 if (depotSizeSlider) {
