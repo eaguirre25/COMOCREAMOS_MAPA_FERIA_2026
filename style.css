@@ -344,10 +344,10 @@ button,
 
 .hud-timer-container {
     position: absolute;
-    top: 215px;
+    top: 60px;
     bottom: auto;
-    left: 30px;
-    right: auto;
+    left: auto;
+    right: 15px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -360,7 +360,7 @@ button,
     box-shadow: 0 6px 20px rgba(0,0,0,.28);
     width: max-content;
     transform: scale(.72);
-    transform-origin: top left;
+    transform-origin: top right;
     z-index: 90;
 }
 .hud-timer-container:active { cursor: grabbing; }
@@ -607,15 +607,20 @@ button,
     bottom: -90px;
     top: auto;
     left: 50%;
-    transform: translateX(-50%) scale(0.35);
+    transform: translateX(-50%) scale(0.7);
     background: rgba(0, 20, 40, 0.85);
     border: 2px solid #0ff;
-    padding: 15px 25px;
-    border-radius: 10px;
+    padding: 34px 46px;
+    border-width: 5px;
+    border-radius: 24px;
     color: #fff;
-    font-size: 20px;
+    font-size: clamp(52px, 5vw, 76px);
+    line-height: 1.12;
     font-weight: 700;
-    white-space: nowrap;
+    white-space: normal;
+    min-width: min(72vw, 900px);
+    max-width: 88vw;
+    text-align: center;
     opacity: 0;
     pointer-events: auto;
     cursor: pointer;
@@ -626,11 +631,11 @@ button,
 }
 .posta-screen:hover {
     box-shadow: 0 0 40px rgba(0,255,255,1);
-    transform: translateX(-50%) scale(0.77);
+    transform: translateX(-50%) scale(1.03);
 }
 .posta-screen.visible {
     opacity: 1;
-    transform: translateX(-50%) scale(0.7);
+    transform: translateX(-50%) scale(1);
 }
 .posta-screen:focus-visible {
     outline: 3px solid #fff;
@@ -644,7 +649,7 @@ button,
 .posta-screen-hint {
     margin-top: 5px;
     color: #7ffaff;
-    font-size: 12px;
+    font-size: 15px;
     font-weight: 700;
     letter-spacing: .06em;
     text-transform: lowercase;

@@ -73,12 +73,12 @@ button:focus-visible,
 
     .hud-timer-container {
         display: flex !important;
-        top: calc(105px + var(--safe-top)) !important;
+        top: calc(60px + var(--safe-top)) !important;
         bottom: auto !important;
-        left: calc(10px + var(--safe-left)) !important;
-        right: auto !important;
+        left: auto !important;
+        right: calc(8px + var(--safe-right)) !important;
         transform: scale(.42) !important;
-        transform-origin: top left !important;
+        transform-origin: top right !important;
         z-index: 90 !important;
     }
 
@@ -157,12 +157,14 @@ button:focus-visible,
     }
 
     .posta-screen {
-        max-width: min(86vw, 430px);
+        min-width: min(82vw, 520px);
+        max-width: 90vw;
         white-space: normal;
         text-align: center;
-        font-size: 17px;
-        line-height: 1.25;
-        padding: 12px 14px;
+        font-size: clamp(38px, 10vw, 58px);
+        line-height: 1.15;
+        padding: 28px 30px;
+        border-width: 4px;
         backdrop-filter: none;
     }
 
