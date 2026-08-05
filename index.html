@@ -4,79 +4,63 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#07131d">
-  <title>Feria de Ciencias Humanas</title>
+  <title>Feria de Ciencias Sociales y Humanas</title>
   <style>
     * { box-sizing: border-box; }
     html, body { margin: 0; width: 100%; min-height: 100%; }
     body {
       min-height: 100dvh;
       overflow: hidden;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #07131d;
-    }
-    .background {
-      position: fixed;
-      inset: 0;
-      background: #07131d center / cover no-repeat;
-      filter: brightness(.86) saturate(.96);
-      transform: scale(1.002);
-    }
-    .background::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to bottom, rgba(0,0,0,.18), rgba(0,0,0,.01) 42%, rgba(0,0,0,.11));
-      pointer-events: none;
-    }
-    main {
-      position: relative;
-      z-index: 2;
-      min-height: 100dvh;
-      display: flex;
-      justify-content: flex-end;
-      align-items: flex-start;
-      padding: calc(22px + env(safe-area-inset-top)) calc(22px + env(safe-area-inset-right)) calc(22px + env(safe-area-inset-bottom)) calc(22px + env(safe-area-inset-left));
-    }
-    .choices {
       display: grid;
-      grid-template-columns: repeat(2, minmax(280px, 460px));
-      gap: 20px;
-      padding: 20px;
-      border: 1px solid rgba(255,255,255,.42);
-      border-radius: 17px;
-      background: rgba(3,15,26,.38);
-      box-shadow: 0 10px 34px rgba(0,0,0,.25);
-      backdrop-filter: blur(7px);
-      -webkit-backdrop-filter: blur(7px);
+      place-items: center;
+      background: #07131d;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
-    .choice {
-      min-height: 144px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 20px;
-      padding: 28px 32px;
-      border: 2px solid rgba(82,239,255,.88);
-      border-radius: 13px;
-      color: #fff;
+    .portal {
+      position: relative;
+      width: min(100vw, 150dvh);
+      aspect-ratio: 3 / 2;
+      max-height: 100dvh;
+    }
+    .portal-image {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+    .hotspot {
+      position: absolute;
+      top: 70.15%;
+      height: max(9.8%, 44px);
+      transform: translateY(-50%);
+      border: 0;
+      border-radius: 14px;
+      background: transparent;
+      color: transparent;
       text-decoration: none;
-      background: rgba(4,22,36,.84);
-      box-shadow: inset 0 0 18px rgba(0,220,255,.12), 0 4px 15px rgba(0,0,0,.25);
-      font-weight: 800;
-      font-size: 2rem;
-      text-align: center;
-      text-shadow: 0 2px 4px rgba(0,0,0,.8);
-      transition: transform .16s ease, background .16s ease, border-color .16s ease;
+      cursor: pointer;
       touch-action: manipulation;
+      transition: background .16s ease, box-shadow .16s ease;
     }
-    .choice:hover, .choice:focus-visible {
-      transform: translateY(-2px);
-      background: rgba(7,45,66,.96);
-      border-color: #fff;
-      outline: 3px solid #fff;
-      outline-offset: 3px;
+    .hotspot-mobile {
+      left: 27.15%;
+      width: max(20%, 110px);
     }
-    .icon { font-size: 3rem; line-height: 1; }
+    .hotspot-desktop {
+      left: 48.45%;
+      width: max(24.4%, 130px);
+    }
+    .hotspot:hover {
+      background: rgba(255, 255, 255, .08);
+      box-shadow: 0 0 24px rgba(0, 238, 255, .65);
+    }
+    .hotspot:focus-visible {
+      outline: 4px solid #fff;
+      outline-offset: 4px;
+      background: rgba(255, 255, 255, .12);
+    }
     .loading {
       position: fixed;
       inset: 0;
@@ -89,71 +73,36 @@
       transition: opacity .25s ease;
     }
     .loading.hidden { opacity: 0; pointer-events: none; }
-    @media (max-width: 720px) {
-      .background { background-position: center; }
-      main {
-        justify-content: center;
-        padding-top: calc(12px + env(safe-area-inset-top));
-      }
-      .choices {
-        width: min(100%, 680px);
-        grid-template-columns: 1fr 1fr;
-        gap: 8px;
-        padding: 8px;
-        border-radius: 14px;
-      }
-      .choice {
-        min-height: 116px;
-        padding: 20px 16px;
-        font-size: 1.5rem;
-        line-height: 1.12;
-      }
-      .icon { font-size: 2.4rem; }
-    }
-    @media (max-width: 390px) {
-      .choices { grid-template-columns: 1fr; width: min(90vw, 360px); }
-      .choice { min-height: 104px; }
-    }
     @media (prefers-reduced-motion: reduce) {
-      .choice, .loading { transition: none; }
+      .hotspot, .loading { transition: none; }
     }
   </style>
 </head>
 <body>
-  <div class="background" id="background" aria-hidden="true"></div>
-  <main aria-label="Seleccionar versión del recorrido">
-    <nav class="choices">
-      <a class="choice" href="mobile.html">
-        <span class="icon" aria-hidden="true">📱</span>
-        <span>Versión móvil</span>
-      </a>
-      <a class="choice" href="desktop.html">
-        <span class="icon" aria-hidden="true">🖥️</span>
-        <span>Versión escritorio</span>
-      </a>
-    </nav>
+  <main class="portal" aria-label="Seleccionar versión del recorrido">
+    <img
+      id="portal-image"
+      class="portal-image"
+      src="assets/selector-portada-interactiva.png"
+      alt="Feria de Ciencias Sociales y Humanas. Elegí la versión móvil o de escritorio."
+    >
+    <a class="hotspot hotspot-mobile" href="mobile.html" aria-label="Ingresar a la versión móvil">
+      Versión móvil
+    </a>
+    <a class="hotspot hotspot-desktop" href="desktop.html" aria-label="Ingresar a la versión escritorio">
+      Versión escritorio
+    </a>
   </main>
-  <div class="loading" id="loading">Preparando la portada…</div>
+  <div class="loading" id="loading" role="status">Preparando la portada…</div>
   <script>
-    (async () => {
-      const background = document.getElementById('background');
+    (() => {
+      const image = document.getElementById('portal-image');
       const loading = document.getElementById('loading');
-      try {
-        const source = 'assets/selector-campus-2026.jpg';
-        const image = new Image();
-        image.onload = () => {
-          background.style.backgroundImage = `url("${source}")`;
-          loading.classList.add('hidden');
-        };
-        image.onerror = () => {
-          background.style.backgroundImage = 'url("assets/selector-campus-2026.jpg")';
-          loading.classList.add('hidden');
-        };
-        image.src = source;
-      } catch (error) {
-        console.error(error);
-        background.style.backgroundImage = 'url("assets/selector-campus-2026.jpg")';
-        loading.classList.add('hidden');
+      const finish = () => loading.classList.add('hidden');
+      if (image.complete) finish();
+      else {
+        image.addEventListener('load', finish, { once: true });
+        image.addEventListener('error', finish, { once: true });
       }
     })();
   </script>
