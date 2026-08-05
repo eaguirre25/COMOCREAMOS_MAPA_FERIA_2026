@@ -2011,7 +2011,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let depotMarker = null;
     
     // Load Postas coordinates
-    fetch('POSTAS 1 Y 2.geojson').then(res => res.json()).then(data => {
+    const postasCoordinatesReady = fetch('POSTAS 1 Y 2.geojson').then(res => res.json()).then(data => {
         const f1 = data.features.find(f => f.properties.id === 1);
         const f2 = data.features.find(f => f.properties.id === 2);
         if (f1) p1Coord = proj4("EPSG:22183", "EPSG:4326", f1.geometry.coordinates[0]);
@@ -2136,9 +2136,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    function initializeMapExperience() {
+    async function initializeMapExperience() {
         if (window._mapLayersReady || window._mapLayersInitializing) return;
         window._mapLayersInitializing = true;
+        // Los marcadores deben crearse recién cuando estén disponibles las coordenadas
+        // originales (o la ubicación manual guardada). De lo contrario Posta 1 queda
+        // fijada en la coordenada provisoria aunque el GeoJSON termine de cargar después.
+        await postasCoordinatesReady;
         function setSanMartinLocalities(data) {
             sanMartinLocalidadesGeoJSON = data;
             const sanMartinSource = map.getSource('sm-locality-shape');
