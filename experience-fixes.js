@@ -2,17 +2,50 @@
   'use strict';
 
   let leavingPostaOne = false;
+  let vehicleTraveling = false;
+  let travelStartedAt = 0;
 
   const style = document.createElement('style');
   style.textContent = `
     .hud-title { left: 22% !important; top: 18px !important; width: min(31vw, 520px) !important; }
-    .hud-timer-container { top: 20px !important; left: 55% !important; right: auto !important; bottom: auto !important; transform: scale(.72) !important; transform-origin: top left !important; padding: 6px 8px 6px 82px !important; z-index: 90 !important; }
+
+    /* Contador más legible, sin el aspa decorativa. */
+    .hud-timer-container {
+      top: 20px !important;
+      left: 55% !important;
+      right: auto !important;
+      bottom: auto !important;
+      transform: scale(.72) !important;
+      transform-origin: top left !important;
+      padding: 14px 18px !important;
+      z-index: 90 !important;
+      background: rgba(255,255,255,.82) !important;
+      border-radius: 16px !important;
+      box-shadow: 0 6px 20px rgba(0,0,0,.28) !important;
+      backdrop-filter: blur(3px) !important;
+    }
+    .hud-aspas { display: none !important; }
+    .hud-timer, .timer-label, .timer-target, .time-sub, .colon { color: #111 !important; text-shadow: none !important; }
+
+    /* Carteles de posta con una presencia visual aproximadamente cuatro veces mayor. */
+    .posta-screen {
+      font-size: clamp(52px, 5vw, 76px) !important;
+      line-height: 1.12 !important;
+      padding: 34px 46px !important;
+      min-width: min(72vw, 900px) !important;
+      max-width: 88vw !important;
+      border-width: 5px !important;
+      border-radius: 24px !important;
+      text-align: center !important;
+      box-shadow: 0 0 32px currentColor, 0 12px 34px rgba(0,0,0,.65) !important;
+      white-space: normal !important;
+    }
+
     .train-container.train-stopped .spin-wheel,
     .train-container.train-stopped .smoke-effect,
     .bus-stopped .smoke-effect { animation-play-state: paused !important; }
     body.embedded-modal-open #btn-fullscreen { display: none !important; }
 
-    /* Posiciones distintas para el depósito inicial y el final. */
     img[src*="deposito_animado"], img[src*="depot_animado"] {
       position: relative !important;
       top: 52px !important;
@@ -26,7 +59,21 @@
 
     @media (max-width: 932px) {
       .hud-title { left: calc(8px + env(safe-area-inset-left, 0px)) !important; top: calc(8px + env(safe-area-inset-top, 0px)) !important; width: min(45vw, 250px) !important; }
-      .hud-timer-container { display: flex !important; top: calc(7px + env(safe-area-inset-top, 0px)) !important; left: 48vw !important; transform: scale(.42) !important; transform-origin: top left !important; }
+      .hud-timer-container {
+        display: flex !important;
+        top: calc(7px + env(safe-area-inset-top, 0px)) !important;
+        left: 48vw !important;
+        transform: scale(.42) !important;
+        transform-origin: top left !important;
+        padding: 14px 18px !important;
+      }
+      .posta-screen {
+        font-size: clamp(38px, 10vw, 58px) !important;
+        padding: 28px 30px !important;
+        min-width: min(84vw, 620px) !important;
+        max-width: 90vw !important;
+        border-width: 4px !important;
+      }
       #btn-close-modal { top: calc(10px + env(safe-area-inset-top, 0px)) !important; right: calc(10px + env(safe-area-inset-right, 0px)) !important; z-index: 15001 !important; }
       img[src*="deposito_animado"], img[src*="depot_animado"] { top: 64px !important; }
       img[src*="deposito_tren_final"] { top: -46px !important; }
@@ -123,10 +170,21 @@
   function pauseTrainAtStation() {
     const train = document.querySelector('.train-gif-target');
     const stopLabel = document.querySelector('.posta-screen.visible');
-    if (train && stopLabel) pauseGif(train);
+    const destination = document.getElementById('dest-ui');
+    const destinationActive = Boolean(destination && destination.classList.contains('active'));
+
+    if (vehicleTraveling) {
+      const graceElapsed = Date.now() - travelStartedAt > 900;
+      if (graceElapsed && stopLabel && !destinationActive) vehicleTraveling = false;
+      else return;
+    }
+
+    if (train && stopLabel && !destinationActive) pauseGif(train);
   }
 
   function resumeVehiclesBeforeTravel() {
+    vehicleTraveling = true;
+    travelStartedAt = Date.now();
     if (isAtPostaOne()) leavingPostaOne = true;
     revealRailScenery();
     const train = document.querySelector('.train-gif-target');
