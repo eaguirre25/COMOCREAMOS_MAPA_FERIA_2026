@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Vista previa móvil — El camino de la investigación</title>
+  <style>
+    html, body { margin: 0; width: 100%; height: 100%; background: #050510; overflow: hidden; }
+    #preview-frame { display: block; width: 100%; height: 100dvh; border: 0; background: #050510; }
+    #preview-status {
+      position: fixed; inset: 0; z-index: 10; display: grid; place-items: center;
+      padding: 24px; background: #050510; color: #fff; font: 600 18px/1.4 system-ui, sans-serif;
+      text-align: center;
+    }
+    #preview-status.hidden { display: none; }
+  </style>
+</head>
+<body>
+  <div id="preview-status">Preparando la versión móvil de prueba…</div>
+  <iframe
+    id="preview-frame"
+    src="../index.html?preview=mobile-v1"
+    title="Vista previa accesible del recorrido interactivo"
+    allow="fullscreen"
+    allowfullscreen>
+  </iframe>
+  <script>
+    (() => {
+      const frame = document.getElementById('preview-frame');
+      const status = document.getElementById('preview-status');
+
+      frame.addEventListener('load', () => {
+        try {
+          const doc = frame.contentDocument;
+          const win = frame.contentWindow;
+
+          const responsiveStyles = doc.createElement('link');
+          responsiveStyles.rel = 'stylesheet';
+          responsiveStyles.href = '../mobile-accessibility.css?v=1';
+          doc.head.appendChild(responsiveStyles);
+
+          const enhancements = doc.createElement('script');
+          enhancements.src = '../mobile-performance.js?v=2';
+          enhancements.onload = () => {
+            const skipButton = doc.getElementById('btn-skip-3');
+            if (skipButton) skipButton.textContent = 'Saltar posta';
+            win.dispatchEvent(new Event('resize'));
+            status.classList.add('hidden');
+          };
+          enhancements.onerror = () => {
+            status.textContent = 'No se pudieron cargar las mejoras de la vista previa.';
+          };
+          doc.body.appendChild(enhancements);
+        } catch (error) {
+          status.textContent = 'No se pudo iniciar la vista previa. Recargá la página.';
+          console.error(error);
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
