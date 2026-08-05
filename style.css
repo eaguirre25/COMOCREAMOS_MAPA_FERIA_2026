@@ -614,6 +614,30 @@ body, html {
     opacity: 1;
     transform: translateX(-50%) scale(1);
 }
+.posta-screen:focus-visible {
+    outline: 3px solid #fff;
+    outline-offset: 4px;
+}
+.posta-material-panel {
+    width: min(100%, 900px);
+    margin: auto;
+    padding: clamp(24px, 5vw, 64px);
+    border: 2px solid #0ff;
+    border-radius: 18px;
+    background: rgba(0, 30, 60, 0.88);
+    box-shadow: 0 0 28px rgba(0, 255, 255, 0.35);
+    align-self: center;
+}
+.posta-material-panel h3 {
+    margin: 0 0 20px;
+    color: #0ff;
+    font-size: clamp(26px, 4vw, 52px);
+}
+.posta-material-panel p {
+    margin: 0;
+    font-size: clamp(20px, 2.6vw, 34px);
+    line-height: 1.35;
+}
 .posta-screen::after {
     content: '';
     position: absolute;

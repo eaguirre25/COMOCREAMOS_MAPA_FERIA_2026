@@ -1796,7 +1796,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!modal || !title || !body) return;
         title.innerText = postasText[index] || 'Información de Posta';
         modal.dataset.postaIndex = String(index);
-        if (index === 1) {
+        if (index === 0) {
+            body.innerHTML = `
+                <section class="posta-material-panel" aria-label="Materiales de Posta 1">
+                    <h3>Punto de partida</h3>
+                    <p>En esta posta nos preguntamos: ¿qué tema nos interesa? ¿Cuál nos motiva? ¿Qué nos da intriga o llama la atención? ¿Qué queremos saber?</p>
+                </section>
+            `;
+        } else if (index === 1) {
             posta2SlideIndex = 0;
             renderPosta2Slide();
         } else {
@@ -2112,9 +2119,18 @@ document.addEventListener('DOMContentLoaded', () => {
         // Posta Clickable Popup
         postaScreenEl = document.createElement('div');
         postaScreenEl.className = 'posta-screen';
+        postaScreenEl.setAttribute('role', 'button');
+        postaScreenEl.setAttribute('tabindex', '0');
+        postaScreenEl.setAttribute('aria-label', 'Abrir materiales de la posta actual');
         postaScreenEl.onclick = (e) => {
             e.stopPropagation();
             showPostaModal(currentPathIndex);
+        };
+        postaScreenEl.onkeydown = (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                showPostaModal(currentPathIndex);
+            }
         };
         pinwheelDiv.appendChild(postaScreenEl);
 
@@ -2494,10 +2510,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     mainPinwheelMarker.setOffset([0, -(ap * 130)]);
                 }
 
-                // Hide Posta 1 cartel 1 second before arriving at Posta 2
-                if (startIndex === 0 && endIndex === 1 && frame >= totalFrames - 60) {
-                    postaScreenEl.classList.remove('visible');
-                }
                 map.jumpTo({
                     center: [lng, lat],
                     bearing: droneBearing,
