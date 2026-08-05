@@ -29,14 +29,14 @@ document.addEventListener('DOMContentLoaded', () => {
         'EL CAMINO DE LA INVESTIGACION-TITULO.png',
         'ASPAS FERIA.svg',
         'SAN MARTIN LOCALIDADES.geojson',
-        'colectivo_animado.gif',
+        'colectivo_animado.webm',
         'posta1.gif',
-        'posta2.gif',
+        'posta2.webm',
         posta2Slides[0]
     ];
 
     const deferredPreloadTargets = [
-        'tren_animado.gif',
+        'tren_animado.webm',
         'deposito_animado.gif',
         'deposito_tren_final.gif',
         'miguelete.gif',
@@ -73,6 +73,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 img.src = src;
             } else {
                 fetch(src, { cache: 'force-cache' })
+                    .then(response => {
+                        if (!response.ok) throw new Error(`No se pudo precargar ${src}`);
+                        return /\.webm$/i.test(src) ? response.arrayBuffer() : null;
+                    })
                     .then(() => { clearTimeout(timeout); done(); })
                     .catch(() => { clearTimeout(timeout); done(); });
             }
@@ -1477,63 +1481,86 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function setGifPlayback(img, playing) {
-        if (!img) return;
-        if (!img.dataset.animSrc) img.dataset.animSrc = img.src;
-        img.dataset.playbackState = playing ? 'playing' : 'paused';
+    function setMediaPlayback(media, playing) {
+        if (!media) return;
+        media.dataset.playbackState = playing ? 'playing' : 'paused';
+        if (media instanceof HTMLVideoElement) {
+            if (!playing) {
+                media.pause();
+                return;
+            }
+            const play = () => {
+                if (media.dataset.playbackState !== 'playing') return;
+                media.play().catch(() => {});
+            };
+            if (media.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) play();
+            else media.addEventListener('loadeddata', play, { once: true });
+            return;
+        }
+        if (!media.dataset.animSrc) media.dataset.animSrc = media.src;
         if (playing) {
-            if (img.dataset.pausedSrc) {
-                img.src = img.dataset.animSrc;
-                delete img.dataset.pausedSrc;
-            } else if (img.src !== img.dataset.animSrc && img.dataset.animSrc) {
-                img.src = img.dataset.animSrc;
+            if (media.dataset.pausedSrc) {
+                media.src = media.dataset.animSrc;
+                delete media.dataset.pausedSrc;
+            } else if (media.src !== media.dataset.animSrc && media.dataset.animSrc) {
+                media.src = media.dataset.animSrc;
             }
             return;
         }
-        if (img.dataset.pausedSrc) return;
-        if (!img.complete || !img.naturalWidth) {
-            img.addEventListener('load', () => {
-                if (img.dataset.playbackState === 'paused') setGifPlayback(img, false);
+        if (media.dataset.pausedSrc) return;
+        if (!media.complete || !media.naturalWidth) {
+            media.addEventListener('load', () => {
+                if (media.dataset.playbackState === 'paused') setMediaPlayback(media, false);
             }, { once: true });
             return;
         }
         const canvas = document.createElement('canvas');
-        const width = img.naturalWidth || img.width || 1;
-        const height = img.naturalHeight || img.height || 1;
+        const width = media.naturalWidth || media.width || 1;
+        const height = media.naturalHeight || media.height || 1;
         canvas.width = width;
         canvas.height = height;
         const ctx = canvas.getContext('2d');
         try {
-            ctx.drawImage(img, 0, 0, width, height);
-            img.dataset.pausedSrc = canvas.toDataURL('image/png');
-            img.src = img.dataset.pausedSrc;
+            ctx.drawImage(media, 0, 0, width, height);
+            media.dataset.pausedSrc = canvas.toDataURL('image/png');
+            media.src = media.dataset.pausedSrc;
         } catch (e) {
             // If the frame cannot be captured, keep the GIF running rather than hiding it.
             console.warn('No se pudo pausar el GIF', e);
         }
     }
 
-    function keepGifPlaying(img, src) {
-        if (!img) return;
-        const absSrc = new URL(src, window.location.href).href;
-        img.dataset.animSrc = absSrc;
-        img.dataset.playbackState = 'playing';
-        if (img.dataset.pausedSrc) {
-            setGifPlayback(img, true);
-            return;
-        }
-        if (img.src !== absSrc) {
-            img.src = absSrc;
-        }
+    function createLoopingVideo(webmSrc, gifFallback, className, onFallback) {
+        const video = document.createElement('video');
+        video.src = webmSrc;
+        video.className = className;
+        video.loop = true;
+        video.muted = true;
+        video.autoplay = true;
+        video.playsInline = true;
+        video.preload = 'auto';
+        video.disablePictureInPicture = true;
+        video.setAttribute('aria-hidden', 'true');
+        video.addEventListener('error', () => {
+            const fallback = document.createElement('img');
+            fallback.src = gifFallback;
+            fallback.className = className;
+            fallback.dataset.animSrc = new URL(gifFallback, window.location.href).href;
+            fallback.setAttribute('aria-hidden', 'true');
+            const state = video.dataset.playbackState || 'playing';
+            if (video.parentNode) video.replaceWith(fallback);
+            setMediaPlayback(fallback, state === 'playing');
+            if (onFallback) onFallback(fallback);
+        }, { once: true });
+        return video;
     }
 
     function setVehiclePlayback(mode, playing) {
         const isBus = mode === 'street';
-        const img = pinwheelDiv && pinwheelDiv.querySelector(isBus ? '.bus-image' : '.train-gif-target');
-        if (!img) return;
-        if (playing) keepGifPlaying(img, isBus ? 'colectivo_animado.gif' : 'tren_animado.gif');
-        else setGifPlayback(img, false);
-        img.closest('.train-container')?.classList.toggle('train-stopped', !playing);
+        const media = pinwheelDiv && pinwheelDiv.querySelector(isBus ? '.bus-image' : '.train-media-target');
+        if (!media) return;
+        setMediaPlayback(media, playing);
+        media.closest('.train-container')?.classList.toggle('train-stopped', !playing);
         pinwheelDiv.classList.toggle('bus-stopped', isBus && !playing);
     }
 
@@ -1589,10 +1616,7 @@ document.addEventListener('DOMContentLoaded', () => {
         pinwheelDiv.innerHTML = '';
         const smoke = document.createElement('div');
         smoke.className = 'smoke-effect';
-        const bus = document.createElement('img');
-        bus.src = 'colectivo_animado.gif';
-        bus.className = 'bus-image';
-        bus.dataset.animSrc = new URL('colectivo_animado.gif', window.location.href).href;
+        const bus = createLoopingVideo('colectivo_animado.webm', 'colectivo_animado.gif', 'bus-image');
         const busConf = JSON.parse(localStorage.getItem('busConfig') || '{"size":300, "rot":0}');
         bus.style.width = busConf.size + 'px';
         bus.style.transform = `translateY(-85%) rotate(${busConf.rot}deg)`;
@@ -1603,9 +1627,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (coord) mainPinwheelMarker.setLngLat(coord);
         setVehicleMarkerZ('bus');
         if (pauseAtStop) {
-            setGifPlayback(bus, false);
+            setMediaPlayback(bus, false);
         } else {
-            keepGifPlaying(bus, 'colectivo_animado.gif');
+            setMediaPlayback(bus, true);
         }
     }
 
@@ -1620,10 +1644,7 @@ document.addEventListener('DOMContentLoaded', () => {
         trainContainer.style.position = 'relative';
         trainContainer.style.width = conf.size + 'px';
         trainContainer.style.transform = `translateY(-40%) rotate(${conf.rot}deg)`;
-        const img = document.createElement('img');
-        img.src = 'tren_animado.gif';
-        img.className = 'train-gif-target';
-        img.dataset.animSrc = new URL('tren_animado.gif', window.location.href).href;
+        const img = createLoopingVideo('tren_animado.webm', 'tren_animado.gif', 'train-media-target');
         img.style.width = '100%';
         img.style.height = 'auto';
         img.style.display = 'block';
@@ -2219,9 +2240,9 @@ document.addEventListener('DOMContentLoaded', () => {
         new maplibregl.Marker({element: wrapMarkerEl(p1El), anchor: 'bottom'}).setLngLat(fullPathArray[0]).addTo(map);
 
         // Posta 2 Atalaya GIF marker
-        const p2El = document.createElement('img');
-        p2El.src = 'posta2.gif';
-        p2El.className = 'posta1-gif';
+        const p2El = createLoopingVideo('posta2.webm', 'posta2.gif', 'posta1-gif', fallback => {
+            window.posta2MarkerEl = fallback;
+        });
         p2El.style.width = '765px'; // ~1.7x Posta 1 (900 * 0.85)
         p2El.style.zIndex = 10;
         window.posta2MarkerEl = p2El;
@@ -2867,7 +2888,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (editorOverlay.classList.contains('hidden')) {
                 editorOverlay.classList.remove('hidden');
                 editorOverlay.style.display = 'flex';
-                const wImg = document.querySelector('.train-gif-target');
+                const wImg = document.querySelector('.train-media-target');
                 if (wImg) {
                     const matchRot = wImg.style.transform.match(/rotate\(([-\d]+)deg\)/);
                     if (matchRot) {
