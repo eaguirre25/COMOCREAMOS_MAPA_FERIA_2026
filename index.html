@@ -139,7 +139,7 @@
       const background = document.getElementById('background');
       const loading = document.getElementById('loading');
       try {
-        const response = await fetch('assets/selector-campus-bg.b64?v=2', { cache: 'force-cache' });
+        const response = await fetch('assets/selector-campus-bg.b64?v=3', { cache: 'reload' });
         if (!response.ok) throw new Error('No se pudo cargar la portada');
         const base64 = (await response.text()).trim();
         const source = `data:image/webp;base64,${base64}`;
