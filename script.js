@@ -1,3 +1,5 @@
+const BUS_SIZE_MIGRATION_KEY = 'busSizeIncreased30V41';
+
 document.addEventListener('DOMContentLoaded', () => {
     // UI Elements
     const screen1 = document.getElementById('screen-1');
@@ -8,7 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const postaBlackTitle = document.getElementById('posta-black-title');
     const preloadStatus = document.getElementById('preload-status');
     const DEPOT3_VERTICAL_OFFSET = 52;
-    const BUS_SIZE_MIGRATION_KEY = 'busSizeIncreased30V41';
 
     const posta2Slides = [
         'assets/posta2-slides/slide-01.webp',
@@ -1905,6 +1906,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function showJourneyScenery(includeFinalLocality = false) {
+        [
+            window.posta1MarkerEl,
+            window.posta2MarkerEl,
+            window.depot3MarkerEl,
+            window.depot10MarkerEl,
+            window.migueletMarkerEl
+        ].forEach(element => element?.classList.add('visible'));
+        window.localityGifEls?.forEach(element => element.classList.add('visible'));
+        if (includeFinalLocality) window.jlsMarkerEl?.classList.add('visible');
+    }
+
     // Las capas de localidades de San Martín se definen acá, como parte del ESTILO
     // INICIAL del mapa (no agregadas dinámicamente después vía map.on('load')). En este
     // entorno, agregar fuentes GeoJSON dinámicamente dentro del handler de 'load' (sobre
@@ -2123,8 +2136,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    map.on('load', () => {
-        if (window._mapLayersReady) return; window._mapLayersReady = true;
+    function initializeMapExperience() {
+        if (window._mapLayersReady || window._mapLayersInitializing) return;
+        window._mapLayersInitializing = true;
         function setSanMartinLocalities(data) {
             sanMartinLocalidadesGeoJSON = data;
             const sanMartinSource = map.getSource('sm-locality-shape');
@@ -2319,9 +2333,18 @@ document.addEventListener('DOMContentLoaded', () => {
         window.depot10MarkerObj = new maplibregl.Marker({element: wrapMarkerEl(depot10El), anchor: 'bottom', offset: [depotConf.offX, depotConf.offY + 160]}).setLngLat(fullPathArray[fullPathArray.length - 1]).addTo(map);
         markDepotMarker(window.depot10MarkerObj);
         bringSanMartinMapLayersToFront();
+        window._mapLayersReady = true;
+        window._mapLayersInitializing = false;
         mapExperienceIsReady = true;
         resolveMapExperienceReady();
-    });
+    }
+
+    // style.load ocurre mucho antes que load cuando las teselas satelitales son lentas.
+    // En ese punto el estilo ya admite fuentes, capas y marcadores; no hace falta bloquear
+    // el recorrido hasta que terminen todos los recursos cartográficos externos.
+    map.on('style.load', initializeMapExperience);
+    map.on('load', initializeMapExperience);
+    if (map.isStyleLoaded()) setTimeout(initializeMapExperience, 0);
 
     // Interpolación suave de ángulos para evitar rotación brusca al inicio
     function lerpAngle(a, b, t) {
@@ -2649,13 +2672,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 showBusVehicle(p1Coord, true);
 
-                // Mostrar todos los GIFs de postas y localidades
-                if (window.posta1MarkerEl) window.posta1MarkerEl.classList.add('visible');
-                if (window.posta2MarkerEl) window.posta2MarkerEl.classList.add('visible');
-                if (window.depot3MarkerEl) window.depot3MarkerEl.classList.add('visible');
-                if (window.depot10MarkerEl) window.depot10MarkerEl.classList.add('visible');
-                if (window.migueletMarkerEl) window.migueletMarkerEl.classList.add('visible');
-                if (window.localityGifEls) window.localityGifEls.forEach(el => el.classList.add('visible'));
+                // Mostrar todos los recursos visuales de postas y localidades.
+                showJourneyScenery();
                 // jlsMarkerEl se muestra al iniciar el último tramo (no aquí)
 
                 // Mostrar botón de reinicio desde el inicio del recorrido
@@ -2836,6 +2854,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     let phaseNavigationPending = false;
+    let mapTransitionInProgress = false;
+    let pendingMapAdvance = false;
     async function requestPhaseNavigation(forward) {
         if (phaseNavigationPending || isMoving) return;
         phaseNavigationPending = true;
@@ -2846,6 +2866,7 @@ document.addEventListener('DOMContentLoaded', () => {
         routeButtons.forEach(button => button.classList.add('disabled'));
         try {
             if (!mapExperienceIsReady) await mapExperienceReady;
+            if (mapPhase < 0 && screen3.classList.contains('active')) mapPhase = 0;
             await window.navigateToPhase(forward);
         } finally {
             phaseNavigationPending = false;
@@ -2913,6 +2934,14 @@ document.addEventListener('DOMContentLoaded', () => {
             if (screen1.classList.contains('active')) {
                 screen1.classList.remove('active'); screen2.classList.add('active');
             } else if (screen2.classList.contains('active')) {
+                // La cortina tarda 2,5 s. Si el visitante pulsa "siguiente" otra vez
+                // durante ese lapso, conservamos la intención y arrancamos el viaje
+                // apenas el mapa queda activo, en lugar de perder el evento.
+                if (mapTransitionInProgress) {
+                    pendingMapAdvance = true;
+                    return;
+                }
+                mapTransitionInProgress = true;
                 screen3.classList.add('under');
                 setTimeout(() => { map.resize();
                     // If map style got stuck (hidden container at init), re-apply it now
@@ -2926,6 +2955,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     map.fitBounds(sanMartinBounds, { padding: 70, maxZoom: 12.2, duration: 0 });
                     map.triggerRepaint();
                     mapPhase = 0;
+                    mapTransitionInProgress = false;
+                    if (pendingMapAdvance) {
+                        pendingMapAdvance = false;
+                        requestPhaseNavigation(true);
+                    }
                  }, 2500); 
             } else if (screen3.classList.contains('active')) {
                 if (!postaBlackScreen.classList.contains('active')) requestPhaseNavigation(true);
@@ -2934,6 +2968,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (e.key === 'ArrowLeft') {
             if (screen2.classList.contains('active')) {
+                if (mapTransitionInProgress) return;
                 screen2.classList.remove('active'); screen1.classList.add('active');
             } else if (screen3.classList.contains('active')) {
                 if (!postaBlackScreen.classList.contains('active')) requestPhaseNavigation(false);
@@ -3074,6 +3109,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.jumpToPosta = function(index) {
         if (restartPanel) restartPanel.classList.add('hidden');
+        showJourneyScenery(index >= fullPathArray.length - 1);
         const coord = fullPathArray[index];
         currentPathIndex = index;
         const color = postaColors[index % postaColors.length];
