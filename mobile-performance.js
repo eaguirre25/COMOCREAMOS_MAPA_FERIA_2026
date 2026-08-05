@@ -97,7 +97,7 @@
         if (!document.documentElement.classList.contains('low-power-mode')) return;
 
         const MAX_PARTICLES = 90;
-        const particleSelectors = '.confetti-particle, .magic-sparkle';
+        const particleSelectors = '.confetti-particle, .magic-sparkle, .magic-bus-sparkle';
         let cleanupQueued = false;
 
         const cleanup = () => {
@@ -149,12 +149,20 @@
         markerObserver.observe(document.body, { childList: true, subtree: true });
     }
 
-    function loadExperienceFixes() {
-        if (document.querySelector('script[data-experience-fixes]')) return;
+    function loadScriptOnce(src, marker) {
+        if (document.querySelector(`script[${marker}]`)) return;
         const script = document.createElement('script');
-        script.src = `experience-fixes.js?v=2-${Date.now()}`;
-        script.dataset.experienceFixes = 'true';
+        script.src = src;
+        script.setAttribute(marker, 'true');
         document.body.appendChild(script);
+    }
+
+    function loadExperienceFixes() {
+        loadScriptOnce(`experience-fixes.js?v=4-${Date.now()}`, 'data-experience-fixes');
+    }
+
+    function loadMagicBusTrail() {
+        loadScriptOnce(`magic-bus-trail.js?v=1-${Date.now()}`, 'data-magic-bus-trail');
     }
 
     function init() {
@@ -163,6 +171,7 @@
         limitDecorativeDomOnMobile();
         makeDynamicMarkersKeyboardAccessible();
         loadExperienceFixes();
+        loadMagicBusTrail();
     }
 
     if (document.readyState === 'loading') {
