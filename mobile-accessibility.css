@@ -72,7 +72,14 @@ button:focus-visible,
     }
 
     .hud-timer-container {
-        display: none !important;
+        display: flex !important;
+        top: calc(105px + var(--safe-top)) !important;
+        bottom: auto !important;
+        left: calc(10px + var(--safe-left)) !important;
+        right: auto !important;
+        transform: scale(.42) !important;
+        transform-origin: top left !important;
+        z-index: 90 !important;
     }
 
     #btn-fullscreen {
@@ -238,6 +245,20 @@ button:focus-visible,
             calc(12px + var(--safe-bottom))
             calc(10px + var(--safe-left));
         overflow-y: auto;
+    }
+
+    .restart-inner {
+        width: 100%;
+        padding: 24px 18px;
+    }
+
+    .restart-title {
+        font-size: 28px;
+    }
+
+    .restart-posta-btn {
+        padding: 14px 8px;
+        font-size: 20px;
     }
 
     .restart-postas-grid {

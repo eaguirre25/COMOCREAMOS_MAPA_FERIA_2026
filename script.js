@@ -1480,6 +1480,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function setGifPlayback(img, playing) {
         if (!img) return;
         if (!img.dataset.animSrc) img.dataset.animSrc = img.src;
+        img.dataset.playbackState = playing ? 'playing' : 'paused';
         if (playing) {
             if (img.dataset.pausedSrc) {
                 img.src = img.dataset.animSrc;
@@ -1491,7 +1492,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         if (img.dataset.pausedSrc) return;
         if (!img.complete || !img.naturalWidth) {
-            img.addEventListener('load', () => setGifPlayback(img, false), { once: true });
+            img.addEventListener('load', () => {
+                if (img.dataset.playbackState === 'paused') setGifPlayback(img, false);
+            }, { once: true });
             return;
         }
         const canvas = document.createElement('canvas');
@@ -1514,6 +1517,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!img) return;
         const absSrc = new URL(src, window.location.href).href;
         img.dataset.animSrc = absSrc;
+        img.dataset.playbackState = 'playing';
         if (img.dataset.pausedSrc) {
             setGifPlayback(img, true);
             return;
@@ -1521,6 +1525,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (img.src !== absSrc) {
             img.src = absSrc;
         }
+    }
+
+    function setVehiclePlayback(mode, playing) {
+        const isBus = mode === 'street';
+        const img = pinwheelDiv && pinwheelDiv.querySelector(isBus ? '.bus-image' : '.train-gif-target');
+        if (!img) return;
+        if (playing) keepGifPlaying(img, isBus ? 'colectivo_animado.gif' : 'tren_animado.gif');
+        else setGifPlayback(img, false);
+        img.closest('.train-container')?.classList.toggle('train-stopped', !playing);
+        pinwheelDiv.classList.toggle('bus-stopped', isBus && !playing);
     }
 
     const DEFAULT_TRAIN_CONFIG = {
@@ -1609,6 +1623,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const img = document.createElement('img');
         img.src = 'tren_animado.gif';
         img.className = 'train-gif-target';
+        img.dataset.animSrc = new URL('tren_animado.gif', window.location.href).href;
         img.style.width = '100%';
         img.style.height = 'auto';
         img.style.display = 'block';
@@ -1628,6 +1643,7 @@ document.addEventListener('DOMContentLoaded', () => {
         pinwheelDiv.style.display = 'block';
         if (coord) mainPinwheelMarker.setLngLat(coord);
         setVehicleMarkerZ('train');
+        setVehiclePlayback('train', false);
     }
 
     function buildLocalityPath(geometry) {
@@ -1836,6 +1852,18 @@ document.addEventListener('DOMContentLoaded', () => {
         "Posta 8: Equipaje metodológico",
         "Posta 9: Conclusiones"
     ];
+
+    function setPostaScreenContent(index) {
+        if (!postaScreenEl) return;
+        const title = document.createElement('span');
+        title.className = 'posta-screen-title';
+        title.textContent = postasText[index] || 'Información de Posta';
+        const hint = document.createElement('span');
+        hint.className = 'posta-screen-hint';
+        hint.textContent = 'Click aquí';
+        postaScreenEl.replaceChildren(title, hint);
+        postaScreenEl.setAttribute('aria-label', `Abrir materiales de ${postasText[index] || 'la posta'}`);
+    }
 
     // Las capas de localidades de San Martín se definen acá, como parte del ESTILO
     // INICIAL del mapa (no agregadas dinámicamente después vía map.on('load')). En este
@@ -2160,7 +2188,25 @@ document.addEventListener('DOMContentLoaded', () => {
             if (i >= postasText.length) return;
             const el = document.createElement('div');
             el.className = 'posta-label visible';
-            el.innerText = postasText[i].split(':')[0];
+            const labelTitle = document.createElement('span');
+            labelTitle.textContent = postasText[i].split(':')[0];
+            const labelHint = document.createElement('span');
+            labelHint.className = 'posta-label-hint';
+            labelHint.textContent = 'Click aquí';
+            el.replaceChildren(labelTitle, labelHint);
+            el.setAttribute('role', 'button');
+            el.setAttribute('tabindex', '0');
+            el.setAttribute('aria-label', `Abrir materiales de ${postasText[i]}`);
+            el.addEventListener('click', (event) => {
+                event.stopPropagation();
+                showPostaModal(i);
+            });
+            el.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    showPostaModal(i);
+                }
+            });
             new maplibregl.Marker({element: wrapMarkerEl(el), anchor: 'left', offset: [15, 0]}).setLngLat(coord).addTo(map);
             window.postaLabels.push(el);
         });
@@ -2233,7 +2279,7 @@ document.addEventListener('DOMContentLoaded', () => {
         depot10El.style.width = Math.round(depotConf.size * 1.12) + 'px';
         depot10El.style.zIndex = 50;
         window.depot10MarkerEl = depot10El;
-        window.depot10MarkerObj = new maplibregl.Marker({element: wrapMarkerEl(depot10El), anchor: 'bottom', offset: [depotConf.offX, depotConf.offY + 220]}).setLngLat(fullPathArray[fullPathArray.length - 1]).addTo(map);
+        window.depot10MarkerObj = new maplibregl.Marker({element: wrapMarkerEl(depot10El), anchor: 'bottom', offset: [depotConf.offX, depotConf.offY + 160]}).setLngLat(fullPathArray[fullPathArray.length - 1]).addTo(map);
         markDepotMarker(window.depot10MarkerObj);
         bringSanMartinMapLayersToFront();
     });
@@ -2308,6 +2354,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function moveToPoint(startIndex, endIndex, mode = 'train') {
         if (isMoving) return;
         isMoving = true;
+        if (mode === 'street' || mode === 'train') setVehiclePlayback(mode, true);
         
         const start = fullPathArray[startIndex];
         const end = fullPathArray[endIndex];
@@ -2436,6 +2483,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Hide inter-posta text on arrival
                     const _it = document.getElementById('inter-posta-text');
                     if (_it) _it.classList.remove('visible');
+                    if (mode === 'street' || mode === 'train') setVehiclePlayback(mode, false);
                     resolve();
                     return;
                 }
@@ -2517,9 +2565,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     zoom: zoomToUse
                 });
 
-                if (frame % 6 === 0) {
-                    if (mode === 'street') spawnConfetti([lng, lat], 3); // Colectivo: rastro de confeti
-                    else if (mode === 'flight') spawnConfetti([lng, lat], 6);
+                if (frame % 12 === 0) {
+                    if (mode === 'street') spawnConfetti([lng, lat], 1); // Rastro liviano para no bloquear la animación
+                    else if (mode === 'flight') spawnConfetti([lng, lat], 3);
                     else spawnSparkle([lng, lat]);
                 }
 
@@ -2582,9 +2630,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Short pause so user can see the scene before the info screen appears
                 await new Promise(r => setTimeout(r, 800));
 
-                postaScreenEl.innerText = postasText[0];
+                setPostaScreenContent(0);
                 postaScreenEl.style.bottom = 'auto';
-                postaScreenEl.style.top = '-300px';
+                postaScreenEl.style.top = '150px';
                 postaScreenEl.style.left = '';
                 pinwheelDiv.appendChild(postaScreenEl);
                 setTimeout(() => postaScreenEl.classList.add('visible'), 100);
@@ -2625,13 +2673,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                     if (nextIndex === 2 && forward && mapPhase < 3) mapPhase = 3;
 
-                    if (moveMode === 'street') {
-                        const busImg = pinwheelDiv.querySelector('.bus-image');
-                        keepGifPlaying(busImg, 'colectivo_animado.gif');
-                    } else if (moveMode === 'train') {
-                        const trainImg = pinwheelDiv.querySelector('.train-gif-target');
-                        if (trainImg) trainImg.src = 'tren_animado.gif';
-                    }
+                    setVehiclePlayback(moveMode, true);
                     
                     if (window.posta1MarkerEl) window.posta1MarkerEl.classList.remove('visible');
 
@@ -2647,15 +2689,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         window.posta1MarkerEl.classList.add('visible');
                     }
                     
-                    if (moveMode === 'street') {
-                        const busImg = pinwheelDiv.querySelector('.bus-image');
-                        keepGifPlaying(busImg, 'colectivo_animado.gif');
-                        if (currentPathIndex === 1) setGifPlayback(busImg, false);
-                        else setGifPlayback(busImg, true);
-                    } else if (moveMode === 'train') {
-                        const trainImg = pinwheelDiv.querySelector('.train-gif-target');
-                        if (trainImg) trainImg.src = 'tren_animado.gif';
-                    }
+                    setVehiclePlayback(moveMode, false);
                     
                     if (currentPathIndex === 2) { // Shockwave at Posta 3
                         for(let x=0; x<10; x++) {
@@ -2683,7 +2717,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
 
                     const color = postaColors[currentPathIndex % postaColors.length];
-                    postaScreenEl.innerText = postasText[currentPathIndex];
+                    setPostaScreenContent(currentPathIndex);
                     postaScreenEl.style.borderColor = color;
                     postaScreenEl.style.boxShadow = `0 0 15px ${color}`;
                     postaScreenEl.style.color = '#fff';
@@ -2703,7 +2737,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     } else {
                         postaScreenEl.style.top = 'auto';
                         // Posta 3 needs extra separation from the train/depot artwork.
-                        postaScreenEl.style.bottom = currentPathIndex === 2 ? '-240px' : '-150px';
+                        postaScreenEl.style.bottom = currentPathIndex === 2 ? '-330px' : '-150px';
                         postaScreenEl.style.left = '';
                     }
                     postaScreenEl.classList.add('visible');
@@ -2733,7 +2767,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     showBusVehicle(fullPathArray[2], false);
 
                     const color = postaColors[currentPathIndex % postaColors.length];
-                    postaScreenEl.innerText = postasText[currentPathIndex];
+                    setPostaScreenContent(currentPathIndex);
                     postaScreenEl.style.borderColor = color;
                     postaScreenEl.style.boxShadow = `0 0 15px ${color}`;
                     postaScreenEl.style.color = '#fff';
@@ -2756,13 +2790,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     pinwheelDiv.appendChild(postaScreenEl);
                 }
 
-                if (moveMode === 'street') {
-                    const busImg = pinwheelDiv.querySelector('.bus-image');
-                    keepGifPlaying(busImg, 'colectivo_animado.gif');
-                } else if (moveMode === 'train') {
-                    const trainImg = pinwheelDiv.querySelector('.train-gif-target');
-                    if (trainImg) trainImg.src = 'tren_animado.gif';
-                }
+                setVehiclePlayback(moveMode, true);
                 
                 if (window.posta1MarkerEl) window.posta1MarkerEl.classList.remove('visible');
 
@@ -2773,13 +2801,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     window.posta1MarkerEl.classList.add('visible');
                 }
                 
-                if (moveMode === 'street') {
-                    const busImg = pinwheelDiv.querySelector('.bus-image');
-                keepGifPlaying(busImg, 'colectivo_animado.gif');
-                } else if (moveMode === 'train') {
-                    const trainImg = pinwheelDiv.querySelector('.train-gif-target');
-                    if (trainImg) trainImg.src = 'tren_animado.gif';
-                }
+                setVehiclePlayback(moveMode, false);
                 
                 // Hide 3D model if leaving Posta 2 backwards
                 if (currentPathIndex < 1) {
@@ -2788,7 +2810,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 const color = postaColors[currentPathIndex % postaColors.length];
-                postaScreenEl.innerText = postasText[currentPathIndex];
+                setPostaScreenContent(currentPathIndex);
                 postaScreenEl.style.borderColor = color;
                 postaScreenEl.style.boxShadow = `0 0 15px ${color}`;
                 postaScreenEl.style.color = '#fff';
@@ -2802,12 +2824,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         postaScreenEl.style.top = '150px';
                         postaScreenEl.style.left = '';
                     } else {
-                        postaScreenEl.style.top = '-300px';
+                        postaScreenEl.style.top = '150px';
                         postaScreenEl.style.left = '';
                     }
                 } else {
                     postaScreenEl.style.top = 'auto';
-                    postaScreenEl.style.bottom = currentPathIndex === 2 ? '-240px' : '-150px';
+                    postaScreenEl.style.bottom = currentPathIndex === 2 ? '-330px' : '-150px';
                     postaScreenEl.style.left = '';
                 }
                 postaScreenEl.classList.add('visible');
@@ -3040,7 +3062,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const coord = fullPathArray[index];
         currentPathIndex = index;
         const color = postaColors[index % postaColors.length];
-        postaScreenEl.innerText = postasText[index];
+        setPostaScreenContent(index);
         postaScreenEl.style.borderColor = color;
         postaScreenEl.style.boxShadow = `0 0 15px ${color}`;
         postaScreenEl.style.color = '#fff';
@@ -3048,12 +3070,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (index <= 1) {
             showBusVehicle(coord, index === 0 || index === 1);
             postaScreenEl.style.bottom = 'auto';
-            postaScreenEl.style.top = index === 1 ? '150px' : '-120px';
+            postaScreenEl.style.top = '150px';
             mapPhase = Math.max(mapPhase, index === 1 ? 2 : 1);
         } else {
             showTrainVehicle(coord);
             postaScreenEl.style.top = 'auto';
-            postaScreenEl.style.bottom = index === 2 ? '-240px' : '-150px';
+            postaScreenEl.style.bottom = index === 2 ? '-330px' : '-150px';
             mapPhase = Math.max(mapPhase, 3);
         }
         setTimeout(() => postaScreenEl.classList.add('visible'), 200);
@@ -3272,7 +3294,7 @@ function updateDepotsLive() {
     if (window.depot3MarkerObj) window.depot3MarkerObj.setOffset([ox, oy]);
     
     if (window.depot10MarkerEl) window.depot10MarkerEl.style.width = Math.round(s * 1.12) + 'px';
-    if (window.depot10MarkerObj) window.depot10MarkerObj.setOffset([ox, oy + 220]);
+    if (window.depot10MarkerObj) window.depot10MarkerObj.setOffset([ox, oy + 160]);
 }
 
 if (depotSizeSlider) {

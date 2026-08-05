@@ -157,12 +157,8 @@
         document.body.appendChild(script);
     }
 
-    function loadExperienceFixes() {
-        loadScriptOnce(`experience-fixes.js?v=4-${Date.now()}`, 'data-experience-fixes');
-    }
-
     function loadMagicBusTrail() {
-        loadScriptOnce(`magic-bus-trail.js?v=1-${Date.now()}`, 'data-magic-bus-trail');
+        loadScriptOnce('magic-bus-trail.js?v=2', 'data-magic-bus-trail');
     }
 
     function init() {
@@ -170,7 +166,6 @@
         observeInterfaceState();
         limitDecorativeDomOnMobile();
         makeDynamicMarkersKeyboardAccessible();
-        loadExperienceFixes();
         loadMagicBusTrail();
     }
 

@@ -25,6 +25,16 @@ body, html {
     background-color: #050510; /* Deeper sci-fi dark */
 }
 
+button,
+.nav-btn,
+.posta-screen,
+.posta-label,
+.hud-timer-container,
+.restart-posta-btn,
+.slide-nav-btn {
+    font-family: 'Faustina', sans-serif;
+}
+
 /* Base Screen */
 .screen {
     position: absolute;
@@ -319,8 +329,8 @@ body, html {
 .hud-title {
     position: absolute;
     top: 15px;
-    left: 30%;
-    width: 30vw;
+    left: 30px;
+    width: 40vw;
     max-width: 520px;
     min-width: 180px;
     height: auto;
@@ -328,24 +338,30 @@ body, html {
     filter: drop-shadow(0 10px 25px rgba(0,0,0,0.9));
     cursor: grab;
     pointer-events: auto;
+    z-index: 100;
 }
 .hud-title:active { cursor: grabbing; }
 
 .hud-timer-container {
     position: absolute;
-    bottom: 30px;
-    right: 30px;
+    top: 215px;
+    bottom: auto;
+    left: 30px;
+    right: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 15px;
-    padding-left: 100px; /* Space for absolute aspas */
+    padding: 14px 18px;
     cursor: grab;
     pointer-events: auto;
-    background: transparent;
+    background: rgba(255,255,255,.86);
     border: none;
-    box-shadow: none;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(0,0,0,.28);
     width: max-content;
+    transform: scale(.72);
+    transform-origin: top left;
+    z-index: 90;
 }
 .hud-timer-container:active { cursor: grabbing; }
 
@@ -365,6 +381,7 @@ body, html {
     animation: spin 3s linear infinite;
     filter: drop-shadow(0 0 15px rgba(0, 255, 255, 0.6));
     pointer-events: none;
+    display: none;
 }
 @keyframes spin {
     100% { transform: rotate(360deg); }
@@ -376,13 +393,13 @@ body, html {
     align-items: center;
 }
 .timer-label, .timer-target {
-    color: #0ff;
+    color: #111;
     font-size: 20px;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 3px;
     margin: 5px 0;
-    text-shadow: 2px 2px 4px #000, -2px -2px 4px #000, 0 0 10px rgba(0,255,255,0.8);
+    text-shadow: none;
 }
 .timer-countdown {
     font-size: 56px;
@@ -619,6 +636,19 @@ body, html {
     outline: 3px solid #fff;
     outline-offset: 4px;
 }
+.posta-screen-title,
+.posta-screen-hint,
+.posta-label-hint {
+    display: block;
+}
+.posta-screen-hint {
+    margin-top: 5px;
+    color: #7ffaff;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: lowercase;
+}
 .posta-material-panel {
     width: min(100%, 900px);
     margin: auto;
@@ -833,8 +863,9 @@ body, html {
 .bus-image { width: 120px; height: auto; transform: translateY(-50%) rotate(0deg); filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)); z-index: 100; position: absolute; }
 
 /* Posta Labels Phase 0 */
-.posta-label { background: rgba(0, 30, 60, 0.85); color: #0ff; padding: 5px 12px; border: 1px solid #0ff; border-radius: 8px; font-family: 'Faustina', sans-serif; font-size: 14px; text-shadow: 0 0 5px #0ff; white-space: nowrap; box-shadow: 0 0 10px rgba(0,255,255,0.4); pointer-events: none; opacity: 0; transition: opacity 0.5s; transform: translateY(-30px); }
+.posta-label { background: rgba(0, 30, 60, 0.85); color: #0ff; padding: 5px 12px; border: 1px solid #0ff; border-radius: 8px; font-family: 'Faustina', sans-serif; font-size: 14px; text-shadow: 0 0 5px #0ff; white-space: nowrap; box-shadow: 0 0 10px rgba(0,255,255,0.4); pointer-events: auto; cursor: pointer; opacity: 0; transition: opacity 0.5s; transform: translateY(-30px); text-align: center; }
 .posta-label.visible { opacity: 1; }
+.posta-label-hint { margin-top: 2px; color: #fff; font-size: 9px; font-weight: 700; text-shadow: 0 1px 3px #000; }
 
 /* Posta 1 GIF */
 .posta1-gif { width: 450px; pointer-events: none; opacity: 0; transition: opacity 0.5s; }
@@ -916,21 +947,21 @@ body, html {
     background: rgba(0, 15, 35, 0.97);
     border: 2px solid #0ff;
     border-radius: 20px;
-    padding: 40px 50px;
-    max-width: 680px;
-    width: 92%;
+    padding: 48px 58px;
+    max-width: 980px;
+    width: 96%;
     text-align: center;
     box-shadow: 0 0 60px rgba(0,255,255,0.25);
 }
 .restart-title {
     font-family: 'Faustina', sans-serif;
     color: #0ff;
-    font-size: 26px;
+    font-size: 34px;
     margin: 0 0 25px;
     text-shadow: 0 0 20px #0ff;
 }
 .restart-main-btn {
-    font-size: 18px !important;
+    font-size: 24px !important;
     padding: 14px 28px !important;
     background: linear-gradient(45deg, #0ff, #00c) !important;
     color: #fff !important;
@@ -951,14 +982,15 @@ body, html {
     gap: 8px;
 }
 .restart-posta-btn {
-    padding: 10px 6px;
+    padding: 16px 10px;
     background: rgba(0, 40, 80, 0.8);
     border: 1px solid #0ff;
     border-radius: 8px;
     color: #0ff;
     cursor: pointer;
     font-family: 'Faustina', sans-serif;
-    font-size: 11px;
+    font-size: 22px;
+    font-weight: 800;
     transition: background 0.2s, box-shadow 0.2s;
 }
 .restart-posta-btn:hover {
@@ -1068,5 +1100,5 @@ body, html {
 #btn-fullscreen:hover { background: rgba(0,40,80,0.9); box-shadow: 0 0 20px rgba(0,255,255,0.7); }
 
 .time-block { display: flex; flex-direction: column; align-items: center; }
-.time-sub { font-size: 17px; color: #fff; text-shadow: 2px 2px 4px #000, -2px -2px 4px #000, 0 0 5px rgba(255,255,255,0.55); margin-top: -5px; font-family: 'Faustina', sans-serif; letter-spacing: 2px; font-weight: 900; }
-.colon { color: #fff; text-shadow: 2px 2px 4px #000, -2px -2px 4px #000; margin: 0 5px; }
+.time-sub { font-size: 17px; color: #111; text-shadow: none; margin-top: -5px; font-family: 'Faustina', sans-serif; letter-spacing: 2px; font-weight: 900; }
+.colon { color: #111; text-shadow: none; margin: 0 5px; }
