@@ -1,6 +1,13 @@
 (() => {
     'use strict';
 
+    if (!document.querySelector('script[data-experience-fixes]')) {
+        const fixesScript = document.createElement('script');
+        fixesScript.src = 'experience-fixes.js?v=1';
+        fixesScript.dataset.experienceFixes = 'true';
+        document.head.appendChild(fixesScript);
+    }
+
     const mobileQuery = window.matchMedia('(max-width: 932px)');
     const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     const coarsePointerQuery = window.matchMedia('(pointer: coarse)');
