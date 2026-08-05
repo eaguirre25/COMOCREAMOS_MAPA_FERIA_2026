@@ -26,11 +26,7 @@
     window.addEventListener('resize', updateViewportHeight, { passive: true });
     window.addEventListener('orientationchange', () => {
         window.setTimeout(updateViewportHeight, 120);
-        window.setTimeout(() => {
-            if (window.map && typeof window.map.resize === 'function') {
-                window.map.resize();
-            }
-        }, 250);
+        window.setTimeout(() => window.dispatchEvent(new Event('resize')), 250);
     }, { passive: true });
 
     function enhanceAccessibility() {
@@ -102,8 +98,10 @@
 
         const MAX_PARTICLES = 90;
         const particleSelectors = '.confetti-particle, .magic-sparkle';
+        let cleanupQueued = false;
 
         const cleanup = () => {
+            cleanupQueued = false;
             const particles = document.querySelectorAll(particleSelectors);
             if (particles.length <= MAX_PARTICLES) return;
             const excess = particles.length - MAX_PARTICLES;
@@ -112,7 +110,11 @@
             }
         };
 
-        const particleObserver = new MutationObserver(cleanup);
+        const particleObserver = new MutationObserver(() => {
+            if (cleanupQueued) return;
+            cleanupQueued = true;
+            requestAnimationFrame(cleanup);
+        });
         particleObserver.observe(document.body, { childList: true, subtree: true });
     }
 
@@ -126,12 +128,15 @@
                 if (!element.hasAttribute('aria-label')) {
                     element.setAttribute('aria-label', element.textContent?.trim() || 'Abrir posta');
                 }
-                element.addEventListener('keydown', (event) => {
-                    if (event.key === 'Enter' || event.key === ' ') {
-                        event.preventDefault();
-                        element.click();
-                    }
-                }, { once: true });
+                if (element.dataset.keyboardReady !== 'true') {
+                    element.dataset.keyboardReady = 'true';
+                    element.addEventListener('keydown', (event) => {
+                        if (event.key === 'Enter' || event.key === ' ') {
+                            event.preventDefault();
+                            element.click();
+                        }
+                    });
+                }
             }
 
             element.querySelectorAll?.('.cyan-pin-marker, .posta-screen').forEach(improveMarker);
