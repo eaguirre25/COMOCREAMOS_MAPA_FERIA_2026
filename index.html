@@ -2,12 +2,13 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>EL CAMINO DE LA INVESTIGACIÓN</title>
     <link rel="preconnect" href="https://unpkg.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link rel="preconnect" href="https://server.arcgisonline.com" crossorigin>
     <link rel="stylesheet" href="style.css?v=36">
+    <link rel="stylesheet" href="mobile-accessibility.css?v=1">
     <link rel="preload" as="image" href="CIENCIA Y FICCION.png" fetchpriority="high">
     <link rel="preload" as="image" href="EL CAMINO DE LA INVESTIGACION-TITULO.png">
     <link rel="preload" as="image" href="ASPAS FERIA.svg">
@@ -97,7 +98,7 @@
         <!-- Panel de reinicio (se abre al presionar el botón) -->
         <div id="restart-panel" class="restart-panel hidden">
             <div class="restart-inner">
-                <h2 class="restart-title">🎉 ¡Llegaste a las Conclusiones!</h2>
+                <h2 class="restart-title" id="restart-title">🎉 ¡Llegaste a las Conclusiones!</h2>
                 <button id="btn-restart-journey" class="nav-btn restart-main-btn">↺ Reiniciar viaje desde Posta 1</button>
                 <div class="restart-divider">— o revisitar una posta anterior —</div>
                 <div class="restart-postas-grid" id="restart-postas-grid"></div>
@@ -114,7 +115,7 @@
             <button id="btn-edit-train" class="nav-btn" style="display:none;">Editar Tren</button>
             <button id="btn-edit-depot" class="nav-btn" style="display:none;">Editar Depósito</button>
             <button id="btn-prev-3" class="nav-btn btn-back">Atrás</button>
-            <button id="btn-skip-3" class="nav-btn btn-skip" style="background: linear-gradient(45deg, #0f0, #00a);">Skip posta</button>
+            <button id="btn-skip-3" class="nav-btn btn-skip" style="background: linear-gradient(45deg, #0f0, #00a);">Saltar posta</button>
             <button id="btn-next-3" class="nav-btn btn-next">Siguiente</button>
         </div>
     </div>
@@ -133,7 +134,7 @@
             
             <div class="editor-canvas-container">
                 <div id="editor-canvas-bus">
-                    <img src="COLECTIVO FERIA-anverso.png" id="editor-bus-img" style="width:100%; height:auto;">
+                    <img src="COLECTIVO FERIA-anverso.png" id="editor-bus-img" style="width:100%; height:auto;" alt="Vista previa del colectivo">
                 </div>
             </div>
             
@@ -175,10 +176,10 @@
             
             <div class="editor-canvas-container">
                 <div id="editor-canvas">
-                    <img src="tren_transparente.png" id="editor-train-img">
-                    <div class="draggable-wheel" id="wheel-1"><img src="ASPAS FERIA.svg" class="spin-wheel"></div>
-                    <div class="draggable-wheel" id="wheel-2"><img src="ASPAS FERIA.svg" class="spin-wheel"></div>
-                    <div class="draggable-wheel" id="wheel-3"><img src="ASPAS FERIA.svg" class="spin-wheel"></div>
+                    <img src="tren_transparente.png" id="editor-train-img" alt="Vista previa del tren">
+                    <div class="draggable-wheel" id="wheel-1"><img src="ASPAS FERIA.svg" class="spin-wheel" alt=""></div>
+                    <div class="draggable-wheel" id="wheel-2"><img src="ASPAS FERIA.svg" class="spin-wheel" alt=""></div>
+                    <div class="draggable-wheel" id="wheel-3"><img src="ASPAS FERIA.svg" class="spin-wheel" alt=""></div>
                 </div>
             </div>
             
@@ -201,10 +202,9 @@
     <!-- Turf.js and Proj4js for spatial analysis and coordinate conversions -->
     <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.9.0/proj4.js"></script>
-    <!-- Model Viewer -->
-    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
     <script src="data.js?v=36"></script>
     <script src="localidades-san-martin-shp.js?v=36"></script>
+    <script src="mobile-performance.js?v=1"></script>
     <script src="script.js?v=36"></script>
 </body>
 </html>
