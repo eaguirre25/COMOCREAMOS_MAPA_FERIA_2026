@@ -30,6 +30,82 @@ button:focus-visible,
     outline-offset: 3px;
 }
 
+.orientation-suggestion {
+    display: none;
+}
+
+.orientation-suggestion[hidden] {
+    display: none !important;
+}
+
+@media (max-width: 932px) and (orientation: portrait) {
+    .orientation-suggestion {
+        position: fixed;
+        inset: 0;
+        z-index: 20000;
+        display: grid;
+        place-items: center;
+        padding: calc(20px + var(--safe-top)) calc(18px + var(--safe-right)) calc(20px + var(--safe-bottom)) calc(18px + var(--safe-left));
+        background: rgba(0, 9, 24, .88);
+        backdrop-filter: blur(8px);
+    }
+
+    .orientation-card {
+        width: min(88vw, 420px);
+        padding: 28px 24px;
+        border: 2px solid #00efff;
+        border-radius: 22px;
+        background: linear-gradient(160deg, rgba(0, 35, 64, .98), rgba(0, 12, 35, .98));
+        color: #fff;
+        text-align: center;
+        box-shadow: 0 0 34px rgba(0, 239, 255, .4), 0 18px 48px rgba(0, 0, 0, .55);
+    }
+
+    .orientation-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        color: #00efff;
+        font-size: 52px;
+        line-height: 1;
+        text-shadow: 0 0 18px rgba(0, 239, 255, .7);
+    }
+
+    .orientation-icon span:last-child {
+        display: inline-block;
+        transform: rotate(90deg);
+    }
+
+    .orientation-card h2 {
+        margin: 18px 0 10px;
+        color: #7ffaff;
+        font-size: clamp(25px, 7vw, 34px);
+    }
+
+    .orientation-card p {
+        margin: 0 auto 24px;
+        max-width: 32ch;
+        font-size: clamp(17px, 4.8vw, 21px);
+        line-height: 1.4;
+    }
+
+    #btn-dismiss-orientation {
+        min-width: 180px;
+        min-height: 52px;
+        padding: 12px 24px;
+        border: 2px solid #00efff;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #00c6d2, #0067df);
+        color: #fff;
+        font-family: 'Faustina', sans-serif;
+        font-size: 19px;
+        font-weight: 800;
+        cursor: pointer;
+        box-shadow: 0 0 18px rgba(0, 239, 255, .45);
+    }
+}
+
 /* Oculta animaciones de pantallas que no están activas. */
 .screen:not(.active) *,
 .hidden * {

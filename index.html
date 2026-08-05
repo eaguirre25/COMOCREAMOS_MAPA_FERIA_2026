@@ -11,50 +11,82 @@
     body {
       min-height: 100dvh;
       overflow: hidden;
-      display: grid;
-      place-items: center;
       background: #07131d;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
     .portal {
       position: relative;
-      width: min(100vw, 150dvh);
-      aspect-ratio: 3 / 2;
-      max-height: 100dvh;
+      width: 100vw;
+      height: 100dvh;
+      overflow: hidden;
+      isolation: isolate;
     }
     .portal-image {
       display: block;
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      object-fit: cover;
       user-select: none;
       -webkit-user-drag: none;
     }
-    .hotspot {
+    .portal::after {
+      content: "";
       position: absolute;
-      top: 70.15%;
-      height: max(9.8%, 44px);
-      transform: translateY(-50%);
-      border: 0;
-      border-radius: 14px;
-      background: transparent;
-      color: transparent;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background: linear-gradient(180deg, rgba(4, 10, 18, .32), transparent 28%, transparent 68%, rgba(4, 10, 18, .7));
+    }
+    .portal-brand {
+      position: absolute;
+      z-index: 2;
+      top: max(18px, env(safe-area-inset-top, 0px));
+      left: 50%;
+      width: clamp(220px, 25vw, 390px);
+      max-height: 14vh;
+      object-fit: contain;
+      transform: translateX(-50%);
+      border-radius: 8px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, .35);
+    }
+    .version-actions {
+      position: absolute;
+      z-index: 2;
+      left: 50%;
+      bottom: max(30px, calc(env(safe-area-inset-bottom, 0px) + 18px));
+      transform: translateX(-50%);
+      display: flex;
+      justify-content: center;
+      gap: clamp(14px, 2vw, 28px);
+      width: min(92vw, 850px);
+    }
+    .hotspot {
+      min-height: 68px;
+      flex: 1 1 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 24px;
+      border: 2px solid #00efff;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(0, 192, 202, .96), rgba(0, 91, 211, .96));
+      color: #fff;
       text-decoration: none;
+      text-transform: uppercase;
+      text-align: center;
+      font-size: clamp(18px, 2vw, 26px);
+      font-weight: 800;
+      letter-spacing: .03em;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, .5);
       cursor: pointer;
       touch-action: manipulation;
-      transition: background .16s ease, box-shadow .16s ease;
-    }
-    .hotspot-mobile {
-      left: 27.15%;
-      width: max(20%, 110px);
-    }
-    .hotspot-desktop {
-      left: 48.45%;
-      width: max(24.4%, 130px);
+      box-shadow: 0 0 22px rgba(0, 238, 255, .5), 0 10px 24px rgba(0, 0, 0, .35);
+      transition: transform .16s ease, box-shadow .16s ease, filter .16s ease;
     }
     .hotspot:hover {
-      background: rgba(255, 255, 255, .08);
-      box-shadow: 0 0 24px rgba(0, 238, 255, .65);
+      transform: translateY(-3px);
+      filter: brightness(1.08);
+      box-shadow: 0 0 32px rgba(0, 238, 255, .8), 0 14px 28px rgba(0, 0, 0, .45);
     }
     .hotspot:focus-visible {
       outline: 4px solid #fff;
@@ -73,6 +105,24 @@
       transition: opacity .25s ease;
     }
     .loading.hidden { opacity: 0; pointer-events: none; }
+    @media (orientation: portrait) {
+      .portal-image { object-fit: contain; }
+      .portal-brand {
+        top: max(16px, calc(env(safe-area-inset-top, 0px) + 8px));
+        width: min(76vw, 360px);
+      }
+      .version-actions {
+        bottom: max(24px, calc(env(safe-area-inset-bottom, 0px) + 16px));
+        flex-direction: column;
+        width: min(88vw, 430px);
+        gap: 12px;
+      }
+      .hotspot {
+        min-height: 58px;
+        padding: 12px 18px;
+        font-size: 18px;
+      }
+    }
     @media (prefers-reduced-motion: reduce) {
       .hotspot, .loading { transition: none; }
     }
@@ -83,15 +133,18 @@
     <img
       id="portal-image"
       class="portal-image"
-      src="assets/selector-portada-interactiva.png"
-      alt="Feria de Ciencias Sociales y Humanas. Elegí la versión móvil o de escritorio."
+      src="CIENCIA Y FICCION.png"
+      alt="Ciencia y Ficción, XI edición 2026."
     >
-    <a class="hotspot hotspot-mobile" href="mobile.html" aria-label="Ingresar a la versión móvil">
-      Versión móvil
-    </a>
-    <a class="hotspot hotspot-desktop" href="desktop.html" aria-label="Ingresar a la versión escritorio">
-      Versión escritorio
-    </a>
+    <img class="portal-brand" src="assets/feria-ciencias-humanas-sociales-logo.png" alt="Feria de Ciencias Humanas y Sociales">
+    <nav class="version-actions" aria-label="Elegir versión de la experiencia">
+      <a class="hotspot hotspot-mobile" href="mobile.html" aria-label="Ingresar a la versión móvil">
+        Versión móvil
+      </a>
+      <a class="hotspot hotspot-desktop" href="desktop.html" aria-label="Ingresar a la versión escritorio">
+        Versión escritorio
+      </a>
+    </nav>
   </main>
   <div class="loading" id="loading" role="status">Preparando la portada…</div>
   <script>
