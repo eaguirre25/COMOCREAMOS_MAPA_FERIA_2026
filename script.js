@@ -1863,6 +1863,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // State Machine
     let mapPhase = -1; 
     let currentPathIndex = 0; 
+    let mapExperienceIsReady = false;
+    let resolveMapExperienceReady;
+    const mapExperienceReady = new Promise(resolve => {
+        resolveMapExperienceReady = resolve;
+    });
 
     const postasText = [
         "Posta 1: Punto de partida",
@@ -2314,6 +2319,8 @@ document.addEventListener('DOMContentLoaded', () => {
         window.depot10MarkerObj = new maplibregl.Marker({element: wrapMarkerEl(depot10El), anchor: 'bottom', offset: [depotConf.offX, depotConf.offY + 160]}).setLngLat(fullPathArray[fullPathArray.length - 1]).addTo(map);
         markDepotMarker(window.depot10MarkerObj);
         bringSanMartinMapLayersToFront();
+        mapExperienceIsReady = true;
+        resolveMapExperienceReady();
     });
 
     // Interpolación suave de ángulos para evitar rotación brusca al inicio
@@ -2828,6 +2835,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    let phaseNavigationPending = false;
+    async function requestPhaseNavigation(forward) {
+        if (phaseNavigationPending || isMoving) return;
+        phaseNavigationPending = true;
+        const routeButtons = [
+            document.getElementById('btn-prev-3'),
+            document.getElementById('btn-next-3')
+        ].filter(Boolean);
+        routeButtons.forEach(button => button.classList.add('disabled'));
+        try {
+            if (!mapExperienceIsReady) await mapExperienceReady;
+            await window.navigateToPhase(forward);
+        } finally {
+            phaseNavigationPending = false;
+            routeButtons.forEach(button => button.classList.remove('disabled'));
+        }
+    }
+
 
     // --- Keyboard Controls ---
     document.addEventListener('keydown', (e) => {
@@ -2903,7 +2928,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     mapPhase = 0;
                  }, 2500); 
             } else if (screen3.classList.contains('active')) {
-                if (!postaBlackScreen.classList.contains('active')) navigateToPhase(true);
+                if (!postaBlackScreen.classList.contains('active')) requestPhaseNavigation(true);
             }
         }
         
@@ -2911,7 +2936,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (screen2.classList.contains('active')) {
                 screen2.classList.remove('active'); screen1.classList.add('active');
             } else if (screen3.classList.contains('active')) {
-                if (!postaBlackScreen.classList.contains('active')) navigateToPhase(false);
+                if (!postaBlackScreen.classList.contains('active')) requestPhaseNavigation(false);
             }
         }
     });
