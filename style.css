@@ -377,7 +377,8 @@ body, html {
 }
 .timer-label, .timer-target {
     color: #0ff;
-    font-size: 16px;
+    font-size: 20px;
+    font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 3px;
     margin: 5px 0;
@@ -589,7 +590,7 @@ body, html {
     bottom: -90px;
     top: auto;
     left: 50%;
-    transform: translateX(-50%) scale(0.5);
+    transform: translateX(-50%) scale(0.35);
     background: rgba(0, 20, 40, 0.85);
     border: 2px solid #0ff;
     padding: 15px 25px;
@@ -608,11 +609,11 @@ body, html {
 }
 .posta-screen:hover {
     box-shadow: 0 0 40px rgba(0,255,255,1);
-    transform: translateX(-50%) scale(1.1);
+    transform: translateX(-50%) scale(0.77);
 }
 .posta-screen.visible {
     opacity: 1;
-    transform: translateX(-50%) scale(1);
+    transform: translateX(-50%) scale(0.7);
 }
 .posta-screen:focus-visible {
     outline: 3px solid #fff;
@@ -1067,5 +1068,5 @@ body, html {
 #btn-fullscreen:hover { background: rgba(0,40,80,0.9); box-shadow: 0 0 20px rgba(0,255,255,0.7); }
 
 .time-block { display: flex; flex-direction: column; align-items: center; }
-.time-sub { font-size: 14px; color: #fff; text-shadow: 2px 2px 4px #000, -2px -2px 4px #000; margin-top: -5px; font-family: 'Faustina', sans-serif; letter-spacing: 2px; font-weight: bold; }
+.time-sub { font-size: 17px; color: #fff; text-shadow: 2px 2px 4px #000, -2px -2px 4px #000, 0 0 5px rgba(255,255,255,0.55); margin-top: -5px; font-family: 'Faustina', sans-serif; letter-spacing: 2px; font-weight: 900; }
 .colon { color: #fff; text-shadow: 2px 2px 4px #000, -2px -2px 4px #000; margin: 0 5px; }

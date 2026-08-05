@@ -2702,7 +2702,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     } else {
                         postaScreenEl.style.top = 'auto';
-                        postaScreenEl.style.bottom = '-150px';
+                        // Posta 3 needs extra separation from the train/depot artwork.
+                        postaScreenEl.style.bottom = currentPathIndex === 2 ? '-240px' : '-150px';
                         postaScreenEl.style.left = '';
                     }
                     postaScreenEl.classList.add('visible');
@@ -2806,7 +2807,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 } else {
                     postaScreenEl.style.top = 'auto';
-                    postaScreenEl.style.bottom = '-150px';
+                    postaScreenEl.style.bottom = currentPathIndex === 2 ? '-240px' : '-150px';
                     postaScreenEl.style.left = '';
                 }
                 postaScreenEl.classList.add('visible');
@@ -3052,7 +3053,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             showTrainVehicle(coord);
             postaScreenEl.style.top = 'auto';
-            postaScreenEl.style.bottom = '-150px';
+            postaScreenEl.style.bottom = index === 2 ? '-240px' : '-150px';
             mapPhase = Math.max(mapPhase, 3);
         }
         setTimeout(() => postaScreenEl.classList.add('visible'), 200);
