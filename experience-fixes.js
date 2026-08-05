@@ -9,7 +9,6 @@
   style.textContent = `
     .hud-title { left: 22% !important; top: 18px !important; width: min(31vw, 520px) !important; }
 
-    /* Contador más legible, sin el aspa decorativa. */
     .hud-timer-container {
       top: 20px !important;
       left: 55% !important;
@@ -27,7 +26,7 @@
     .hud-aspas { display: none !important; }
     .hud-timer, .timer-label, .timer-target, .time-sub, .colon { color: #111 !important; text-shadow: none !important; }
 
-    /* Carteles de posta con una presencia visual aproximadamente cuatro veces mayor. */
+    /* Cartel activo: se mantiene grande, excepto en Posta 1. */
     .posta-screen {
       font-size: clamp(52px, 5vw, 76px) !important;
       line-height: 1.12 !important;
@@ -39,6 +38,48 @@
       text-align: center !important;
       box-shadow: 0 0 32px currentColor, 0 12px 34px rgba(0,0,0,.65) !important;
       white-space: normal !important;
+    }
+    .posta-screen.hide-at-posta-one {
+      display: none !important;
+    }
+
+    /* Etiquetas permanentes del mapa: aproximadamente el doble y desplazadas. */
+    .enhanced-posta-label {
+      position: relative !important;
+      font-size: 2em !important;
+      line-height: 1.05 !important;
+      padding: .65em .9em !important;
+      min-width: max-content !important;
+      border-width: 3px !important;
+      border-radius: 10px !important;
+      transform: translate(26px, -28px) !important;
+      box-shadow: 0 0 14px rgba(0,255,255,.8), 0 6px 14px rgba(0,0,0,.55) !important;
+      z-index: 220 !important;
+      overflow: visible !important;
+    }
+    .enhanced-posta-label:nth-of-type(even) {
+      transform: translate(-34px, 30px) !important;
+    }
+    .enhanced-posta-label::before {
+      content: '';
+      position: absolute;
+      width: 42px;
+      height: 1.5px;
+      left: -34px;
+      bottom: -13px;
+      background: rgba(255,255,255,.9);
+      box-shadow: 0 0 4px rgba(0,255,255,.9);
+      transform: rotate(38deg);
+      transform-origin: right center;
+      pointer-events: none;
+    }
+    .enhanced-posta-label:nth-of-type(even)::before {
+      left: auto;
+      right: -34px;
+      top: -12px;
+      bottom: auto;
+      transform: rotate(38deg);
+      transform-origin: left center;
     }
 
     .train-container.train-stopped .spin-wheel,
@@ -74,6 +115,14 @@
         max-width: 90vw !important;
         border-width: 4px !important;
       }
+      .enhanced-posta-label {
+        font-size: 1.85em !important;
+        padding: .6em .8em !important;
+        transform: translate(22px, -24px) !important;
+      }
+      .enhanced-posta-label:nth-of-type(even) {
+        transform: translate(-28px, 26px) !important;
+      }
       #btn-close-modal { top: calc(10px + env(safe-area-inset-top, 0px)) !important; right: calc(10px + env(safe-area-inset-right, 0px)) !important; z-index: 15001 !important; }
       img[src*="deposito_animado"], img[src*="depot_animado"] { top: 64px !important; }
       img[src*="deposito_tren_final"] { top: -46px !important; }
@@ -103,9 +152,42 @@
     return [...nodes];
   }
 
+  function currentPostaLabel() {
+    return document.querySelector('.posta-screen.visible');
+  }
+
   function isAtPostaOne() {
-    const label = document.querySelector('.posta-screen.visible');
+    const label = currentPostaLabel();
     return Boolean(label && /^Posta\s*1\b/i.test(label.textContent.trim()));
+  }
+
+  function hidePostaOneActiveCard() {
+    const label = currentPostaLabel();
+    if (!label) return;
+    label.classList.toggle('hide-at-posta-one', /^Posta\s*1\b/i.test(label.textContent.trim()));
+  }
+
+  function enlargeBus() {
+    const bus = document.querySelector('.bus-image');
+    if (!bus || bus.dataset.doubleSizeApplied === 'true') return;
+    const inlineWidth = parseFloat(bus.style.width);
+    const renderedWidth = bus.getBoundingClientRect().width;
+    const baseWidth = Number.isFinite(inlineWidth) && inlineWidth > 0 ? inlineWidth : renderedWidth;
+    if (!baseWidth) return;
+    bus.dataset.doubleSizeApplied = 'true';
+    bus.style.width = `${Math.round(baseWidth * 2)}px`;
+  }
+
+  function enhanceMapLabels() {
+    const labels = new Set();
+    if (Array.isArray(window.postaLabels)) window.postaLabels.forEach((label) => label && labels.add(label));
+    document.querySelectorAll('.posta-label, .posta-label-marker, [class*="posta-label"]').forEach((label) => labels.add(label));
+    labels.forEach((label, index) => {
+      const element = label instanceof HTMLElement ? label : label?.getElement?.();
+      if (!(element instanceof HTMLElement)) return;
+      element.classList.add('enhanced-posta-label');
+      element.dataset.postaLabelIndex = String(index + 1);
+    });
   }
 
   function hideInitialRailScenery() {
@@ -165,11 +247,12 @@
     bus.dataset.stationPaused = 'false';
     bus.src = source.href;
     bus.closest('#pinwheel-marker, .maplibregl-marker')?.classList.remove('bus-stopped');
+    enlargeBus();
   }
 
   function pauseTrainAtStation() {
     const train = document.querySelector('.train-gif-target');
-    const stopLabel = document.querySelector('.posta-screen.visible');
+    const stopLabel = currentPostaLabel();
     const destination = document.getElementById('dest-ui');
     const destinationActive = Boolean(destination && destination.classList.contains('active'));
 
@@ -200,7 +283,10 @@
   function syncExperience() {
     if (!isAtPostaOne()) leavingPostaOne = false;
     pauseTrainAtStation();
+    hidePostaOneActiveCard();
     hideInitialRailScenery();
+    enlargeBus();
+    enhanceMapLabels();
     syncModalControls();
   }
 
