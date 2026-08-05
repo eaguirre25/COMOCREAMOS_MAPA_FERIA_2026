@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#07131d">
-  <title>Feria de Ciencias Humanas — El camino de la investigación</title>
+  <title>Feria de Ciencias Humanas</title>
   <style>
     * { box-sizing: border-box; }
     html, body { margin: 0; width: 100%; min-height: 100%; }
@@ -12,142 +12,153 @@
       min-height: 100dvh;
       overflow: hidden;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: #fff;
       background: #07131d;
     }
-
-    .selector-page {
-      position: relative;
-      min-height: 100dvh;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      padding:
-        calc(20px + env(safe-area-inset-top))
-        calc(18px + env(safe-area-inset-right))
-        calc(28px + env(safe-area-inset-bottom))
-        calc(18px + env(safe-area-inset-left));
-      isolation: isolate;
-      background-image: url('assets/feria-fondo.jpg');
-      background-size: cover;
-      background-position: center center;
-      background-repeat: no-repeat;
+    .background {
+      position: fixed;
+      inset: 0;
+      background: #07131d center / cover no-repeat;
+      filter: brightness(.86) saturate(.96);
+      transform: scale(1.002);
     }
-
-    .selector-page::before {
+    .background::after {
       content: "";
       position: absolute;
       inset: 0;
-      z-index: -1;
-      background:
-        linear-gradient(to bottom,
-          rgba(0, 0, 0, .06) 0%,
-          rgba(0, 0, 0, .08) 48%,
-          rgba(0, 0, 0, .42) 76%,
-          rgba(0, 0, 0, .68) 100%);
+      background: linear-gradient(to bottom, rgba(0,0,0,.18), rgba(0,0,0,.01) 42%, rgba(0,0,0,.11));
       pointer-events: none;
     }
-
-    .choices {
-      width: min(760px, 100%);
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px;
-      margin-bottom: clamp(4px, 2vh, 20px);
+    main {
+      position: relative;
+      z-index: 2;
+      min-height: 100dvh;
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-start;
+      padding: calc(22px + env(safe-area-inset-top)) calc(22px + env(safe-area-inset-right)) calc(22px + env(safe-area-inset-bottom)) calc(22px + env(safe-area-inset-left));
     }
-
+    .choices {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(170px, 230px));
+      gap: 10px;
+      padding: 10px;
+      border: 1px solid rgba(255,255,255,.42);
+      border-radius: 17px;
+      background: rgba(3,15,26,.38);
+      box-shadow: 0 10px 34px rgba(0,0,0,.25);
+      backdrop-filter: blur(7px);
+      -webkit-backdrop-filter: blur(7px);
+    }
     .choice {
-      min-height: 92px;
+      min-height: 72px;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
-      padding: 18px 22px;
-      border: 2px solid rgba(80, 240, 255, .9);
-      border-radius: 16px;
+      gap: 10px;
+      padding: 14px 16px;
+      border: 2px solid rgba(82,239,255,.88);
+      border-radius: 13px;
       color: #fff;
       text-decoration: none;
-      font-size: clamp(1rem, 2.4vw, 1.3rem);
+      background: rgba(4,22,36,.84);
+      box-shadow: inset 0 0 18px rgba(0,220,255,.12), 0 4px 15px rgba(0,0,0,.25);
       font-weight: 800;
-      letter-spacing: .02em;
-      text-shadow: 0 2px 6px rgba(0,0,0,.8);
-      background: rgba(3, 18, 30, .72);
-      box-shadow:
-        0 8px 28px rgba(0, 0, 0, .36),
-        inset 0 0 22px rgba(0, 221, 255, .10);
-      backdrop-filter: blur(7px);
-      -webkit-backdrop-filter: blur(7px);
-      transition: transform .18s ease, background .18s ease, border-color .18s ease;
+      font-size: 1rem;
+      text-align: center;
+      text-shadow: 0 2px 4px rgba(0,0,0,.8);
+      transition: transform .16s ease, background .16s ease, border-color .16s ease;
       touch-action: manipulation;
     }
-
-    .choice:hover,
-    .choice:focus-visible {
-      transform: translateY(-3px);
-      background: rgba(4, 35, 54, .9);
+    .choice:hover, .choice:focus-visible {
+      transform: translateY(-2px);
+      background: rgba(7,45,66,.96);
       border-color: #fff;
       outline: 3px solid #fff;
-      outline-offset: 4px;
+      outline-offset: 3px;
     }
-
-    .choice-icon {
-      font-size: 1.7em;
-      line-height: 1;
+    .icon { font-size: 1.5rem; line-height: 1; }
+    .loading {
+      position: fixed;
+      inset: 0;
+      z-index: 5;
+      display: grid;
+      place-items: center;
+      background: #07131d;
+      color: #fff;
+      font-weight: 700;
+      transition: opacity .25s ease;
     }
-
-    @media (max-width: 640px) {
-      .selector-page {
-        background-position: center top;
-        padding-bottom: calc(18px + env(safe-area-inset-bottom));
+    .loading.hidden { opacity: 0; pointer-events: none; }
+    @media (max-width: 720px) {
+      .background { background-position: center; }
+      main {
+        justify-content: center;
+        padding-top: calc(12px + env(safe-area-inset-top));
       }
-
-      .selector-page::before {
-        background:
-          linear-gradient(to bottom,
-            rgba(0, 0, 0, .02) 0%,
-            rgba(0, 0, 0, .08) 48%,
-            rgba(0, 0, 0, .58) 72%,
-            rgba(0, 0, 0, .82) 100%);
-      }
-
       .choices {
-        grid-template-columns: 1fr;
-        gap: 10px;
+        width: min(100%, 430px);
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        padding: 8px;
+        border-radius: 14px;
       }
-
       .choice {
-        min-height: 64px;
-        padding: 13px 18px;
-        border-radius: 13px;
+        min-height: 58px;
+        padding: 10px 8px;
+        font-size: .88rem;
+        line-height: 1.12;
       }
+      .icon { font-size: 1.2rem; }
     }
-
-    @media (orientation: landscape) and (max-height: 560px) {
-      .selector-page {
-        align-items: flex-end;
-        padding-bottom: calc(12px + env(safe-area-inset-bottom));
-      }
-      .choices { width: min(680px, 90%); }
-      .choice { min-height: 58px; padding: 10px 16px; }
+    @media (max-width: 390px) {
+      .choices { grid-template-columns: 1fr; width: min(78vw, 260px); }
+      .choice { min-height: 52px; }
     }
-
     @media (prefers-reduced-motion: reduce) {
-      .choice { transition: none; }
+      .choice, .loading { transition: none; }
     }
   </style>
 </head>
 <body>
-  <main class="selector-page" aria-label="Seleccionar versión del recorrido">
+  <div class="background" id="background" aria-hidden="true"></div>
+  <main aria-label="Seleccionar versión del recorrido">
     <nav class="choices">
       <a class="choice" href="mobile.html">
-        <span class="choice-icon" aria-hidden="true">📱</span>
+        <span class="icon" aria-hidden="true">📱</span>
         <span>Versión móvil</span>
       </a>
       <a class="choice" href="desktop.html">
-        <span class="choice-icon" aria-hidden="true">🖥️</span>
+        <span class="icon" aria-hidden="true">🖥️</span>
         <span>Versión escritorio</span>
       </a>
     </nav>
   </main>
+  <div class="loading" id="loading">Preparando la portada…</div>
+  <script>
+    (async () => {
+      const background = document.getElementById('background');
+      const loading = document.getElementById('loading');
+      try {
+        const response = await fetch('assets/selector-campus-bg.b64?v=2', { cache: 'force-cache' });
+        if (!response.ok) throw new Error('No se pudo cargar la portada');
+        const base64 = (await response.text()).trim();
+        const source = `data:image/webp;base64,${base64}`;
+        const image = new Image();
+        image.onload = () => {
+          background.style.backgroundImage = `url("${source}")`;
+          loading.classList.add('hidden');
+        };
+        image.onerror = () => {
+          background.style.backgroundImage = 'url("assets/feria-fondo.jpg")';
+          loading.classList.add('hidden');
+        };
+        image.src = source;
+      } catch (error) {
+        console.error(error);
+        background.style.backgroundImage = 'url("assets/feria-fondo.jpg")';
+        loading.classList.add('hidden');
+      }
+    })();
+  </script>
 </body>
 </html>
