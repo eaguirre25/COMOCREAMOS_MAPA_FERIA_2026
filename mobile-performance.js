@@ -139,10 +139,16 @@
         markerObserver.observe(document.body, { childList: true, subtree: true });
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
+    function init() {
         enhanceAccessibility();
         observeInterfaceState();
         limitDecorativeDomOnMobile();
         makeDynamicMarkersKeyboardAccessible();
-    });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init, { once: true });
+    } else {
+        init();
+    }
 })();
