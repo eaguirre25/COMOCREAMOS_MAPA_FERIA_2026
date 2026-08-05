@@ -139,23 +139,20 @@
       const background = document.getElementById('background');
       const loading = document.getElementById('loading');
       try {
-        const response = await fetch('assets/selector-campus-bg.b64?v=3', { cache: 'reload' });
-        if (!response.ok) throw new Error('No se pudo cargar la portada');
-        const base64 = (await response.text()).trim();
-        const source = `data:image/webp;base64,${base64}`;
+        const source = 'assets/selector-campus-2026.jpg';
         const image = new Image();
         image.onload = () => {
           background.style.backgroundImage = `url("${source}")`;
           loading.classList.add('hidden');
         };
         image.onerror = () => {
-          background.style.backgroundImage = 'url("assets/feria-fondo.jpg")';
+          background.style.backgroundImage = 'url("assets/selector-campus-2026.jpg")';
           loading.classList.add('hidden');
         };
         image.src = source;
       } catch (error) {
         console.error(error);
-        background.style.backgroundImage = 'url("assets/feria-fondo.jpg")';
+        background.style.backgroundImage = 'url("assets/selector-campus-2026.jpg")';
         loading.classList.add('hidden');
       }
     })();
