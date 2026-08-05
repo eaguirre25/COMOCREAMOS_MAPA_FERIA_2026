@@ -22,8 +22,14 @@
     }
 
     .train-container.train-stopped .spin-wheel,
-    .train-container.train-stopped .smoke-effect {
+    .train-container.train-stopped .smoke-effect,
+    .bus-stopped .smoke-effect {
       animation-play-state: paused !important;
+    }
+
+    /* El control global no debe competir con el botón Cerrar del modal. */
+    body.embedded-modal-open #btn-fullscreen {
+      display: none !important;
     }
 
     @media (max-width: 932px) {
@@ -39,6 +45,12 @@
         left: 48vw !important;
         transform: scale(.42) !important;
         transform-origin: top left !important;
+      }
+
+      #btn-close-modal {
+        top: calc(10px + env(safe-area-inset-top, 0px)) !important;
+        right: calc(10px + env(safe-area-inset-right, 0px)) !important;
+        z-index: 15001 !important;
       }
     }
   `;
@@ -69,13 +81,27 @@
     }
   }
 
-  function resumeGif(img) {
+  function resumeTrainGif(img) {
     if (!img) return;
-    const source = img.dataset.animSrc || new URL('tren_animado.gif', window.location.href).href;
-    img.dataset.animSrc = source;
+    const source = new URL('tren_animado.gif', window.location.href);
+    source.searchParams.set('play', String(Date.now()));
+    img.dataset.animSrc = source.href;
     img.dataset.stationPaused = 'false';
     img.closest('.train-container')?.classList.remove('train-stopped');
-    img.src = source;
+    img.src = source.href;
+  }
+
+  function resumeBusBeforeTravel() {
+    const bus = document.querySelector('.bus-image');
+    if (!bus) return;
+    const source = new URL('colectivo_animado.gif', window.location.href);
+    source.searchParams.set('play', String(Date.now()));
+    delete bus.dataset.pausedSrc;
+    delete bus.dataset.stationFrame;
+    bus.dataset.animSrc = source.href;
+    bus.dataset.stationPaused = 'false';
+    bus.src = source.href;
+    bus.closest('#pinwheel-marker, .maplibregl-marker')?.classList.remove('bus-stopped');
   }
 
   function pauseTrainAtStation() {
@@ -84,34 +110,75 @@
     if (train && stopLabel) pauseGif(train);
   }
 
-  function resumeTrainBeforeTravel() {
+  function resumeVehiclesBeforeTravel() {
     const train = document.querySelector('.train-gif-target');
-    if (train) resumeGif(train);
+    if (train) resumeTrainGif(train);
+    resumeBusBeforeTravel();
+    revealRailSceneryAfterPostaOne();
+  }
+
+  function railSceneryElements() {
+    const elements = [];
+    [window.depot3MarkerEl, window.depot10MarkerEl, window.migueletMarkerEl, window.jlsMarkerEl]
+      .forEach((element) => element && elements.push(element));
+    if (Array.isArray(window.localityGifEls)) elements.push(...window.localityGifEls.filter(Boolean));
+    return elements;
+  }
+
+  function isAtPostaOne() {
+    const label = document.querySelector('.posta-screen.visible');
+    return Boolean(label && /^Posta\s*1\b/i.test(label.textContent.trim()));
+  }
+
+  function hideRailSceneryAtPostaOne() {
+    if (!isAtPostaOne()) return;
+    railSceneryElements().forEach((element) => element.classList.remove('visible'));
+  }
+
+  function revealRailSceneryAfterPostaOne() {
+    if (!isAtPostaOne()) return;
+    [window.depot3MarkerEl, window.depot10MarkerEl, window.migueletMarkerEl]
+      .forEach((element) => element?.classList.add('visible'));
+    if (Array.isArray(window.localityGifEls)) {
+      window.localityGifEls.forEach((element) => element?.classList.add('visible'));
+    }
+  }
+
+  function syncModalControls() {
+    const modal = document.getElementById('embedded-modal');
+    const open = Boolean(modal && !modal.classList.contains('hidden'));
+    document.body.classList.toggle('embedded-modal-open', open);
+  }
+
+  function syncExperience() {
+    pauseTrainAtStation();
+    hideRailSceneryAtPostaOne();
+    syncModalControls();
   }
 
   function initialise() {
     ['btn-next-3', 'btn-prev-3', 'btn-skip-3'].forEach((id) => {
-      document.getElementById(id)?.addEventListener('click', resumeTrainBeforeTravel, true);
+      document.getElementById(id)?.addEventListener('click', resumeVehiclesBeforeTravel, true);
     });
 
     document.addEventListener('keydown', (event) => {
       if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
-        resumeTrainBeforeTravel();
+        resumeVehiclesBeforeTravel();
       }
     }, true);
 
     const observer = new MutationObserver(() => {
-      window.requestAnimationFrame(pauseTrainAtStation);
+      window.requestAnimationFrame(syncExperience);
     });
 
     observer.observe(document.body, {
       childList: true,
       subtree: true,
       attributes: true,
-      attributeFilter: ['class']
+      attributeFilter: ['class', 'src']
     });
 
-    pauseTrainAtStation();
+    syncExperience();
   }
 
   if (document.readyState === 'loading') {
