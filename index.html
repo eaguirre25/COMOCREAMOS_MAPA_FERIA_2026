@@ -3,76 +3,151 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>El camino de la investigación</title>
+  <meta name="theme-color" content="#07131d">
+  <title>Feria de Ciencias Humanas — El camino de la investigación</title>
   <style>
-    :root { color-scheme: dark; }
     * { box-sizing: border-box; }
-    html, body { margin: 0; min-height: 100%; }
+    html, body { margin: 0; width: 100%; min-height: 100%; }
     body {
       min-height: 100dvh;
-      display: grid;
-      place-items: center;
-      padding: calc(24px + env(safe-area-inset-top)) calc(18px + env(safe-area-inset-right)) calc(24px + env(safe-area-inset-bottom)) calc(18px + env(safe-area-inset-left));
+      overflow: hidden;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: #fff;
-      background:
-        radial-gradient(circle at 50% 15%, rgba(0, 212, 255, .18), transparent 36%),
-        linear-gradient(160deg, #02040c 0%, #07091a 52%, #10051b 100%);
+      background: #07131d;
     }
-    main { width: min(100%, 760px); text-align: center; }
-    .eyebrow { margin: 0 0 10px; color: #75f6ff; font-size: .86rem; font-weight: 750; letter-spacing: .13em; text-transform: uppercase; }
-    h1 { margin: 0; font-size: clamp(2rem, 7vw, 4.2rem); line-height: 1.03; }
-    .intro { max-width: 620px; margin: 18px auto 30px; color: #d6dbea; font-size: clamp(1rem, 2.6vw, 1.18rem); line-height: 1.55; }
-    .choices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
-    a {
-      min-height: 180px;
+
+    .selector-page {
+      position: relative;
+      min-height: 100dvh;
       display: flex;
-      flex-direction: column;
+      align-items: flex-end;
       justify-content: center;
+      padding:
+        calc(20px + env(safe-area-inset-top))
+        calc(18px + env(safe-area-inset-right))
+        calc(28px + env(safe-area-inset-bottom))
+        calc(18px + env(safe-area-inset-left));
+      isolation: isolate;
+      background-image: url('assets/feria-fondo.jpg');
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+    }
+
+    .selector-page::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background:
+        linear-gradient(to bottom,
+          rgba(0, 0, 0, .06) 0%,
+          rgba(0, 0, 0, .08) 48%,
+          rgba(0, 0, 0, .42) 76%,
+          rgba(0, 0, 0, .68) 100%);
+      pointer-events: none;
+    }
+
+    .choices {
+      width: min(760px, 100%);
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: clamp(4px, 2vh, 20px);
+    }
+
+    .choice {
+      min-height: 92px;
+      display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 24px 18px;
-      border: 1px solid rgba(117, 246, 255, .55);
-      border-radius: 18px;
+      justify-content: center;
+      gap: 12px;
+      padding: 18px 22px;
+      border: 2px solid rgba(80, 240, 255, .9);
+      border-radius: 16px;
       color: #fff;
       text-decoration: none;
-      background: rgba(5, 18, 35, .78);
-      box-shadow: inset 0 0 28px rgba(0, 212, 255, .08);
-      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+      font-size: clamp(1rem, 2.4vw, 1.3rem);
+      font-weight: 800;
+      letter-spacing: .02em;
+      text-shadow: 0 2px 6px rgba(0,0,0,.8);
+      background: rgba(3, 18, 30, .72);
+      box-shadow:
+        0 8px 28px rgba(0, 0, 0, .36),
+        inset 0 0 22px rgba(0, 221, 255, .10);
+      backdrop-filter: blur(7px);
+      -webkit-backdrop-filter: blur(7px);
+      transition: transform .18s ease, background .18s ease, border-color .18s ease;
       touch-action: manipulation;
     }
-    a:hover, a:focus-visible { transform: translateY(-3px); border-color: #fff; background: rgba(9, 35, 61, .94); outline: 3px solid #fff; outline-offset: 4px; }
-    .icon { font-size: 2.6rem; line-height: 1; }
-    strong { font-size: 1.35rem; }
-    span:last-child { color: #c7d0df; line-height: 1.35; }
-    .note { margin: 24px 0 0; color: #9ea9bb; font-size: .9rem; }
-    @media (max-width: 620px) {
-      .choices { grid-template-columns: 1fr; }
-      a { min-height: 136px; }
+
+    .choice:hover,
+    .choice:focus-visible {
+      transform: translateY(-3px);
+      background: rgba(4, 35, 54, .9);
+      border-color: #fff;
+      outline: 3px solid #fff;
+      outline-offset: 4px;
     }
+
+    .choice-icon {
+      font-size: 1.7em;
+      line-height: 1;
+    }
+
+    @media (max-width: 640px) {
+      .selector-page {
+        background-position: center top;
+        padding-bottom: calc(18px + env(safe-area-inset-bottom));
+      }
+
+      .selector-page::before {
+        background:
+          linear-gradient(to bottom,
+            rgba(0, 0, 0, .02) 0%,
+            rgba(0, 0, 0, .08) 48%,
+            rgba(0, 0, 0, .58) 72%,
+            rgba(0, 0, 0, .82) 100%);
+      }
+
+      .choices {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .choice {
+        min-height: 64px;
+        padding: 13px 18px;
+        border-radius: 13px;
+      }
+    }
+
+    @media (orientation: landscape) and (max-height: 560px) {
+      .selector-page {
+        align-items: flex-end;
+        padding-bottom: calc(12px + env(safe-area-inset-bottom));
+      }
+      .choices { width: min(680px, 90%); }
+      .choice { min-height: 58px; padding: 10px 16px; }
+    }
+
     @media (prefers-reduced-motion: reduce) {
-      a { transition: none; }
+      .choice { transition: none; }
     }
   </style>
 </head>
 <body>
-  <main>
-    <p class="eyebrow">Feria de Ciencias 2026</p>
-    <h1>El camino de la investigación</h1>
-    <p class="intro">Elegí la versión adecuada para tu dispositivo. Ambas conservan el mismo recorrido, las postas y los contenidos.</p>
-    <div class="choices" aria-label="Seleccionar versión del recorrido">
-      <a href="mobile.html">
-        <span class="icon" aria-hidden="true">📱</span>
-        <strong>Versión móvil</strong>
-        <span>Interfaz adaptada para celulares, controles táctiles y menor carga visual.</span>
+  <main class="selector-page" aria-label="Seleccionar versión del recorrido">
+    <nav class="choices">
+      <a class="choice" href="mobile.html">
+        <span class="choice-icon" aria-hidden="true">📱</span>
+        <span>Versión móvil</span>
       </a>
-      <a href="desktop.html">
-        <span class="icon" aria-hidden="true">🖥️</span>
-        <strong>Versión escritorio</strong>
-        <span>Presentación completa para computadoras y pantallas grandes.</span>
+      <a class="choice" href="desktop.html">
+        <span class="choice-icon" aria-hidden="true">🖥️</span>
+        <span>Versión escritorio</span>
       </a>
-    </div>
-    <p class="note">Podés volver a esta pantalla usando el botón Atrás del navegador.</p>
+    </nav>
   </main>
 </body>
 </html>
