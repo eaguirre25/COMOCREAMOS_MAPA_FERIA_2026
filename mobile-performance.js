@@ -1,13 +1,6 @@
 (() => {
     'use strict';
 
-    if (!document.querySelector('script[data-experience-fixes]')) {
-        const fixesScript = document.createElement('script');
-        fixesScript.src = 'experience-fixes.js?v=1';
-        fixesScript.dataset.experienceFixes = 'true';
-        document.head.appendChild(fixesScript);
-    }
-
     const mobileQuery = window.matchMedia('(max-width: 932px)');
     const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     const coarsePointerQuery = window.matchMedia('(pointer: coarse)');
@@ -156,10 +149,25 @@
         markerObserver.observe(document.body, { childList: true, subtree: true });
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
+    function loadExperienceFixes() {
+        if (document.querySelector('script[data-experience-fixes]')) return;
+        const script = document.createElement('script');
+        script.src = `experience-fixes.js?v=2-${Date.now()}`;
+        script.dataset.experienceFixes = 'true';
+        document.body.appendChild(script);
+    }
+
+    function init() {
         enhanceAccessibility();
         observeInterfaceState();
         limitDecorativeDomOnMobile();
         makeDynamicMarkersKeyboardAccessible();
-    });
+        loadExperienceFixes();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init, { once: true });
+    } else {
+        init();
+    }
 })();
