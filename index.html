@@ -307,6 +307,13 @@
         if (event.key === 'Escape' && !transportChoice.hidden) transportBack.click();
       });
 
+      const entryParams = new URLSearchParams(window.location.search);
+      const requestedDevice = entryParams.get('device');
+      if (entryParams.get('choose') === 'transport' && ['mobile', 'desktop'].includes(requestedDevice)) {
+        const requestedLink = versionLinks.find(link => link.dataset.device === requestedDevice);
+        showTransportChoice(requestedDevice, requestedLink || null);
+      }
+
       const finish = () => loading.classList.add('hidden');
       if (image.complete) finish();
       else {

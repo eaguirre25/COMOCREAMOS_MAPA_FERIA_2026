@@ -1801,6 +1801,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.isAnimationPaused = false;
     document.getElementById('btn-close-modal').addEventListener('click', () => {
         document.getElementById('embedded-modal').classList.add('hidden');
+        document.body.classList.remove('posta-modal-open');
         window.isAnimationPaused = false;
     });
 
@@ -1850,6 +1851,8 @@ document.addEventListener('DOMContentLoaded', () => {
             body.innerHTML = 'Este es el contenido de la posta.';
         }
         modal.classList.remove('hidden');
+        document.body.classList.add('posta-modal-open');
+        document.getElementById('btn-close-modal')?.focus();
     }
 
     function stepPosta2Slide(direction) {
@@ -2277,7 +2280,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const p2El = createLoopingVideo('posta2.webm', 'posta2.gif', 'posta1-gif', fallback => {
             window.posta2MarkerEl = fallback;
         });
-        p2El.style.width = '765px'; // ~1.7x Posta 1 (900 * 0.85)
+        p2El.style.width = '535px'; // Cartel reducido aproximadamente un 30%.
         p2El.style.zIndex = 10;
         window.posta2MarkerEl = p2El;
         markRailSignMarker(new maplibregl.Marker({element: wrapMarkerEl(p2El), anchor: 'bottom'}).setLngLat(fullPathArray[1]).addTo(map));
@@ -2898,6 +2901,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (e.key === 'Escape') {
                 e.preventDefault();
                 embeddedModal.classList.add('hidden');
+                document.body.classList.remove('posta-modal-open');
                 window.isAnimationPaused = false;
                 return;
             }
