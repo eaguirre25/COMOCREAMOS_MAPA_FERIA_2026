@@ -603,11 +603,12 @@ button,
 
 /* Posta Screen Overlay */
 .posta-screen {
+    --posta-vertical-lift: 100px;
     position: absolute;
     bottom: -90px;
     top: auto;
     left: 50%;
-    transform: translateX(-50%) scale(0.49);
+    transform: translateX(-50%) translateY(calc(-1 * var(--posta-vertical-lift))) scale(0.49);
     transform-origin: center bottom;
     background: rgba(0, 20, 40, 0.85);
     border: 2px solid #0ff;
@@ -632,11 +633,11 @@ button,
 }
 .posta-screen:hover {
     box-shadow: 0 0 40px rgba(0,255,255,1);
-    transform: translateX(-50%) scale(0.72);
+    transform: translateX(-50%) translateY(calc(-1 * var(--posta-vertical-lift))) scale(0.72);
 }
 .posta-screen.visible {
     opacity: 1;
-    transform: translateX(-50%) scale(0.7);
+    transform: translateX(-50%) translateY(calc(-1 * var(--posta-vertical-lift))) scale(0.7);
 }
 .posta-screen:focus-visible {
     outline: 3px solid #fff;

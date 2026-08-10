@@ -246,6 +246,7 @@ button:focus-visible,
     }
 
     .posta-screen {
+        --posta-vertical-lift: 112px;
         min-width: min(82vw, 520px);
         max-width: 90vw;
         white-space: normal;
