@@ -105,6 +105,98 @@
       transition: opacity .25s ease;
     }
     .loading.hidden { opacity: 0; pointer-events: none; }
+    .transport-choice {
+      position: fixed;
+      inset: 0;
+      z-index: 6;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: rgba(4, 10, 18, .64);
+      backdrop-filter: blur(14px) saturate(.72);
+    }
+    .transport-choice[hidden] { display: none; }
+    .transport-panel {
+      position: relative;
+      width: min(760px, 94vw);
+      border: 2px solid rgba(0, 239, 255, .72);
+      border-radius: 26px;
+      padding: clamp(30px, 5vw, 56px);
+      background: linear-gradient(145deg, rgba(4, 24, 37, .97), rgba(6, 50, 70, .92));
+      color: #fff;
+      text-align: center;
+      box-shadow: 0 0 44px rgba(0, 238, 255, .28), 0 28px 90px rgba(0, 0, 0, .58);
+    }
+    .transport-kicker {
+      display: block;
+      color: #7ffaff;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .2em;
+    }
+    .transport-panel h1 {
+      margin: 12px auto 8px;
+      max-width: 650px;
+      font-size: clamp(28px, 5vw, 48px);
+      line-height: 1.05;
+    }
+    .transport-device {
+      margin: 0 0 28px;
+      color: rgba(255, 255, 255, .78);
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .transport-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .transport-option {
+      min-height: 112px;
+      display: grid;
+      place-items: center;
+      border: 2px solid #00efff;
+      border-radius: 20px;
+      padding: 18px;
+      color: #fff;
+      text-decoration: none;
+      font-size: clamp(24px, 4vw, 34px);
+      font-weight: 900;
+      letter-spacing: .08em;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, .58);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, .32);
+      transition: transform .16s ease, filter .16s ease, box-shadow .16s ease;
+    }
+    .transport-option.terrestrial {
+      background: linear-gradient(135deg, #00a66a, #006f78);
+    }
+    .transport-option.aerial {
+      background: linear-gradient(135deg, #078bd5, #3448c5);
+    }
+    .transport-option:hover,
+    .transport-option:focus-visible {
+      transform: translateY(-3px);
+      filter: brightness(1.12);
+      box-shadow: 0 0 32px rgba(0, 238, 255, .64), 0 15px 34px rgba(0, 0, 0, .42);
+    }
+    .transport-back {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      min-height: 42px;
+      border: 1px solid rgba(255, 255, 255, .72);
+      border-radius: 999px;
+      padding: 8px 15px;
+      background: rgba(3, 17, 25, .78);
+      color: #fff;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      cursor: pointer;
+    }
     @media (orientation: portrait) {
       .portal-image { object-fit: contain; }
       .portal-brand {
@@ -122,6 +214,16 @@
         padding: 12px 18px;
         font-size: 18px;
       }
+      .transport-choice { padding: 14px; }
+      .transport-panel {
+        width: min(92vw, 430px);
+        border-radius: 22px;
+        padding: 76px 18px 24px;
+      }
+      .transport-panel h1 { font-size: clamp(27px, 8vw, 38px); }
+      .transport-device { margin-bottom: 20px; font-size: 13px; }
+      .transport-actions { grid-template-columns: 1fr; gap: 12px; }
+      .transport-option { min-height: 68px; font-size: 24px; }
     }
     @media (prefers-reduced-motion: reduce) {
       .hotspot, .loading { transition: none; }
@@ -138,19 +240,73 @@
     >
     <img class="portal-brand" src="assets/feria-ciencias-humanas-sociales-logo.png" alt="Feria de Ciencias Humanas y Sociales">
     <nav class="version-actions" aria-label="Elegir versión de la experiencia">
-      <a class="hotspot hotspot-mobile" href="mobile.html" aria-label="Ingresar al recorrido desde un dispositivo móvil">
+      <a class="hotspot hotspot-mobile" href="mobile.html?device=mobile" data-device="mobile" aria-label="Ingresar al recorrido desde un dispositivo móvil">
         Versión móvil
       </a>
-      <a class="hotspot hotspot-desktop" href="mobile.html" aria-label="Ingresar al recorrido desde una computadora">
+      <a class="hotspot hotspot-desktop" href="desktop.html?device=desktop" data-device="desktop" aria-label="Ingresar al recorrido desde una computadora">
         Versión escritorio
       </a>
     </nav>
   </main>
+  <section id="transport-choice" class="transport-choice" role="dialog" aria-modal="true" aria-labelledby="transport-title" aria-hidden="true" hidden>
+    <div class="transport-panel">
+      <button id="transport-back" class="transport-back" type="button">← VOLVER</button>
+      <span class="transport-kicker">EL CAMINO DE LA INVESTIGACIÓN</span>
+      <h1 id="transport-title">¿Por qué medio querés hacer este recorrido?</h1>
+      <p id="transport-device" class="transport-device"></p>
+      <div class="transport-actions">
+        <a id="terrestrial-option" class="transport-option terrestrial" href="mobile.html">TERRESTRE</a>
+        <a id="aerial-option" class="transport-option aerial" href="https://eaguirre25.github.io/AEREO_2026_FERIACHS/">AÉREO</a>
+      </div>
+    </div>
+  </section>
   <div class="loading" id="loading" role="status">Preparando la portada…</div>
   <script>
     (() => {
       const image = document.getElementById('portal-image');
       const loading = document.getElementById('loading');
+      const transportChoice = document.getElementById('transport-choice');
+      const transportDevice = document.getElementById('transport-device');
+      const terrestrialOption = document.getElementById('terrestrial-option');
+      const aerialOption = document.getElementById('aerial-option');
+      const transportBack = document.getElementById('transport-back');
+      const versionLinks = [...document.querySelectorAll('[data-device]')];
+      let selectedVersionLink = null;
+
+      const showTransportChoice = (device, sourceLink) => {
+        selectedVersionLink = sourceLink;
+        const isMobile = device === 'mobile';
+        transportDevice.textContent = isMobile ? 'VERSIÓN MÓVIL' : 'VERSIÓN ESCRITORIO';
+
+        const terrestrialUrl = new URL(isMobile ? 'mobile.html' : 'desktop.html', window.location.href);
+        terrestrialUrl.searchParams.set('device', device);
+        terrestrialOption.href = terrestrialUrl.href;
+
+        const aerialUrl = new URL('https://eaguirre25.github.io/AEREO_2026_FERIACHS/');
+        aerialUrl.searchParams.set('device', device);
+        aerialUrl.searchParams.set('source', 'comocreamos');
+        aerialOption.href = aerialUrl.href;
+
+        transportChoice.hidden = false;
+        transportChoice.setAttribute('aria-hidden', 'false');
+        terrestrialOption.focus();
+      };
+
+      versionLinks.forEach(link => link.addEventListener('click', event => {
+        event.preventDefault();
+        showTransportChoice(link.dataset.device, link);
+      }));
+
+      transportBack.addEventListener('click', () => {
+        transportChoice.hidden = true;
+        transportChoice.setAttribute('aria-hidden', 'true');
+        selectedVersionLink?.focus();
+      });
+
+      document.addEventListener('keydown', event => {
+        if (event.key === 'Escape' && !transportChoice.hidden) transportBack.click();
+      });
+
       const finish = () => loading.classList.add('hidden');
       if (image.complete) finish();
       else {
