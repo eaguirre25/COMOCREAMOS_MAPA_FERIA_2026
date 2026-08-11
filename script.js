@@ -1625,7 +1625,6 @@ document.addEventListener('DOMContentLoaded', () => {
         bus.style.transform = `translateY(-85%) rotate(${busConf.rot}deg)`;
         pinwheelDiv.appendChild(smoke);
         pinwheelDiv.appendChild(bus);
-        pinwheelDiv.appendChild(postaScreenEl);
         pinwheelDiv.style.display = 'block';
         if (coord) mainPinwheelMarker.setLngLat(coord);
         setVehicleMarkerZ('bus');
@@ -1640,7 +1639,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!pinwheelDiv) return;
         clearFloatingTrainMarkers();
         pinwheelDiv.innerHTML = '';
-        pinwheelDiv.appendChild(postaScreenEl);
         const conf = getTrainConfig();
         const trainContainer = document.createElement('div');
         trainContainer.className = 'train-container';
@@ -1897,16 +1895,11 @@ document.addEventListener('DOMContentLoaded', () => {
         postaScreenEl.setAttribute('aria-label', `Abrir materiales de ${postasText[index] || 'la posta'}`);
     }
 
-    function positionPostaScreen(index) {
+    function positionPostaScreen() {
         if (!postaScreenEl) return;
         postaScreenEl.style.left = '';
-        if (index <= 1) {
-            postaScreenEl.style.bottom = 'auto';
-            postaScreenEl.style.top = '220px';
-        } else {
-            postaScreenEl.style.top = 'auto';
-            postaScreenEl.style.bottom = index === 2 ? '-400px' : '-240px';
-        }
+        postaScreenEl.style.top = '';
+        postaScreenEl.style.bottom = '';
     }
 
     function showJourneyScenery(includeFinalLocality = false) {
@@ -2221,7 +2214,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 showPostaModal(currentPathIndex);
             }
         };
-        pinwheelDiv.appendChild(postaScreenEl);
+        // El cartel es interfaz de pantalla, no parte del marcador que se mueve por el mapa.
+        // Mantenerlo fuera del vehículo evita que cambie de posición o quede recortado según
+        // la posta, el zoom o el modelo 3D que esté activo.
+        document.getElementById('screen-3')?.appendChild(postaScreenEl);
 
         mainPinwheelMarker = new maplibregl.Marker({ element: pinwheelDiv, anchor: 'center' }).setLngLat(p1Coord).addTo(map);
 
@@ -2650,10 +2646,9 @@ document.addEventListener('DOMContentLoaded', () => {
     window.navigateToPhase = async function navigateToPhase(forward) {
         if (isMoving) return;
 
-        // Keep cartel visible during Posta 1→2 transit so it follows the bus
-        if (!(forward && currentPathIndex === 0)) {
-            postaScreenEl.classList.remove('visible');
-        }
+        // Durante el viaje se muestra el texto del tramo; el cartel reaparece al llegar.
+        // Así ambas capas nunca compiten por el mismo espacio, especialmente en móvil.
+        postaScreenEl.classList.remove('visible');
 
         if (forward) {
             if (mapPhase === 0) {
@@ -2696,7 +2691,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 setPostaScreenContent(0);
                 positionPostaScreen(0);
-                pinwheelDiv.appendChild(postaScreenEl);
                 setTimeout(() => postaScreenEl.classList.add('visible'), 100);
                 currentPathIndex = 0;
 
@@ -2822,7 +2816,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     postaScreenEl.style.cursor = 'pointer';
                     positionPostaScreen(currentPathIndex);
                     postaScreenEl.classList.add('visible');
-                    pinwheelDiv.appendChild(postaScreenEl);
                 }
 
                 setVehiclePlayback(moveMode, true);

@@ -246,7 +246,7 @@ button:focus-visible,
     }
 
     .posta-screen {
-        --posta-vertical-lift: 112px;
+        bottom: calc(132px + var(--safe-bottom));
         min-width: min(82vw, 520px);
         max-width: 90vw;
         white-space: normal;
@@ -433,6 +433,10 @@ button:focus-visible,
 }
 
 @media (max-width: 932px) and (orientation: landscape) {
+    .posta-screen {
+        bottom: calc(76px + var(--safe-bottom));
+    }
+
     .layout-container {
         padding:
             calc(52px + var(--safe-top))

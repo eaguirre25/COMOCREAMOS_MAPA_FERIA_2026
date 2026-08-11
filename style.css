@@ -603,12 +603,11 @@ button,
 
 /* Posta Screen Overlay */
 .posta-screen {
-    --posta-vertical-lift: 100px;
-    position: absolute;
-    bottom: -90px;
+    position: fixed;
+    bottom: calc(140px + env(safe-area-inset-bottom, 0px));
     top: auto;
     left: 50%;
-    transform: translateX(-50%) translateY(calc(-1 * var(--posta-vertical-lift))) scale(0.49);
+    transform: translateX(-50%) scale(0.49);
     transform-origin: center bottom;
     background: rgba(0, 20, 40, 0.85);
     border: 2px solid #0ff;
@@ -633,11 +632,11 @@ button,
 }
 .posta-screen:hover {
     box-shadow: 0 0 40px rgba(0,255,255,1);
-    transform: translateX(-50%) translateY(calc(-1 * var(--posta-vertical-lift))) scale(0.72);
+    transform: translateX(-50%) scale(0.72);
 }
 .posta-screen.visible {
     opacity: 1;
-    transform: translateX(-50%) translateY(calc(-1 * var(--posta-vertical-lift))) scale(0.7);
+    transform: translateX(-50%) scale(0.7);
 }
 .posta-screen:focus-visible {
     outline: 3px solid #fff;
@@ -1018,7 +1017,7 @@ button,
 /* Embedded Modal — ocupa casi todo el viewport para que las placas no se corten */
 #embedded-modal { position: fixed; top: 8px; left: 8px; right: 8px; bottom: 8px; width: auto; height: auto; max-width: none; max-height: none; transform: none; background: rgba(8, 12, 18, 0.98); border: 2px solid rgba(255,255,255,0.85); border-radius: 8px; z-index: 12000; display: flex; flex-direction: column; padding: 8px 10px 10px; color: white; font-family: 'Faustina', Orbitron, sans-serif; box-shadow: 0 0 50px rgba(255,255,255,0.28); pointer-events: auto; overflow: hidden; }
 #embedded-modal.hidden { display: none; }
-#btn-close-modal { position: absolute; top: 8px; right: 8px; z-index: 3; background: #ff0044; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 7px; font-size: 13px; font-weight: bold; font-family: 'Faustina', sans-serif; }
+#btn-close-modal { position: absolute; top: 8px; right: 8px; z-index: 12002; background: #ff0044; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 7px; font-size: 13px; font-weight: bold; font-family: 'Faustina', sans-serif; }
 #btn-close-modal:hover { background: #ff3366; box-shadow: 0 0 15px #ff0044; }
 #modal-title { flex: 0 0 auto; font-size: clamp(16px, 1.75vw, 26px); line-height: 1.05; margin: 2px 104px 6px 0 !important; min-height: 28px; }
 #modal-body { margin-top: 0; font-family: 'Faustina', sans-serif; font-size: 18px; overflow: hidden; flex: 1 1 auto; min-height: 0; display: flex; }
@@ -1026,7 +1025,7 @@ button,
     width: 100%;
     height: 100%;
     display: grid;
-    grid-template-rows: minmax(0, 1fr) 18px;
+    grid-template-rows: minmax(0, 1fr) 26px;
     gap: 4px;
     min-height: 0;
 }
@@ -1043,10 +1042,12 @@ button,
     padding: 4px 50px;
 }
 .slide-stage img {
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
     max-width: 100%;
     max-height: 100%;
-    width: auto;
-    height: auto;
     object-fit: contain;
     display: block;
 }
@@ -1128,7 +1129,9 @@ button,
 body.posta-modal-open #btn-fullscreen,
 body.posta-modal-open #btn-main-menu,
 body.posta-modal-open .map-nav,
-body.posta-modal-open .restart-trigger-btn { display: none !important; }
+body.posta-modal-open .restart-trigger-btn,
+body.posta-modal-open .posta-screen,
+body.posta-modal-open .inter-posta-text { display: none !important; }
 
 .time-block { display: flex; flex-direction: column; align-items: center; }
 .time-sub { font-size: 17px; color: #111; text-shadow: none; margin-top: -5px; font-family: 'Faustina', sans-serif; letter-spacing: 2px; font-weight: 900; }
