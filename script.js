@@ -2499,10 +2499,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const line = turf.lineString(pathLine.coordinates);
         const distance = turf.length(line, { units: 'kilometers' });
         
-        // Calculate realistic frames (speed) based on distance
-        // Train: 50 km/h, Bus: 34 km/h, Drone: 100 km/h
+        // Calculate realistic frames (speed) based on distance.
+        // El tren se mantiene deliberadamente más pausado para poder leer el mapa.
         let speedKmh = 34;
-        if (mode === 'train') speedKmh = 50;
+        if (mode === 'train') speedKmh = 38;
         if (mode === 'flight') speedKmh = 100;
         
         // Time lapse multiplier: keep the route dynamic and light enough for mobile.
@@ -2512,8 +2512,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const durationHours = distance / (speedKmh * SIMULATION_SPEEDUP);
         const durationSecs = durationHours * 3600;
         
-        // Keep travel readable but lighter on low-end phones.
-        const clampedSecs = Math.max(2.2, Math.min(12, durationSecs));
+        // Keep travel readable but lighter on low-end phones. El tren conserva un mínimo
+        // más largo para que incluso las estaciones cercanas se recorran con calma.
+        const minimumTravelSecs = mode === 'train' ? 3.4 : 2.2;
+        const clampedSecs = Math.max(minimumTravelSecs, Math.min(12, durationSecs));
         
         const totalFrames = Math.floor(clampedSecs * 30);
         
