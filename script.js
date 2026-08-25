@@ -11,6 +11,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const preloadStatus = document.getElementById('preload-status');
     const DEPOT3_VERTICAL_OFFSET = 52;
 
+    const posta1Slides = [
+        'assets/posta1-slides/slide-01.webp',
+        'assets/posta1-slides/slide-02.webp'
+    ];
     const posta2Slides = [
         'assets/posta2-slides/slide-01.webp',
         'assets/posta2-slides/slide-02.webp',
@@ -20,7 +24,9 @@ document.addEventListener('DOMContentLoaded', () => {
         'assets/posta2-slides/slide-06.webp',
         'assets/posta2-slides/slide-07.webp'
     ];
-    let posta2SlideIndex = 0;
+    const postaSlides = [posta1Slides, posta2Slides];
+    let materialSlideIndex = 0;
+    let activeMaterialPostaIndex = -1;
 
     const criticalPreloadTargets = [
         'CIENCIA Y FICCION.png',
@@ -35,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'colectivo_animado.webm',
         'posta1.gif',
         'posta2.webm',
+        posta1Slides[0],
         posta2Slides[0]
     ];
 
@@ -49,6 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'malaver.gif',
         'chilavert.gif',
         'jose_l_suarez.gif',
+        ...posta1Slides.slice(1),
         ...posta2Slides.slice(1)
     ];
 
@@ -1803,28 +1811,41 @@ document.addEventListener('DOMContentLoaded', () => {
         window.isAnimationPaused = false;
     });
 
-    function renderPosta2Slide() {
+    function renderPostaSlide() {
         const body = document.getElementById('modal-body');
         if (!body) return;
-        const src = posta2Slides[posta2SlideIndex];
-        const prevDisabled = posta2SlideIndex === 0 ? ' disabled' : '';
-        const nextDisabled = posta2SlideIndex === posta2Slides.length - 1 ? ' disabled' : '';
+        const slides = postaSlides[activeMaterialPostaIndex];
+        if (!slides?.length) return;
+        const src = slides[materialSlideIndex];
+        const prevDisabled = materialSlideIndex === 0 ? ' disabled' : '';
+        const nextDisabled = materialSlideIndex === slides.length - 1 ? ' disabled' : '';
         body.innerHTML = `
             <div class="slide-viewer">
                 <div class="slide-stage">
                     <button class="slide-nav-btn slide-prev" data-slide-dir="-1"${prevDisabled} aria-label="Retroceder material">&lt;</button>
-                    <img id="posta2-slide-img" src="${src}" alt="Placa ${posta2SlideIndex + 1}">
+                    <img class="posta-slide-img" src="${src}" alt="Material de la Posta ${activeMaterialPostaIndex + 1}, placa ${materialSlideIndex + 1} de ${slides.length}">
                     <button class="slide-nav-btn slide-next" data-slide-dir="1"${nextDisabled} aria-label="Avanzar material">&gt;</button>
                 </div>
-                <div class="slide-footer">${posta2SlideIndex + 1} / ${posta2Slides.length}</div>
+                <div class="slide-footer" aria-live="polite">${materialSlideIndex + 1} / ${slides.length}</div>
             </div>
         `;
         body.querySelectorAll('.slide-nav-btn').forEach(btn => {
             btn.addEventListener('click', event => {
                 event.stopPropagation();
-                if (!btn.disabled) stepPosta2Slide(Number(btn.dataset.slideDir));
+                if (!btn.disabled) stepPostaSlide(Number(btn.dataset.slideDir));
             });
         });
+        const stage = body.querySelector('.slide-stage');
+        let touchStartX = null;
+        stage?.addEventListener('touchstart', event => {
+            touchStartX = event.changedTouches[0]?.clientX ?? null;
+        }, { passive: true });
+        stage?.addEventListener('touchend', event => {
+            if (touchStartX === null) return;
+            const deltaX = (event.changedTouches[0]?.clientX ?? touchStartX) - touchStartX;
+            touchStartX = null;
+            if (Math.abs(deltaX) >= 48) stepPostaSlide(deltaX < 0 ? 1 : -1);
+        }, { passive: true });
     }
 
     function showPostaModal(index) {
@@ -1835,17 +1856,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!modal || !title || !body) return;
         title.innerText = postasText[index] || 'Información de Posta';
         modal.dataset.postaIndex = String(index);
-        if (index === 0) {
-            body.innerHTML = `
-                <section class="posta-material-panel" aria-label="Materiales de Posta 1">
-                    <h3>Punto de partida</h3>
-                    <p>En esta posta nos preguntamos: ¿qué tema nos interesa? ¿Cuál nos motiva? ¿Qué nos da intriga o llama la atención? ¿Qué queremos saber?</p>
-                </section>
-            `;
-        } else if (index === 1) {
-            posta2SlideIndex = 0;
-            renderPosta2Slide();
+        if (postaSlides[index]?.length) {
+            activeMaterialPostaIndex = index;
+            materialSlideIndex = 0;
+            renderPostaSlide();
         } else {
+            activeMaterialPostaIndex = -1;
             body.innerHTML = 'Este es el contenido de la posta.';
         }
         modal.classList.remove('hidden');
@@ -1853,11 +1869,12 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('btn-close-modal')?.focus();
     }
 
-    function stepPosta2Slide(direction) {
+    function stepPostaSlide(direction) {
         const modal = document.getElementById('embedded-modal');
-        if (!modal || modal.classList.contains('hidden') || modal.dataset.postaIndex !== '1') return false;
-        posta2SlideIndex = Math.max(0, Math.min(posta2Slides.length - 1, posta2SlideIndex + direction));
-        renderPosta2Slide();
+        const slides = postaSlides[activeMaterialPostaIndex];
+        if (!modal || modal.classList.contains('hidden') || !slides?.length) return false;
+        materialSlideIndex = Math.max(0, Math.min(slides.length - 1, materialSlideIndex + direction));
+        renderPostaSlide();
         return true;
     }
 
@@ -2883,14 +2900,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const embeddedModal = document.getElementById('embedded-modal');
 
         if (embeddedModal && !embeddedModal.classList.contains('hidden')) {
-            if (embeddedModal.dataset.postaIndex === '1' && e.key === 'ArrowRight') {
+            if (activeMaterialPostaIndex >= 0 && e.key === 'ArrowRight') {
                 e.preventDefault();
-                stepPosta2Slide(1);
+                stepPostaSlide(1);
                 return;
             }
-            if (embeddedModal.dataset.postaIndex === '1' && e.key === 'ArrowLeft') {
+            if (activeMaterialPostaIndex >= 0 && e.key === 'ArrowLeft') {
                 e.preventDefault();
-                stepPosta2Slide(-1);
+                stepPostaSlide(-1);
                 return;
             }
             if (e.key === 'Escape') {
