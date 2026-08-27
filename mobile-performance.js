@@ -4,11 +4,14 @@
     const mobileQuery = window.matchMedia('(max-width: 932px)');
     const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     const coarsePointerQuery = window.matchMedia('(pointer: coarse)');
+    const requestedDevice = new URLSearchParams(window.location.search).get('device');
 
     function updateDeviceClasses() {
         const root = document.documentElement;
-        const lowPowerMode = mobileQuery.matches || reducedMotionQuery.matches || coarsePointerQuery.matches;
-        root.classList.toggle('mobile-layout', mobileQuery.matches);
+        const selectedMobile = requestedDevice === 'mobile';
+        const lowPowerMode = selectedMobile || mobileQuery.matches || reducedMotionQuery.matches || coarsePointerQuery.matches;
+        root.dataset.experienceMode = requestedDevice === 'desktop' ? 'desktop' : 'mobile';
+        root.classList.toggle('mobile-layout', selectedMobile || mobileQuery.matches);
         root.classList.toggle('reduced-motion', reducedMotionQuery.matches);
         root.classList.toggle('low-power-mode', lowPowerMode);
     }

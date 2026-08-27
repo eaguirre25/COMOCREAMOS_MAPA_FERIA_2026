@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const screen2 = document.getElementById('screen-2');
     const screen3 = document.getElementById('screen-3');
     const rollWrapper = document.getElementById('roll-wrapper');
+    const terrestrialIntroPlates = [...document.querySelectorAll('.terrestrial-intro-plate')];
     const postaBlackScreen = document.getElementById('posta-black-screen');
     const postaBlackTitle = document.getElementById('posta-black-title');
     const preloadStatus = document.getElementById('preload-status');
@@ -77,10 +78,22 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
     let materialSlideIndex = 0;
     let activeMaterialPostaIndex = -1;
+    let terrestrialIntroStep = 0;
+
+    function renderTerrestrialIntroStep() {
+        rollWrapper.hidden = terrestrialIntroStep !== 0;
+        terrestrialIntroPlates.forEach((plate, index) => {
+            plate.hidden = terrestrialIntroStep !== index + 1;
+        });
+        const next = document.getElementById('btn-next-2');
+        if (next) next.textContent = terrestrialIntroStep < terrestrialIntroPlates.length ? 'Siguiente' : 'Iniciar recorrido';
+    }
 
     const criticalPreloadTargets = [
         'CIENCIA Y FICCION.png',
         'El camino de la investigación.png',
+        'assets/intro-plates/intro-01.webp',
+        'assets/intro-plates/intro-02.webp',
         'assets/feria-fondo.jpg'
     ];
 
@@ -1974,6 +1987,32 @@ document.addEventListener('DOMContentLoaded', () => {
         "Posta 6: Metodología",
         "Posta 7: Conclusiones"
     ];
+    const terrestrialRouteNav = document.getElementById('terrestrial-route-nav');
+    const terrestrialRouteButtons = postasText.map((text, index) => {
+        const separator = text.indexOf(':');
+        const stage = separator >= 0 ? text.slice(0, separator) : text;
+        const title = separator >= 0 ? text.slice(separator + 1).trim() : '';
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.style.setProperty('--posta-color', postaColors[index]);
+        button.innerHTML = `<strong>${stage}</strong><small>${title}</small>`;
+        button.setAttribute('aria-label', `Ir a ${text}`);
+        button.addEventListener('click', () => window.jumpToPosta?.(index));
+        terrestrialRouteNav?.appendChild(button);
+        return button;
+    });
+
+    function syncTerrestrialRouteNav(index) {
+        terrestrialRouteButtons.forEach((button, buttonIndex) => {
+            const active = buttonIndex === index;
+            button.classList.toggle('active', active);
+            if (active) {
+                button.setAttribute('aria-current', 'step');
+                button.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+            } else button.removeAttribute('aria-current');
+        });
+    }
+    syncTerrestrialRouteNav(0);
 
     function setPostaScreenContent(index) {
         if (!postaScreenEl) return;
@@ -2834,6 +2873,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     await moveToPoint(currentPathIndex, nextIndex, moveMode);
                     currentPathIndex = nextIndex;
+                    syncTerrestrialRouteNav(currentPathIndex);
                     
                     if (currentPathIndex === 0 && mapPhase >= 1 && window.posta1MarkerEl) {
                         window.posta1MarkerEl.classList.add('visible');
@@ -2918,6 +2958,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 await moveToPoint(currentPathIndex, prevIndex, moveMode);
                 currentPathIndex = prevIndex;
+                syncTerrestrialRouteNav(currentPathIndex);
                 
                 if (currentPathIndex === 0 && mapPhase >= 1 && window.posta1MarkerEl) {
                     window.posta1MarkerEl.classList.add('visible');
@@ -3029,6 +3070,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (screen1.classList.contains('active')) {
                 screen1.classList.remove('active'); screen2.classList.add('active');
             } else if (screen2.classList.contains('active')) {
+                if (terrestrialIntroStep < terrestrialIntroPlates.length) {
+                    terrestrialIntroStep += 1;
+                    renderTerrestrialIntroStep();
+                    return;
+                }
                 // La cortina tarda 2,5 s. Si el visitante pulsa "siguiente" otra vez
                 // durante ese lapso, conservamos la intención y arrancamos el viaje
                 // apenas el mapa queda activo, en lugar de perder el evento.
@@ -3064,7 +3110,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'ArrowLeft') {
             if (screen2.classList.contains('active')) {
                 if (mapTransitionInProgress) return;
-                screen2.classList.remove('active'); screen1.classList.add('active');
+                if (terrestrialIntroStep > 0) {
+                    terrestrialIntroStep -= 1;
+                    renderTerrestrialIntroStep();
+                } else {
+                    screen2.classList.remove('active'); screen1.classList.add('active');
+                }
             } else if (screen3.classList.contains('active')) {
                 if (!postaBlackScreen.classList.contains('active')) requestPhaseNavigation(false);
             }
@@ -3216,6 +3267,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showJourneyScenery(index >= fullPathArray.length - 1);
         const coord = fullPathArray[index];
         currentPathIndex = index;
+        syncTerrestrialRouteNav(currentPathIndex);
         const color = postaColors[index % postaColors.length];
         setPostaScreenContent(index);
         postaScreenEl.style.borderColor = color;

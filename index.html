@@ -40,6 +40,8 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      animation: portal-breath 12s ease-in-out infinite alternate;
+      transform-origin: center;
       user-select: none;
       -webkit-user-drag: none;
     }
@@ -257,6 +259,11 @@
       box-shadow: 0 0 24px rgba(0,239,255,.28);
       backdrop-filter: blur(12px);
     }
+    @keyframes portal-breath {
+      from { transform: scale(1); }
+      to { transform: scale(1.025); }
+    }
+    @media (prefers-reduced-motion: reduce) { .portal-image { animation: none; } }
     .music-toggle {
       width: 42px;
       height: 42px;
