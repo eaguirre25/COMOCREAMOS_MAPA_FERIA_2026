@@ -1015,18 +1015,19 @@ button,
 .inter-posta-text.visible { opacity: 1; bottom: 10%; }
 
 /* Embedded Modal — ocupa casi todo el viewport para que las placas no se corten */
-#embedded-modal { position: fixed; top: 8px; left: 8px; right: 8px; bottom: 8px; width: auto; height: auto; max-width: none; max-height: none; transform: none; background: rgba(8, 12, 18, 0.98); border: 2px solid rgba(255,255,255,0.85); border-radius: 8px; z-index: 12000; display: flex; flex-direction: column; padding: 8px 10px 10px; color: white; font-family: 'Faustina', Orbitron, sans-serif; box-shadow: 0 0 50px rgba(255,255,255,0.28); pointer-events: auto; overflow: hidden; }
+#embedded-modal { position: fixed; inset: 4px; width: auto; height: auto; max-width: none; max-height: none; transform: none; background: rgba(8, 12, 18, 0.99); border: 1px solid rgba(255,255,255,0.85); border-radius: 6px; z-index: 12000; display: flex; flex-direction: column; padding: 4px; color: white; font-family: 'Faustina', Orbitron, sans-serif; box-shadow: 0 0 50px rgba(255,255,255,0.28); pointer-events: auto; overflow: hidden; }
 #embedded-modal.hidden { display: none; }
 #btn-close-modal { position: absolute; top: 8px; right: 8px; z-index: 12002; background: #ff0044; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 7px; font-size: 13px; font-weight: bold; font-family: 'Faustina', sans-serif; }
 #btn-close-modal:hover { background: #ff3366; box-shadow: 0 0 15px #ff0044; }
-#modal-title { flex: 0 0 auto; font-size: clamp(16px, 1.75vw, 26px); line-height: 1.05; margin: 2px 104px 6px 0 !important; min-height: 28px; }
-#modal-body { margin-top: 0; font-family: 'Faustina', sans-serif; font-size: 18px; overflow: hidden; flex: 1 1 auto; min-height: 0; display: flex; }
+#modal-title { position: absolute; top: 8px; left: 10px; z-index: 12001; max-width: calc(100% - 150px); margin: 0 !important; border-radius: 6px; padding: 4px 8px; background: rgba(3,10,16,0.76); font-size: clamp(14px, 1.5vw, 22px); line-height: 1.05; pointer-events: none; }
+#modal-body { margin: 0; width: 100%; height: 100%; font-family: 'Faustina', sans-serif; font-size: 18px; overflow: hidden; flex: 1 1 auto; min-height: 0; display: flex; }
 .slide-viewer {
+    position: relative;
     width: 100%;
     height: 100%;
     display: grid;
-    grid-template-rows: minmax(0, 1fr) 26px;
-    gap: 4px;
+    grid-template-rows: minmax(0, 1fr);
+    gap: 0;
     min-height: 0;
 }
 .slide-stage {
@@ -1037,9 +1038,9 @@ button,
     justify-content: center;
     background: #05070c;
     border: 1px solid rgba(255,255,255,0.16);
-    border-radius: 8px;
+    border-radius: 4px;
     overflow: hidden;
-    padding: 4px 50px;
+    padding: 2px 50px;
 }
 .slide-stage img {
     width: 100%;
@@ -1052,9 +1053,17 @@ button,
     display: block;
 }
 .slide-footer {
+    position: absolute;
+    left: 50%;
+    bottom: 8px;
+    z-index: 3;
     display: flex;
+    transform: translateX(-50%);
     align-items: center;
     justify-content: center;
+    border-radius: 999px;
+    padding: 4px 10px;
+    background: rgba(0,12,22,0.78);
     color: rgba(255,255,255,0.72);
     font-size: 13px;
     line-height: 1.2;
