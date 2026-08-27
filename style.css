@@ -22,6 +22,13 @@
     box-sizing: border-box;
     font-family: 'Faustina', serif;
 }
+html body,
+html body button,
+html body a,
+html body input,
+html body output,
+html body select,
+html body textarea { font-family: 'Faustina', serif !important; }
 
 body, html {
     width: 100%;
@@ -138,8 +145,19 @@ button,
     gap: 20px;
 }
 .map-nav {
-    bottom: 20px;
+    top: 238px;
     right: 20px;
+    bottom: auto;
+    width: 205px;
+    flex-direction: column;
+    align-items: stretch !important;
+    gap: 10px !important;
+}
+.map-nav .nav-btn {
+    width: 100%;
+    min-height: 52px;
+    padding: 10px 12px;
+    font-size: 15px;
 }
 .terrestrial-route-nav {
     position: absolute;
@@ -1023,15 +1041,21 @@ button,
 
 @media (max-width: 932px) {
     .terrestrial-route-nav {
-        bottom: 88px;
+        bottom: 4px;
         display: flex;
         padding: 5px;
     }
     .terrestrial-route-nav button { flex: 0 0 118px; min-height: 54px; }
     .terrestrial-route-nav strong { font-size: 14px; }
     .terrestrial-route-nav small { font-size: 9px; }
-    .map-nav { bottom: 12px; right: 12px; gap: 6px !important; }
-    .map-nav .nav-btn { padding: 10px 12px; font-size: 13px; letter-spacing: 1px; }
+    #screen-3 .map-nav {
+        top: calc(154px + env(safe-area-inset-top, 0px));
+        right: calc(8px + env(safe-area-inset-right, 0px));
+        bottom: auto;
+        width: 155px;
+        gap: 6px !important;
+    }
+    #screen-3 .map-nav .nav-btn { min-height: 44px; padding: 8px 9px; font-size: 12px; letter-spacing: .5px; }
 }
 .complete-pdf-download {
     display: inline-grid;
