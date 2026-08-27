@@ -45,6 +45,14 @@ document.addEventListener('DOMContentLoaded', () => {
         { length: 3 },
         (_, index) => `assets/parada-b-slides/slide-${String(index + 1).padStart(2, '0')}.webp`
     );
+    const posta6Slides = Array.from(
+        { length: 4 },
+        (_, index) => `assets/posta-6/slide-${String(index + 1).padStart(2, '0')}.webp`
+    );
+    const posta7Slides = Array.from(
+        { length: 2 },
+        (_, index) => `assets/posta-7/slide-${String(index + 1).padStart(2, '0')}.webp`
+    );
     const postaSlides = [
         posta1Slides,
         posta2Slides,
@@ -52,7 +60,9 @@ document.addEventListener('DOMContentLoaded', () => {
         posta4Slides,
         posta5Slides,
         paradaASlides,
-        paradaBSlides
+        paradaBSlides,
+        posta6Slides,
+        posta7Slides
     ];
     let materialSlideIndex = 0;
     let activeMaterialPostaIndex = -1;
@@ -76,7 +86,9 @@ document.addEventListener('DOMContentLoaded', () => {
         posta4Slides[0],
         posta5Slides[0],
         paradaASlides[0],
-        paradaBSlides[0]
+        paradaBSlides[0],
+        posta6Slides[0],
+        posta7Slides[0]
     ];
 
     const deferredPreloadTargets = [
@@ -96,7 +108,9 @@ document.addEventListener('DOMContentLoaded', () => {
         ...posta4Slides.slice(1),
         ...posta5Slides.slice(1),
         ...paradaASlides.slice(1),
-        ...paradaBSlides.slice(1)
+        ...paradaBSlides.slice(1),
+        ...posta6Slides.slice(1),
+        ...posta7Slides.slice(1)
     ];
 
     function updatePreloadStatus(done, total) {
@@ -1935,8 +1949,8 @@ document.addEventListener('DOMContentLoaded', () => {
         "Posta 5: Objetivos",
         "Parada A: Hipótesis",
         "Parada B: Antecedentes",
-        "Posta 8: Equipaje metodológico",
-        "Posta 9: Conclusiones"
+        "Posta 6: Metodología",
+        "Posta 7: Conclusiones"
     ];
 
     function setPostaScreenContent(index) {
@@ -1997,7 +2011,7 @@ document.addEventListener('DOMContentLoaded', () => {
             { id: 'san-martin-map-boundary-core', type: 'line', source: 'sm-locality-shape', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': ['coalesce', ['get', 'fill'], '#ffffff'], 'line-width': 4, 'line-opacity': 0.76 } },
             { id: 'san-martin-map-locality-labels', type: 'symbol', source: 'sm-locality-shape', layout: { 'text-field': ['get', 'Localidad'], 'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'], 'text-size': 24, 'text-anchor': 'center', 'text-allow-overlap': true, 'text-ignore-placement': true }, paint: { 'text-color': '#ffffff', 'text-halo-color': '#001018', 'text-halo-width': 4, 'text-opacity': 0 } },
             { id: 'san-martin-active-fill', type: 'fill', source: 'sm-locality-shape', paint: { 'fill-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'fill-opacity': 0.25 }, filter: ['==', 'id', -1] },
-            { id: 'san-martin-active-labels', type: 'symbol', source: 'sm-locality-shape', layout: { 'text-field': ['get', 'Localidad'], 'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'], 'text-size': 24, 'text-anchor': 'center' }, paint: { 'text-color': '#ffffff', 'text-halo-color': '#000000', 'text-halo-width': 2, 'text-opacity': 0 }, filter: ['==', 'id', -1] },
+            { id: 'san-martin-active-labels', type: 'symbol', source: 'sm-locality-shape', layout: { 'visibility': 'none', 'text-field': ['get', 'Localidad'], 'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'], 'text-size': 24, 'text-anchor': 'center' }, paint: { 'text-color': '#ffffff', 'text-halo-color': '#000000', 'text-halo-width': 2, 'text-opacity': 0 }, filter: ['==', 'id', -1] },
             { id: 'san-martin-base-glow', type: 'line', source: 'sm-locality-shape', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'line-width': 8, 'line-blur': 6, 'line-opacity': 0.42 } },
             { id: 'san-martin-active-glow', type: 'line', source: 'sm-locality-shape', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': ['coalesce', ['get', 'fill'], '#29b6f6'], 'line-width': 18, 'line-blur': 12, 'line-opacity': 0.68 }, filter: ['==', 'id', -1] },
             { id: 'san-martin-core', type: 'line', source: 'sm-locality-shape', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': '#ffffff', 'line-width': 2, 'line-opacity': 0.7 } },
@@ -3052,7 +3066,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- Countdown Timer Logic ---
-    const targetDate = new Date('2026-10-18T00:00:00');
+    const targetDate = new Date('2026-10-15T08:00:00-03:00');
     function updateTimer() {
         const now = new Date();
         const diff = targetDate - now;

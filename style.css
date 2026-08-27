@@ -881,6 +881,7 @@ button,
 
 /* Locality name overlay — pequeño, izquierda */
 .locality-name-display {
+    display: none !important;
     position: fixed;
     bottom: 80px;
     left: 20px;
