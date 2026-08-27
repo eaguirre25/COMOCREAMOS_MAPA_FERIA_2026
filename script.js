@@ -25,7 +25,19 @@ document.addEventListener('DOMContentLoaded', () => {
         'assets/posta3-slides/slide-02.webp',
         'assets/posta3-slides/slide-03.webp'
     ];
-    const postaSlides = [posta1Slides, posta2Slides, posta3Slides];
+    const posta4Slides = [
+        'assets/posta4-slides/slide-01.webp',
+        'assets/posta4-slides/slide-02.webp',
+        'assets/posta4-slides/slide-03.webp',
+        'assets/posta4-slides/slide-04.webp',
+        'assets/posta4-slides/slide-05.webp'
+    ];
+    const posta5Slides = [
+        'assets/posta5-slides/slide-01.webp',
+        'assets/posta5-slides/slide-02.webp',
+        'assets/posta5-slides/slide-03.webp'
+    ];
+    const postaSlides = [posta1Slides, posta2Slides, posta3Slides, posta4Slides, posta5Slides];
     let materialSlideIndex = 0;
     let activeMaterialPostaIndex = -1;
 
@@ -44,7 +56,9 @@ document.addEventListener('DOMContentLoaded', () => {
         'posta2.webm',
         posta1Slides[0],
         posta2Slides[0],
-        posta3Slides[0]
+        posta3Slides[0],
+        posta4Slides[0],
+        posta5Slides[0]
     ];
 
     const deferredPreloadTargets = [
@@ -60,7 +74,9 @@ document.addEventListener('DOMContentLoaded', () => {
         'jose_l_suarez.gif',
         ...posta1Slides.slice(1),
         ...posta2Slides.slice(1),
-        ...posta3Slides.slice(1)
+        ...posta3Slides.slice(1),
+        ...posta4Slides.slice(1),
+        ...posta5Slides.slice(1)
     ];
 
     function updatePreloadStatus(done, total) {
