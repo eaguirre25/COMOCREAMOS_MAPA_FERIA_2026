@@ -37,7 +37,23 @@ document.addEventListener('DOMContentLoaded', () => {
         'assets/posta5-slides/slide-02.webp',
         'assets/posta5-slides/slide-03.webp'
     ];
-    const postaSlides = [posta1Slides, posta2Slides, posta3Slides, posta4Slides, posta5Slides];
+    const paradaASlides = Array.from(
+        { length: 5 },
+        (_, index) => `assets/parada-a-slides/slide-${String(index + 1).padStart(2, '0')}.webp`
+    );
+    const paradaBSlides = Array.from(
+        { length: 3 },
+        (_, index) => `assets/parada-b-slides/slide-${String(index + 1).padStart(2, '0')}.webp`
+    );
+    const postaSlides = [
+        posta1Slides,
+        posta2Slides,
+        posta3Slides,
+        posta4Slides,
+        posta5Slides,
+        paradaASlides,
+        paradaBSlides
+    ];
     let materialSlideIndex = 0;
     let activeMaterialPostaIndex = -1;
 
@@ -58,7 +74,9 @@ document.addEventListener('DOMContentLoaded', () => {
         posta2Slides[0],
         posta3Slides[0],
         posta4Slides[0],
-        posta5Slides[0]
+        posta5Slides[0],
+        paradaASlides[0],
+        paradaBSlides[0]
     ];
 
     const deferredPreloadTargets = [
@@ -76,7 +94,9 @@ document.addEventListener('DOMContentLoaded', () => {
         ...posta2Slides.slice(1),
         ...posta3Slides.slice(1),
         ...posta4Slides.slice(1),
-        ...posta5Slides.slice(1)
+        ...posta5Slides.slice(1),
+        ...paradaASlides.slice(1),
+        ...paradaBSlides.slice(1)
     ];
 
     function updatePreloadStatus(done, total) {
@@ -1842,7 +1862,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="slide-viewer">
                 <div class="slide-stage">
                     <button class="slide-nav-btn slide-prev" data-slide-dir="-1"${prevDisabled} aria-label="Retroceder material">&lt;</button>
-                    <img class="posta-slide-img" src="${src}" alt="Material de la Posta ${activeMaterialPostaIndex + 1}, placa ${materialSlideIndex + 1} de ${slides.length}">
+                    <img class="posta-slide-img" src="${src}" alt="Material de ${postasText[activeMaterialPostaIndex]?.split(':')[0] || 'la etapa'}, placa ${materialSlideIndex + 1} de ${slides.length}">
                     <button class="slide-nav-btn slide-next" data-slide-dir="1"${nextDisabled} aria-label="Avanzar material">&gt;</button>
                 </div>
                 <div class="slide-footer" aria-live="polite">${materialSlideIndex + 1} / ${slides.length}</div>
@@ -1913,8 +1933,8 @@ document.addEventListener('DOMContentLoaded', () => {
         "Posta 3: Situación problemática",
         "Posta 4: Pregunta de investigación",
         "Posta 5: Objetivos",
-        "Posta 6: Hipótesis",
-        "Posta 7: Antecedentes",
+        "Parada A: Hipótesis",
+        "Parada B: Antecedentes",
         "Posta 8: Equipaje metodológico",
         "Posta 9: Conclusiones"
     ];
