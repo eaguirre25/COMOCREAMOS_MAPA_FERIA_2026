@@ -239,6 +239,33 @@
     @media (prefers-reduced-motion: reduce) {
       .hotspot, .loading { transition: none; }
     }
+    .music-control {
+      position: fixed;
+      right: max(18px, env(safe-area-inset-right));
+      bottom: max(18px, env(safe-area-inset-bottom));
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      border: 1px solid rgba(255,255,255,.76);
+      border-radius: 999px;
+      padding: 7px 11px 7px 7px;
+      background: rgba(3,12,18,.86);
+      box-shadow: 0 0 24px rgba(0,239,255,.28);
+      backdrop-filter: blur(12px);
+    }
+    .music-toggle {
+      width: 42px;
+      height: 42px;
+      border: 0;
+      border-radius: 50%;
+      background: linear-gradient(135deg,#00c6ff,#4455ff);
+      color: #fff;
+      font-size: 22px;
+      cursor: pointer;
+    }
+    .music-volume { width: 105px; accent-color: #00eaff; cursor: pointer; }
+    .music-control label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
   </style>
 </head>
 <body>
@@ -271,6 +298,12 @@
       </div>
     </div>
   </section>
+  <div class="music-control" aria-label="Control de música de fondo">
+    <button id="music-toggle" class="music-toggle" type="button" aria-pressed="false" aria-label="Silenciar música">🔊</button>
+    <label for="music-volume">Volumen</label>
+    <input id="music-volume" class="music-volume" type="range" min="0" max="1" step="0.05" value="0.35" aria-label="Volumen de la música">
+  </div>
+  <audio id="portal-music" src="assets/audio/Noche_de_Tablado.mp3" preload="auto" loop></audio>
   <div class="loading" id="loading" role="status">Preparando la portada…</div>
   <script>
     (() => {
@@ -281,8 +314,58 @@
       const terrestrialOption = document.getElementById('terrestrial-option');
       const aerialOption = document.getElementById('aerial-option');
       const transportBack = document.getElementById('transport-back');
+      const portalMusic = document.getElementById('portal-music');
+      const musicToggle = document.getElementById('music-toggle');
+      const musicVolume = document.getElementById('music-volume');
       const versionLinks = [...document.querySelectorAll('[data-device]')];
       let selectedVersionLink = null;
+      let previousVolume = 0.35;
+
+      portalMusic.volume = previousVolume;
+      const updateMusicControl = () => {
+        const muted = portalMusic.muted || portalMusic.volume === 0;
+        musicToggle.textContent = muted ? '🔇' : '🔊';
+        musicToggle.setAttribute('aria-pressed', String(muted));
+        musicToggle.setAttribute('aria-label', muted ? 'Activar música' : 'Silenciar música');
+      };
+      const tryPlayMusic = () => portalMusic.play().catch(() => {});
+      const unlockMusic = () => {
+        tryPlayMusic();
+        document.removeEventListener('pointerdown', unlockMusic);
+        document.removeEventListener('keydown', unlockMusic);
+      };
+      document.addEventListener('pointerdown', unlockMusic);
+      document.addEventListener('keydown', unlockMusic);
+      tryPlayMusic();
+
+      musicToggle.addEventListener('click', () => {
+        if (portalMusic.paused) {
+          portalMusic.muted = false;
+          portalMusic.volume = previousVolume || 0.35;
+          musicVolume.value = String(portalMusic.volume);
+          tryPlayMusic();
+        } else if (portalMusic.muted || portalMusic.volume === 0) {
+          portalMusic.muted = false;
+          portalMusic.volume = previousVolume || 0.35;
+          musicVolume.value = String(portalMusic.volume);
+          tryPlayMusic();
+        } else {
+          previousVolume = portalMusic.volume;
+          portalMusic.muted = true;
+        }
+        updateMusicControl();
+      });
+
+      musicVolume.addEventListener('input', () => {
+        const volume = Number(musicVolume.value);
+        portalMusic.volume = volume;
+        portalMusic.muted = volume === 0;
+        if (volume > 0) previousVolume = volume;
+        tryPlayMusic();
+        updateMusicControl();
+      });
+
+      [terrestrialOption, aerialOption].forEach(option => option.addEventListener('click', () => portalMusic.pause()));
 
       const showTransportChoice = (device, sourceLink) => {
         selectedVersionLink = sourceLink;

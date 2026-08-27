@@ -64,6 +64,17 @@ document.addEventListener('DOMContentLoaded', () => {
         posta6Slides,
         posta7Slides
     ];
+    const postaPdfs = [
+        'assets/pdfs/Posta-1-Punto-de-partida.pdf',
+        'assets/pdfs/Posta-2-Mirador.pdf',
+        'assets/pdfs/Posta-3-Situacion-problematica.pdf',
+        'assets/pdfs/Posta-4-Pregunta-de-investigacion.pdf',
+        'assets/pdfs/Posta-5-Objetivos.pdf',
+        'assets/pdfs/Parada-A-Hipotesis.pdf',
+        'assets/pdfs/Parada-B-Antecedentes.pdf',
+        'assets/pdfs/Posta-6-Metodologia.pdf',
+        'assets/pdfs/Posta-7-Conclusiones.pdf'
+    ];
     let materialSlideIndex = 0;
     let activeMaterialPostaIndex = -1;
 
@@ -1909,6 +1920,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!modal || !title || !body) return;
         title.innerText = postasText[index] || 'Información de Posta';
         modal.dataset.postaIndex = String(index);
+        let downloadLink = modal.querySelector('.posta-pdf-download');
+        if (!downloadLink) {
+            downloadLink = document.createElement('a');
+            downloadLink.className = 'posta-pdf-download';
+            downloadLink.textContent = '⇩ DESCARGAR PDF';
+            downloadLink.setAttribute('download', '');
+            modal.appendChild(downloadLink);
+        }
+        downloadLink.href = postaPdfs[index] || '#';
+        downloadLink.download = postaPdfs[index]?.split('/').pop() || 'material.pdf';
+        downloadLink.hidden = !postaPdfs[index];
         if (postaSlides[index]?.length) {
             activeMaterialPostaIndex = index;
             materialSlideIndex = 0;
