@@ -145,10 +145,10 @@ button,
     gap: 20px;
 }
 .map-nav {
-    top: 238px;
+    top: auto;
     right: 20px;
-    bottom: auto;
-    width: 205px;
+    bottom: 96px;
+    width: 220px;
     flex-direction: column;
     align-items: stretch !important;
     gap: 10px !important;
@@ -163,7 +163,7 @@ button,
     position: absolute;
     left: 12px;
     right: 12px;
-    bottom: 94px;
+    bottom: 12px;
     z-index: 1001;
     display: grid;
     grid-template-columns: repeat(9, minmax(0, 1fr));
@@ -178,7 +178,7 @@ button,
 }
 .terrestrial-route-nav button {
     min-width: 0;
-    min-height: 58px;
+    min-height: 66px;
     border: 0;
     border-top: 3px solid var(--posta-color);
     padding: 5px 4px;
@@ -188,8 +188,8 @@ button,
 }
 .terrestrial-route-nav strong,
 .terrestrial-route-nav small { display: block; line-height: 1.05; }
-.terrestrial-route-nav strong { color: var(--posta-color); font-size: clamp(12px, 1.2vw, 18px); }
-.terrestrial-route-nav small { margin-top: 3px; font-size: clamp(8px, .72vw, 11px); }
+.terrestrial-route-nav strong { color: var(--posta-color); font-size: clamp(16px, 1.45vw, 22px); }
+.terrestrial-route-nav small { margin-top: 4px; font-size: clamp(11px, .9vw, 14px); }
 .terrestrial-route-nav button.active {
     background: color-mix(in srgb, var(--posta-color) 24%, rgba(5,13,20,.92));
     box-shadow: inset 0 0 0 1px var(--posta-color), 0 0 15px color-mix(in srgb, var(--posta-color) 60%, transparent);
@@ -1045,14 +1045,14 @@ button,
         display: flex;
         padding: 5px;
     }
-    .terrestrial-route-nav button { flex: 0 0 118px; min-height: 54px; }
-    .terrestrial-route-nav strong { font-size: 14px; }
-    .terrestrial-route-nav small { font-size: 9px; }
+    .terrestrial-route-nav button { flex: 0 0 138px; min-height: 68px; }
+    .terrestrial-route-nav strong { font-size: 17px; }
+    .terrestrial-route-nav small { font-size: 11px; }
     #screen-3 .map-nav {
-        top: calc(154px + env(safe-area-inset-top, 0px));
+        top: auto;
         right: calc(8px + env(safe-area-inset-right, 0px));
-        bottom: auto;
-        width: 155px;
+        bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+        width: 165px;
         gap: 6px !important;
     }
     #screen-3 .map-nav .nav-btn { min-height: 44px; padding: 8px 9px; font-size: 12px; letter-spacing: .5px; }

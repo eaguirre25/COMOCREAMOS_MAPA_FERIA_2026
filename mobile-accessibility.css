@@ -376,11 +376,11 @@ button:focus-visible,
 @media (max-width: 932px) {
     #screen-3 .map-nav {
         position: fixed !important;
-        top: calc(154px + var(--safe-top)) !important;
+        top: auto !important;
         left: auto !important;
         right: calc(8px + var(--safe-right)) !important;
-        bottom: auto !important;
-        width: 155px !important;
+        bottom: calc(88px + var(--safe-bottom)) !important;
+        width: 165px !important;
         display: flex !important;
         flex-direction: column !important;
         align-items: stretch !important;
