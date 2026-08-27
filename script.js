@@ -3178,6 +3178,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- PANEL REINICIO (Posta 9) ---
     const restartPanel = document.getElementById('restart-panel');
     const restartGrid = document.getElementById('restart-postas-grid');
+    const restartInner = restartPanel && restartPanel.querySelector('.restart-inner');
+    if (restartInner) {
+        const completePdfDownload = document.createElement('a');
+        completePdfDownload.className = 'complete-pdf-download';
+        completePdfDownload.href = 'assets/pdfs/Recorrido-completo-El-camino-de-la-investigacion.pdf';
+        completePdfDownload.download = 'Recorrido-completo-El-camino-de-la-investigacion.pdf';
+        completePdfDownload.textContent = '⇩ Descargar PDF completo';
+        restartInner.querySelector('.restart-title').after(completePdfDownload);
+    }
 
     // Botón trigger: abre el panel
     const btnShowRestart = document.getElementById('btn-show-restart');
